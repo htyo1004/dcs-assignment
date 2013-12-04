@@ -19,7 +19,7 @@ public class Branch {
     private String branchCode;
     private String ipaddress;
     private String getBranchCode = "SELECT branchCode FROM branch WHERE bid = ?;";
-    private String getBranchIP = "SELECT ipAddress FROM branch WHERE bid = ?;";
+    private String getBranchIP = "SELECT ipAddress FROM branch WHERE branchCode = ?;";
 
     public Branch() {
     }
@@ -67,7 +67,7 @@ public class Branch {
     public String obtainBranchIp(Connection con){
         try {
             PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchIP);
-            pstmtSelect.setInt(1, this.bid);
+            pstmtSelect.setString(1, this.branchCode);
             ResultSet rs = pstmtSelect.executeQuery();
             if(rs.next()){
                 String ipAdd = rs.getString(1);
