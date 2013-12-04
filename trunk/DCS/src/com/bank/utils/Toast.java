@@ -88,7 +88,7 @@ public class Toast extends JDialog {
         toast.setDuration(duration);
         FontMetrics fm = Toast.message.getFontMetrics(message.getFont());
         int textWidth = fm.stringWidth(text);
-        toast.setSize(textWidth-350, height);
+        toast.setSize(textWidth, height);
         toast.setLocationRelativeTo(root);
         return toast;
     }
