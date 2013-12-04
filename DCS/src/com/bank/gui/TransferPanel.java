@@ -1,5 +1,9 @@
 package com.bank.gui;
 
+import com.bank.utils.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -28,70 +32,105 @@ public class TransferPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtAccNo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtAccNoReceiver = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        txtAmountTransfer = new javax.swing.JTextField();
+        btnReset = new javax.swing.JButton();
+        btnSubmit = new javax.swing.JButton();
+        btnCheck = new javax.swing.JButton();
 
         setLayout(null);
 
         jLabel1.setText("Beneficial Account Number ");
         add(jLabel1);
         jLabel1.setBounds(20, 60, 190, 30);
-        add(jTextField1);
-        jTextField1.setBounds(20, 90, 290, 30);
+        add(txtAccNo);
+        txtAccNo.setBounds(20, 90, 290, 30);
 
         jLabel2.setText("Account Number");
         add(jLabel2);
         jLabel2.setBounds(20, 130, 220, 30);
 
-        jTextField2.setEnabled(false);
-        add(jTextField2);
-        jTextField2.setBounds(20, 160, 390, 30);
+        txtAccNoReceiver.setEnabled(false);
+        add(txtAccNoReceiver);
+        txtAccNoReceiver.setBounds(20, 160, 390, 30);
 
         jLabel3.setText("Amount to Transfer");
         add(jLabel3);
         jLabel3.setBounds(20, 200, 180, 30);
 
-        jTextField3.setEnabled(false);
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        txtAmountTransfer.setEnabled(false);
+        add(txtAmountTransfer);
+        txtAmountTransfer.setBounds(20, 230, 390, 30);
+
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                btnResetActionPerformed(evt);
             }
         });
-        add(jTextField3);
-        jTextField3.setBounds(20, 230, 390, 30);
+        add(btnReset);
+        btnReset.setBounds(10, 320, 170, 50);
 
-        jButton2.setText("Reset");
-        add(jButton2);
-        jButton2.setBounds(10, 320, 170, 50);
+        btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
+        add(btnSubmit);
+        btnSubmit.setBounds(260, 320, 170, 50);
 
-        jButton1.setText("Submit");
-        add(jButton1);
-        jButton1.setBounds(260, 320, 170, 50);
-
-        jButton3.setText("Check");
-        add(jButton3);
-        jButton3.setBounds(320, 90, 90, 30);
+        btnCheck.setText("Check");
+        btnCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckActionPerformed(evt);
+            }
+        });
+        add(btnCheck);
+        btnCheck.setBounds(320, 90, 90, 30);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        if(txtAccNo.getText().isEmpty()){
+            Toast.makeText(getParent(),"Please enter account number.",Toast.LENGTH_SHORT).display();
+        }else{
+           txtAccNoReceiver.setEnabled(true);
+           txtAmountTransfer.setEditable(true);
+        }
+    }//GEN-LAST:event_btnCheckActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // TODO add your handling code here:
+        String accReceiver = txtAccNoReceiver.getText().trim();
+        
+        try{
+        Double amount = Double.parseDouble(txtAmountTransfer.getText().trim());
+        }catch(NumberFormatException ex){
+             Toast.makeText(getParent(),"Please enter amount in number format.",Toast.LENGTH_SHORT).display();
+        }
+        
+    }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        txtAccNo.setText("");
+        txtAccNoReceiver.setText("");
+        txtAmountTransfer.setText("");
+    }//GEN-LAST:event_btnResetActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnCheck;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSubmit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtAccNo;
+    private javax.swing.JTextField txtAccNoReceiver;
+    private javax.swing.JTextField txtAmountTransfer;
     // End of variables declaration//GEN-END:variables
 }

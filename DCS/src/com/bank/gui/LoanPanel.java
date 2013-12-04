@@ -28,21 +28,21 @@ public class LoanPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jcbLoanType = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtLoanAmount = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtLoanInterest = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jcbDuration = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtloanerName = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtLoanerIC = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        txtloanerContact = new javax.swing.JTextField();
+        btnReset = new javax.swing.JButton();
+        btnSubmit = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -50,61 +50,106 @@ public class LoanPanel extends javax.swing.JPanel {
         add(jLabel1);
         jLabel1.setBounds(20, 20, 140, 30);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(jComboBox1);
-        jComboBox1.setBounds(160, 20, 260, 30);
+        jcbLoanType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Housing Loan", "Personal Loan", "Car Loan" }));
+        jcbLoanType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbLoanTypeActionPerformed(evt);
+            }
+        });
+        add(jcbLoanType);
+        jcbLoanType.setBounds(160, 20, 260, 30);
 
         jLabel2.setText("Loan Amount");
         add(jLabel2);
         jLabel2.setBounds(20, 60, 140, 30);
-        add(jTextField1);
-        jTextField1.setBounds(160, 60, 260, 30);
+        add(txtLoanAmount);
+        txtLoanAmount.setBounds(160, 60, 260, 30);
 
         jLabel3.setText("Loan Interest Rate");
         add(jLabel3);
         jLabel3.setBounds(20, 100, 140, 30);
-        add(jTextField2);
-        jTextField2.setBounds(160, 100, 260, 30);
+        add(txtLoanInterest);
+        txtLoanInterest.setBounds(160, 100, 260, 30);
 
         jLabel4.setText("Duration");
         add(jLabel4);
         jLabel4.setBounds(20, 140, 140, 30);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(jComboBox2);
-        jComboBox2.setBounds(160, 140, 260, 30);
+        add(jcbDuration);
+        jcbDuration.setBounds(160, 140, 260, 30);
 
         jLabel5.setText("Loaner Name");
         add(jLabel5);
         jLabel5.setBounds(20, 180, 140, 30);
-        add(jTextField3);
-        jTextField3.setBounds(160, 180, 260, 30);
+        add(txtloanerName);
+        txtloanerName.setBounds(160, 180, 260, 30);
 
         jLabel6.setText("Loaner IC Number");
         add(jLabel6);
         jLabel6.setBounds(20, 220, 140, 30);
-        add(jTextField4);
-        jTextField4.setBounds(160, 220, 260, 30);
+        add(txtLoanerIC);
+        txtLoanerIC.setBounds(160, 220, 260, 30);
 
         jLabel7.setText("Loaner Contact No");
         add(jLabel7);
         jLabel7.setBounds(20, 260, 140, 30);
-        add(jTextField5);
-        jTextField5.setBounds(160, 260, 260, 30);
+        add(txtloanerContact);
+        txtloanerContact.setBounds(160, 260, 260, 30);
 
-        jButton2.setText("Reset");
-        add(jButton2);
-        jButton2.setBounds(10, 320, 170, 50);
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+        add(btnReset);
+        btnReset.setBounds(10, 320, 170, 50);
 
-        jButton1.setText("Submit");
-        add(jButton1);
-        jButton1.setBounds(260, 320, 170, 50);
+        btnSubmit.setText("Submit");
+        add(btnSubmit);
+        btnSubmit.setBounds(260, 320, 170, 50);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jcbLoanTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbLoanTypeActionPerformed
+        // TODO add your handling code here:
+         Integer month=12;
+        Integer item = 0;
+        jcbDuration.removeAllItems();
+        if(jcbLoanType.getSelectedIndex()==0){
+            Integer []year ={20,25,30,35};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }else if(jcbLoanType.getSelectedIndex()==1){
+            Integer []year ={10,20,30};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }else if(jcbLoanType.getSelectedIndex()==2){
+            Integer []year ={5,7,9};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }
+    }//GEN-LAST:event_jcbLoanTypeActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnResetActionPerformed
+    
+    public void clear(){
+        jcbLoanType.setSelectedIndex(0);
+        txtLoanAmount.setText("");
+        txtLoanInterest.setText("");
+        jcbDuration.removeAllItems();
+        txtloanerName.setText("");
+        txtLoanerIC.setText("");
+        txtloanerContact.setText("");  
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSubmit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -112,10 +157,12 @@ public class LoanPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JComboBox jcbDuration;
+    private javax.swing.JComboBox jcbLoanType;
+    private javax.swing.JTextField txtLoanAmount;
+    private javax.swing.JTextField txtLoanInterest;
+    private javax.swing.JTextField txtLoanerIC;
+    private javax.swing.JTextField txtloanerContact;
+    private javax.swing.JTextField txtloanerName;
     // End of variables declaration//GEN-END:variables
 }
