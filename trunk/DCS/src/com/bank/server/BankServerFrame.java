@@ -145,7 +145,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         }
         jtaMessage.append("Operation ended, return to idle state\n");
     }
-    
+
     private void transferWithdraw(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Withdraw\n");
@@ -218,6 +218,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
+                returnValue.put("result", result);
                 cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
                 jtaMessage.append("Unable to deposit : " + result + "\n");
             }
@@ -229,7 +230,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         }
         jtaMessage.append("Operation ended, return to idle state\n");
     }
-    
+
     private void transferDeposit(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Deposit\n");
@@ -277,11 +278,73 @@ public class BankServerFrame extends javax.swing.JFrame {
     private void transfer(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Transfer\n");
-//        JSONObject j = json.getJSONObject("content");
-        transferWithdraw(json);
+        JSONObject tData = json.getJSONObject("content");
+        JSONObject returnValue = new JSONObject();
+        JSONObject returnContent = new JSONObject();
+        jtaMessage.append("Reading data received..\n");
+        returnContent.put("bCode", tData.getString("bCode"));
+        returnContent.put("address", tData.getString("address"));
+        returnContent.put("port", tData.getInt("port"));
+        if (json.optBoolean("withdraw", false)) {
+            String accBranch = tData.getString("accNo").substring(0, 4);
+            if (accBranch.equals(this.branchCode)) {
+                withdraw = new Withdraw();
+                withdraw.setAccNo(tData.getString("accNo"));
+                withdraw.setAmount(tData.getDouble("amount"));
+                jtaMessage.append("Deducting money\n");
+                String res = withdraw.transferWithdraw(dbCon);
+                if (res.equals("Success")) {
+                    tLog = new TransactionLog();
+                    tLog.setAccNo(tData.getString("accNo"));
+                    tLog.setAmount(tData.getDouble("amount"));
+                    tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                    tLog.setTransactionType(TransactionType.DBT.toString());
+                    tLog.createTransactionLog(dbCon);
+                    json.put("withdraw", true);
+                } else {
+                    returnValue.put("result", res);
+                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+                    jtaMessage.append("Unable to take out money : " + res + "\n");
+                }
+            } else {
+                jtaMessage.append("Not belongs to this branch, send to next branch\n");
+                branch = new Branch();
+                branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+                cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
+            }
+        } else {
+            String accReceiver = tData.getString("accReceiver").substring(0, 4);
+            if (accReceiver.equals(this.branchCode)) {
+                deposit = new Deposit();
+                deposit.setAccNo(tData.getString("accReceiver"));
+                deposit.setAmount(tData.getDouble("amount"));
+                String result = deposit.transferDeposit(dbCon);
+                returnValue.put("operation", Operation.RESPONSE);
+                if (result.equals("Success")) {
+                    tLog = new TransactionLog();
+                    tLog.setAccNo(tData.getString("accNo"));
+                    tLog.setAmount(tData.getDouble("amount"));
+                    tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                    tLog.setTransactionType(TransactionType.CRD.toString());
+                    tLog.createTransactionLog(dbCon);
+                    returnContent.put("result", result);
+                    returnValue.put("content", returnContent);
+                    respond(returnValue);
+                } else {
+                    returnValue.put("result", result);
+                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+                    jtaMessage.append("Unable to transfer the money : " + result + "\n");
+                }
+            } else {
+                jtaMessage.append("Not belongs to this branch, send to next branch\n");
+                branch = new Branch();
+                branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+                cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
+            }
+        }
         jtaMessage.append("Operation ended, return to idle state\n");
-        
-        
+
+
     }
 
     private void loan(JSONObject json) throws JSONException, UnknownHostException {
