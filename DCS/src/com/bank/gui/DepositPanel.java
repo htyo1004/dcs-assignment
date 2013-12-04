@@ -67,6 +67,7 @@ public class DepositPanel extends javax.swing.JPanel {
         txtAmountDeposit = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -119,6 +120,13 @@ public class DepositPanel extends javax.swing.JPanel {
         });
         add(btnSubmit);
         btnSubmit.setBounds(260, 320, 170, 50);
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Deposit");
+        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 3));
+        add(jLabel4);
+        jLabel4.setBounds(100, 20, 250, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtAmountDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAmountDepositActionPerformed
@@ -132,7 +140,7 @@ public class DepositPanel extends javax.swing.JPanel {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
-        
+
         if (txtAccNumber.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter account number");
@@ -171,7 +179,13 @@ public class DepositPanel extends javax.swing.JPanel {
                 j.put("content", content);
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
+                JSONObject result = js.getJSONObject("content");
                 System.out.println(js.toString());
+                if (result.get("result").toString().equalsIgnoreCase("Success")) {
+                    Toast.makeText(getParent(), "Success", Toast.LENGTH_SHORT).display();
+                } else {
+                    Toast.makeText(getParent(), "Transfer Unsuccessful.", Toast.LENGTH_SHORT).display();
+                }
             } catch (JSONException ex) {
                 ex.printStackTrace();
                 System.out.println(ex);
@@ -188,6 +202,7 @@ public class DepositPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtAccNumber;
     private javax.swing.JTextField txtAmountDeposit;
     private javax.swing.JTextField txtICNumber;
