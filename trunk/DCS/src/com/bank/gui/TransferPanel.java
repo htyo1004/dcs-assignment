@@ -1,5 +1,6 @@
 package com.bank.gui;
 
+import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,11 +15,12 @@ import org.json.JSONObject;
  * @author Moofie
  */
 public class TransferPanel extends javax.swing.JPanel {
-
+    private CommunicationWrapper cw;
     /**
      * Creates new form TransferPanel
      */
-    public TransferPanel() {
+    public TransferPanel(CommunicationWrapper cw) {
+        this.cw = cw;
         initComponents();
     }
 

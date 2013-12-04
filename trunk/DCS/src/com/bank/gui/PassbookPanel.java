@@ -1,5 +1,6 @@
 package com.bank.gui;
 
+import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Toast;
 import java.awt.print.PrinterException;
 import java.util.logging.Level;
@@ -15,11 +16,12 @@ import java.util.logging.Logger;
  * @author Moofie
  */
 public class PassbookPanel extends javax.swing.JPanel {
-
+    private CommunicationWrapper cw;
     /**
      * Creates new form PassbookPanel
      */
-    public PassbookPanel() {
+    public PassbookPanel(CommunicationWrapper cw) {
+        this.cw = cw;
         initComponents();
     }
 

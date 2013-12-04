@@ -1,7 +1,9 @@
 package com.bank.gui;
 
 
+import com.bank.utils.CommunicationWrapper;
 import java.awt.CardLayout;
+import java.net.SocketException;
 
 /*
  * To change this template, choose Tools | Templates
@@ -13,20 +15,32 @@ import java.awt.CardLayout;
  * @author Moofie
  */
 public class Main extends javax.swing.JFrame {
-
     private CardLayout cl;
+    private CommunicationWrapper cw;
     /**
      * Creates new form Main
      */
     public Main() {
+        try{
+            cw = new CommunicationWrapper(5000);
+        } catch (SocketException ex) {
+            System.out.println("Unable to open socket : " + ex.getMessage());
+            System.out.println("Closing server..");
+            try {
+                Thread.sleep(2000);
+                System.exit(1);
+            } catch (InterruptedException ex1) {
+            }
+        }
         initComponents();
-        jpMainCard.add(new WithdrawPanel(), "withdraw");
-        jpMainCard.add(new DepositPanel(), "deposit");
-        jpMainCard.add(new TransferPanel(), "transfer");
-        jpMainCard.add(new RegisterPanel(), "register");
-        jpMainCard.add(new LoanPanel(), "loan");
-        jpMainCard.add(new PassbookPanel(), "passbook");
+        jpMainCard.add(new WithdrawPanel(cw), "withdraw");
+        jpMainCard.add(new DepositPanel(cw), "deposit");
+        jpMainCard.add(new TransferPanel(cw), "transfer");
+        jpMainCard.add(new RegisterPanel(cw), "register");
+        jpMainCard.add(new LoanPanel(cw), "loan");
+        jpMainCard.add(new PassbookPanel(cw), "passbook");
         cl = (CardLayout) jpMainCard.getLayout();
+        
     }
 
     /**
