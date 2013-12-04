@@ -32,6 +32,7 @@ public class CommunicationWrapper {
     DatagramPacket packetReceived = new DatagramPacket(dataReceived, dataReceived.length);
     DatagramPacket sendPacket = new DatagramPacket(dataToSend, dataToSend.length);
     DatagramSocket udpSocket;
+    private String textFile = "/com/bank/InterconnectionGraph.txt";
 
     public CommunicationWrapper(int port) throws SocketException {
         udpSocket = new DatagramSocket(port);
@@ -63,15 +64,34 @@ public class CommunicationWrapper {
         }
         return json;
     }
-    
-    public void close(){
+
+    public void close() {
         udpSocket.close();
+    }
+
+    public boolean isBranchReachable(String source, String destination) {
+        boolean reachable = false;
+        try {
+            FileInputStream graphFile = new FileInputStream(new File(this.getClass().getResource(textFile).getPath()));
+            DataInputStream input = new DataInputStream(graphFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(" ");
+                if (source.equals(data[0])) {
+                    reachable = destination.equals(data[1]);
+                    break;
+                }
+            }
+        } catch (IOException ex) {
+        }
+        return reachable;
     }
 
     public String whoIsNeighbors(String branch) {
         String neighbor = null;
         try {
-            FileInputStream graphFile = new FileInputStream(new File(this.getClass().getResource("/com/bank/InterconnectionGraph.txt").getPath()));
+            FileInputStream graphFile = new FileInputStream(new File(this.getClass().getResource(textFile).getPath()));
             DataInputStream input = new DataInputStream(graphFile);
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line;
@@ -82,10 +102,7 @@ public class CommunicationWrapper {
                     break;
                 }
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(CommunicationWrapper.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(CommunicationWrapper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return neighbor;
     }

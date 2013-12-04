@@ -4,9 +4,19 @@
  */
 package com.bank.entity;
 
+import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -14,18 +24,34 @@ import java.util.Date;
  */
 public class Test {
 
-    public static void main(String[] args) {
-        TransactionLog tl = new TransactionLog();
-        tl.setAccNo("66490000000001");
-//        tl.setAmount(253.23);
-//        tl.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-//        tl.setTransactionType("DBT");
-//        boolean result = tl.createTransactionLog(MySQLConnection.getConnection());
-//        System.out.println(result);
-        ArrayList<TransactionLog> da = tl.getTransactionLog(MySQLConnection.getConnection(), "66490000000001");
-        for (int i = 0; i < da.size(); i++) {
-            TransactionLog transactionLog = da.get(i);
-            System.out.println(transactionLog.toString() + "\n");
+    public static void main(String[] args) throws SocketException, JSONException, UnknownHostException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        CommunicationWrapper cw = new CommunicationWrapper(5000);
+        if (cw.isBranchReachable("6649", "6650")) {
+            JSONObject j = new JSONObject();
+            j.put("operation", Operation.WITHDRAW);
+            String message;
+            JSONObject content = new JSONObject();
+            System.out.println("Enter account number: ");
+            message = br.readLine();
+            content.put("accNo", message);
+            System.out.println("Enter IC number: ");
+            message = br.readLine();
+            content.put("icNo", message);
+            System.out.println("Enter Amount to withdraw : ");
+            message = br.readLine();
+            content.put("amount", Double.parseDouble(message));
+            content.put("port", 5000);
+            content.put("address", InetAddress.getLocalHost().getHostAddress());
+            j.put("content", content);
+            Branch b = new Branch();
+            b.setBranchCode("6650");
+            String ip = b.obtainBranchIp(MySQLConnection.getConnection());
+            cw.send(j, InetAddress.getByName(ip), 5000);
+            JSONObject js = cw.receive();
+            System.out.println(js.toString());
+        }else{
+            System.out.println("Branch unreacbable");
         }
     }
 }

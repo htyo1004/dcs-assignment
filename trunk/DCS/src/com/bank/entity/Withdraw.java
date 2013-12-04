@@ -20,7 +20,6 @@ public class Withdraw {
     private String icNo;
     private String checkAccount = "SELECT balance FROM account WHERE accNo = ? AND accHolder = ?;";
     private String withdrawMoney = "UPDATE account SET balance = (balance - ?) WHERE accNo = ?";
-    private String selectBalance = "SELECT balance FROM account WHERE accNo = ?;";
 
     public Withdraw() {
     }
