@@ -20,6 +20,7 @@ public class Deposit {
     private String icNo;
     private String checkAccount = "SELECT * FROM account WHERE accNo = ? AND accHolder = ?;";
     private String depositMoney = "UPDATE account SET balance = (balance + ?) WHERE accNo = ?;";
+    private String transfer = "SELECT * FROM account WHERE accNo = ?;";
 
     public Deposit() {
     }
@@ -60,6 +61,36 @@ public class Deposit {
             PreparedStatement pstmtSelect = con.prepareStatement(this.checkAccount);
             pstmtSelect.setString(1, this.accNo);
             pstmtSelect.setString(2, this.icNo);
+            ResultSet check = pstmtSelect.executeQuery();
+            if (check.next()) {
+                pstmtSelect.close();
+                PreparedStatement pstmtUpdate = con.prepareStatement(this.depositMoney);
+                pstmtUpdate.setDouble(1, this.amount);
+                pstmtUpdate.setString(2, this.accNo);
+                pstmtUpdate.executeUpdate();
+                con.commit();
+                return "Success";
+            } else {
+                return "Account not found.";
+            }
+        } catch (SQLException ex) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex1) {
+                    ex1.printStackTrace();
+                }
+            }
+            return ex.getMessage();
+        }
+    }
+    
+    
+     public String transferDeposit(Connection con) {
+        try {
+            con.setAutoCommit(false);
+            PreparedStatement pstmtSelect = con.prepareStatement(this.transfer);
+            pstmtSelect.setString(1, this.accNo);
             ResultSet check = pstmtSelect.executeQuery();
             if (check.next()) {
                 pstmtSelect.close();

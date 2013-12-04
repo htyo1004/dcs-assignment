@@ -20,6 +20,7 @@ public class Withdraw {
     private String icNo;
     private String checkAccount = "SELECT balance FROM account WHERE accNo = ? AND accHolder = ?;";
     private String withdrawMoney = "UPDATE account SET balance = (balance - ?) WHERE accNo = ?";
+    private String transfer = "SELECT balance FROM account WHERE accNo = ?;";
 
     public Withdraw() {
     }
@@ -60,6 +61,43 @@ public class Withdraw {
             PreparedStatement pstmtSelect = con.prepareStatement(this.checkAccount);
             pstmtSelect.setString(1, this.accNo);
             pstmtSelect.setString(2, this.icNo);
+            ResultSet check = pstmtSelect.executeQuery();
+            if (check.next()) {
+                Double balance = check.getDouble("balance");
+                if ((balance - 1) > amount) {
+                    PreparedStatement pstmtInsert = con.prepareStatement(this.withdrawMoney);
+                    pstmtInsert.setDouble(1, this.amount);
+                    pstmtInsert.setString(2, this.accNo);
+                    pstmtInsert.executeUpdate();
+                    con.commit();
+                    return "Success";
+                } else {
+                    con.commit();
+                    return "Insufficient balance in account.";
+                }
+            } else {
+                con.commit();
+                return "Account not found.";
+            }
+        } catch (SQLException ex) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex1) {
+                    ex1.printStackTrace();
+                }
+            }
+            return ex.getMessage();
+        }
+    }
+    
+    
+     public String transferWithdraw(Connection con) {
+        try {
+            con.setAutoCommit(false);
+            PreparedStatement pstmtSelect = con.prepareStatement(this.transfer);
+            pstmtSelect.setString(1, this.accNo);
+         
             ResultSet check = pstmtSelect.executeQuery();
             if (check.next()) {
                 Double balance = check.getDouble("balance");
