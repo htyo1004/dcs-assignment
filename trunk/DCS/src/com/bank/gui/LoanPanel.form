@@ -58,6 +58,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLoanAmount">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocloan = (AbstractDocument)txtLoanAmount.getDocument();&#xa;aDocloan.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,8}&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="160" y="60" width="260" height="30"/>
@@ -75,6 +78,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLoanInterest">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocInterest = (AbstractDocument)txtLoanInterest.getDocument();&#xa;aDocInterest.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,3}&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="160" y="100" width="260" height="30"/>
@@ -114,6 +120,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtloanerName">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocname = (AbstractDocument)txtloanerName.getDocument();&#xa;aDocname.setDocumentFilter(new TextFieldLimiter(&quot;^[a-z A-Z]+$&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="160" y="180" width="260" height="30"/>
@@ -131,6 +140,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLoanerIC">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocPostCode = (AbstractDocument)txtLoanerIC.getDocument();&#xa;aDocPostCode.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,12}&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="160" y="220" width="260" height="30"/>
@@ -148,6 +160,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtloanerContact">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDoccontact = (AbstractDocument)txtloanerContact.getDocument();&#xa;aDoccontact.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,10}&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="160" y="260" width="260" height="30"/>
@@ -171,6 +186,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Submit"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSubmitActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="260" y="320" width="170" height="50"/>
