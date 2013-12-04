@@ -24,28 +24,29 @@ import org.json.JSONObject;
  * @author Moofie
  */
 public class RegisterPanel extends javax.swing.JPanel {
+
     private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
-    
+
     /**
      * Creates new form RegisterPanel
      */
-    public RegisterPanel(CommunicationWrapper cw,String branchCode) {
-        this.cw=cw;
+    public RegisterPanel(CommunicationWrapper cw, String branchCode) {
+        this.cw = cw;
         this.branchCode = branchCode;
-    
+
         initComponents();
     }
-    
-    private void reset(){
+
+    private void reset() {
         txtFname.setText("");
         txtLname.setText("");
         jrbMale.setSelected(true);
         txtAddress.setText("");
         jcbState.setSelectedItem("Perak");
         txtCity.setText("");
-        txtPostCode.setText("");
+        txtICNumber.setText("");
         txtContact.setText("");
         txtEmail.setText("");
         jcbAccType.setSelectedItem("Saving");
@@ -74,7 +75,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         jcbState = new javax.swing.JComboBox();
         txtCity = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtPostCode = new javax.swing.JTextField();
+        txtICNumber = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtContact = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -91,10 +92,13 @@ public class RegisterPanel extends javax.swing.JPanel {
         add(jLabel1);
         jLabel1.setBounds(20, 10, 150, 30);
 
-        AbstractDocument aDocname = (AbstractDocument)txtPostCode.getDocument();
-        aDocname.setDocumentFilter(new TextFieldLimiter("^[a-zA-Z]+$"));
+        AbstractDocument aDocname = (AbstractDocument)txtFname.getDocument();
+        aDocname.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
         add(txtFname);
         txtFname.setBounds(170, 10, 250, 30);
+
+        AbstractDocument aDocLname = (AbstractDocument)txtLname.getDocument();
+        aDocLname.setDocumentFilter(new TextFieldLimiter("^[a-zA-Z]+$"));
         add(txtLname);
         txtLname.setBounds(170, 40, 250, 30);
 
@@ -104,49 +108,52 @@ public class RegisterPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Gender");
         add(jLabel3);
-        jLabel3.setBounds(20, 70, 150, 30);
+        jLabel3.setBounds(20, 100, 150, 30);
         add(txtAddress);
-        txtAddress.setBounds(170, 100, 250, 30);
+        txtAddress.setBounds(170, 130, 250, 30);
 
         jLabel4.setText("Address");
         add(jLabel4);
-        jLabel4.setBounds(20, 100, 150, 30);
+        jLabel4.setBounds(20, 130, 150, 30);
 
         btngrp.add(jrbMale);
         jrbMale.setSelected(true);
         jrbMale.setText("Male");
         add(jrbMale);
-        jrbMale.setBounds(213, 70, 70, 30);
+        jrbMale.setBounds(220, 100, 70, 30);
 
         btngrp.add(jrbFemale);
         jrbFemale.setText("Female");
         add(jrbFemale);
-        jrbFemale.setBounds(320, 70, 59, 30);
+        jrbFemale.setBounds(320, 100, 59, 30);
 
         jLabel5.setText("State");
         add(jLabel5);
-        jLabel5.setBounds(20, 130, 150, 30);
+        jLabel5.setBounds(20, 160, 150, 30);
 
         jcbState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Perak", "Selangor", "Seremban", "Melaka", "Wilayah Persekutuan" }));
         add(jcbState);
-        jcbState.setBounds(170, 130, 250, 30);
+        jcbState.setBounds(170, 160, 250, 30);
+
+        AbstractDocument aDocCity = (AbstractDocument)txtCity.getDocument();
+        aDocCity.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
         add(txtCity);
-        txtCity.setBounds(170, 160, 250, 30);
+        txtCity.setBounds(170, 190, 250, 30);
 
         jLabel6.setText("City");
         add(jLabel6);
-        jLabel6.setBounds(20, 160, 150, 30);
+        jLabel6.setBounds(20, 190, 150, 30);
 
-        AbstractDocument aDocPostCode = (AbstractDocument)txtPostCode.getDocument();
-        aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,5}"));
-        add(txtPostCode);
-        txtPostCode.setBounds(170, 190, 250, 30);
+        AbstractDocument aDocPostCode = (AbstractDocument)txtICNumber.getDocument();
+        aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,12}"));
+        add(txtICNumber);
+        txtICNumber.setBounds(170, 70, 250, 30);
 
-        jLabel7.setText("Postal Code");
+        jLabel7.setText("IC Number");
         add(jLabel7);
-        jLabel7.setBounds(20, 190, 150, 30);
+        jLabel7.setBounds(20, 70, 150, 30);
 
-        AbstractDocument aDocContact = (AbstractDocument)txtPostCode.getDocument();
+        AbstractDocument aDocContact = (AbstractDocument)txtContact.getDocument();
         aDocContact.setDocumentFilter(new TextFieldLimiter("\\d{0,10}"));
         add(txtContact);
         txtContact.setBounds(170, 220, 250, 30);
@@ -187,7 +194,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         add(jcbAccType);
         jcbAccType.setBounds(170, 280, 250, 30);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         clear();
@@ -196,11 +203,11 @@ public class RegisterPanel extends javax.swing.JPanel {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
-        
+
         if (txtFname.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter first name");
-        } 
+        }
 
         if (txtLname.getText().length() == 0) {
             validate = false;
@@ -210,106 +217,115 @@ public class RegisterPanel extends javax.swing.JPanel {
         if (txtAddress.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter address");
-        } 
+        }
         if (txtCity.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter city");
-        } 
-        if (txtPostCode.getText().length() == 0) {
+        }
+        if (txtICNumber.getText().length() == 0) {
             validate = false;
-            check.append("<br />Please enter postal code");
-        } 
+            check.append("<br />Please enter IC number");
+        }
 
         if (txtContact.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter contact number");
-        } 
+        }
         if (txtEmail.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter email");
-        } 
-        
+        }
+
         if (!validate) {
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
-            CommunicationWrapper cw = null;
+
             try {
-                cw = new CommunicationWrapper(5500);
-            } catch (SocketException ex) {
+
+                String gender = "";
+                JSONObject j = new JSONObject();
+                j.put("operation", Operation.REGISTER);
+                String message;
+                JSONObject content = new JSONObject();
+                content.put("firstname", txtFname.getText());
+                content.put("lastname", txtLname.getText().trim());
+                content.put("icno", txtICNumber.getText().trim());
+                if (jrbMale.isSelected()) {
+                    gender = "M";
+                } else {
+                    gender = "F";
+                }
+                content.put("gender", gender);
+                content.put("address", txtAddress.getText());
+                content.put("state", jcbState.getSelectedItem().toString());
+                content.put("city", txtCity.getText());
+                content.put("postcode",postcode(jcbState.getSelectedIndex()));
+                content.put("contact", txtContact.getText().trim());
+                content.put("email", txtEmail.getText().trim());
+                content.put("type", jcbAccType.getSelectedItem().toString());
+                content.put("bid", this.branchCode);
+
+
+                content.put("port", 5500);
+                content.put("address", InetAddress.getLocalHost().getHostAddress());
+                System.out.println(InetAddress.getLocalHost().getHostAddress());
+                j.put("content", content);
+                Branch b = new Branch();
+                b.setBranchCode("6652");
+                String ip = b.obtainBranchIp(MySQLConnection.getConnection());
+                cw.send(j, InetAddress.getByName(ip), 5000);
+                JSONObject js = cw.receive();
+                System.out.println(js.toString());
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+                System.out.println(ex);
+            } catch (UnknownHostException ex) {
+                ex.printStackTrace();
                 Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-
-//            if (cw.isBranchReachable("6652", "6649")) {
-//            try {
-//
-//                    JSONObject j = new JSONObject();
-//                    j.put("operation", Operation.DEPOSIT);
-//                    String message;
-//                    JSONObject content = new JSONObject();
-//                    content.put("accNo", txtAccNumber.getText());
-//                    content.put("icNo", txtICNumber.getText());
-//                    content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
-//                    content.put("port", 5500);
-//                    content.put("address", InetAddress.getLocalHost().getHostAddress());
-//                    System.out.println(InetAddress.getLocalHost().getHostAddress());
-//                    j.put("content", content);
-//                    Branch b = new Branch();
-//                    b.setBranchCode("6649");
-//                    String ip = b.obtainBranchIp(MySQLConnection.getConnection());
-//                    cw.send(j, InetAddress.getByName(ip), 5000);
-//                    JSONObject js = cw.receive();
-//                    System.out.println(js.toString());
-//                } catch (JSONException ex) {
-//                    ex.printStackTrace();
-//                System.out.println(ex);
-//            } catch (UnknownHostException ex) {
-//                ex.printStackTrace();
-//                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            } else {
-//                System.out.println("Branch unreacbable");
-//    }
-        
-        
-        
-      
-            String fname = txtFname.getText().trim();
-            String lname = txtLname.getText().trim();
-            String gender = "";
-            if(jrbMale.isSelected())
-                gender = "Male";
-            else{
-                gender = "Female";
-            }
-            String addr = txtAddress.getText().trim();
-            String state = jcbState.getSelectedItem().toString();
-            String city = txtCity.getText().trim();
-            String postcode = txtPostCode.getText().trim();
-            String contact = txtContact.getText().trim();
-            String email =txtEmail.getText().trim();
-            String acctype = jcbAccType.getSelectedItem().toString();
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
-    
+    private String postcode(int index) {
+        String postcode;
+        switch (index) {
+            case 0:
+                postcode = "32000";
+                return postcode;
+            case 1:
+                postcode = "63300";
+                return postcode;
+            case 2:
+                postcode = "77890";
+               return postcode;
+            case 3:
+                postcode = "44690";
+                return postcode;
+            case 4:
+                postcode = "53200";
+                return postcode;
+        }
+        return "Not available";
+        
+
+    }
+
     public void clear() {
         txtFname.setText("");
         txtLname.setText("");
-        jrbMale.setSelected(true);        
+        jrbMale.setSelected(true);
         txtAddress.setText("");
         jcbState.setSelectedIndex(0);
-        txtCity.setText("");        
-        txtPostCode.setText("");
+        txtCity.setText("");
+        txtICNumber.setText("");
         txtContact.setText("");
         txtEmail.setText("");
         jcbAccType.setSelectedIndex(0);
-        
+
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSubmit;
@@ -333,7 +349,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtContact;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFname;
+    private javax.swing.JTextField txtICNumber;
     private javax.swing.JTextField txtLname;
-    private javax.swing.JTextField txtPostCode;
     // End of variables declaration//GEN-END:variables
 }
