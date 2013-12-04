@@ -24,6 +24,7 @@ import org.json.JSONObject;
  * @author Moofie
  */
 public class DepositPanel extends javax.swing.JPanel {
+
     private CommunicationWrapper cw;
     /**
      * Creates new form DepositPanel
@@ -139,7 +140,7 @@ public class DepositPanel extends javax.swing.JPanel {
         if (txtAccNumber.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter account number");
-        } 
+        }
 
         if (txtICNumber.getText().length() == 0) {
             validate = false;
@@ -149,7 +150,7 @@ public class DepositPanel extends javax.swing.JPanel {
         if (txtAmountDeposit.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter deposit amount");
-        } 
+        }
 
         if (!validate) {
             check.append("</html>");
@@ -158,36 +159,30 @@ public class DepositPanel extends javax.swing.JPanel {
 
 
 
-            if (cw.isBranchReachable("6652", "6649")) {
+
             try {
 
-                    JSONObject j = new JSONObject();
-                    j.put("operation", Operation.DEPOSIT);
-                    String message;
-                    JSONObject content = new JSONObject();
-                    content.put("accNo", txtAccNumber.getText());
-                    content.put("icNo", txtICNumber.getText());
-                    content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
-                    content.put("port", 5500);
-                    content.put("address", InetAddress.getLocalHost().getHostAddress());
-                    System.out.println(InetAddress.getLocalHost().getHostAddress());
-                    j.put("content", content);
-                    Branch b = new Branch();
-                    b.setBranchCode("6649");
-                    String ip = b.obtainBranchIp(MySQLConnection.getConnection());
-                    cw.send(j, InetAddress.getByName(ip), 5000);
-                    JSONObject js = cw.receive();
-                    System.out.println(js.toString());
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
+                JSONObject j = new JSONObject();
+                j.put("operation", Operation.DEPOSIT);
+                JSONObject content = new JSONObject();
+                content.put("accNo", txtAccNumber.getText());
+                content.put("icNo", txtICNumber.getText());
+                content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
+                content.put("port", 5500);
+                content.put("address", InetAddress.getLocalHost().getHostAddress());
+                System.out.println(InetAddress.getLocalHost().getHostAddress());
+                j.put("content", content);
+                cw.send(j, InetAddress.getLocalHost(), 5000);
+                JSONObject js = cw.receive();
+                System.out.println(js.toString());
+            } catch (JSONException ex) {
+                ex.printStackTrace();
                 System.out.println(ex);
             } catch (UnknownHostException ex) {
                 ex.printStackTrace();
                 Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            } else {
-                System.out.println("Branch unreacbable");
-    }
+
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
