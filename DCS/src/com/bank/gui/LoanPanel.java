@@ -1,5 +1,7 @@
 package com.bank.gui;
 
+import com.bank.utils.CommunicationWrapper;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -10,11 +12,12 @@ package com.bank.gui;
  * @author Moofie
  */
 public class LoanPanel extends javax.swing.JPanel {
-
+    private CommunicationWrapper cw;
     /**
      * Creates new form LoanPanel
      */
-    public LoanPanel() {
+    public LoanPanel(CommunicationWrapper cw) {
+        this.cw = cw;
         initComponents();
     }
 

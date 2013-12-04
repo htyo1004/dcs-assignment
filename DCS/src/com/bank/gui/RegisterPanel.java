@@ -1,5 +1,7 @@
 package com.bank.gui;
 
+import com.bank.utils.CommunicationWrapper;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -9,11 +11,12 @@ package com.bank.gui;
  * @author Moofie
  */
 public class RegisterPanel extends javax.swing.JPanel {
-
+    private CommunicationWrapper cw;
     /**
      * Creates new form RegisterPanel
      */
-    public RegisterPanel() {
+    public RegisterPanel(CommunicationWrapper cw) {
+        this.cw = cw;
         initComponents();
     }
 

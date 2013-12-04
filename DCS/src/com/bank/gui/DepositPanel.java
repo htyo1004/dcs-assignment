@@ -24,13 +24,14 @@ import org.json.JSONObject;
  * @author Moofie
  */
 public class DepositPanel extends javax.swing.JPanel {
-
+    private CommunicationWrapper cw;
     /**
      * Creates new form DepositPanel
      */
     private boolean validate;
 
-    public DepositPanel() {
+    public DepositPanel(CommunicationWrapper cw) {
+        this.cw = cw;
         initComponents();
     }
 
@@ -154,12 +155,7 @@ public class DepositPanel extends javax.swing.JPanel {
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
-            CommunicationWrapper cw = null;
-            try {
-                cw = new CommunicationWrapper(5500);
-            } catch (SocketException ex) {
-                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
 
 
             if (cw.isBranchReachable("6652", "6649")) {
