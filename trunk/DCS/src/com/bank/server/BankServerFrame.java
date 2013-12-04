@@ -301,7 +301,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Reading data received..\n");
         account = new AccountApplication();
         account.setAcctype(rData.getString("type"));
-        account.setAddress(rData.getString("address"));
+        account.setAddress(rData.getString("addressss"));
         account.setBid(rData.getInt("bid"));
         account.setCity(rData.getString("city"));
         account.setState(rData.getString("state"));
