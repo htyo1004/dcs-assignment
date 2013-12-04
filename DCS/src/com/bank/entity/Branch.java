@@ -21,6 +21,7 @@ public class Branch {
     private String ipaddress;
     private String getAllBranchCode = "SELECT branchCode FROM branch;";
     private String getBranchCode = "SELECT branchCode FROM branch WHERE bid = ?;";
+    private String getBranchId = "SELECT bid FROM branch WHERE branchCode = ?;";
     private String getBranchIP = "SELECT ipAddress FROM branch WHERE branchCode = ?;";
 
     public Branch() {
@@ -68,6 +69,22 @@ public class Branch {
         try {
             PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchCode);
             pstmtSelect.setInt(1, this.bid);
+            ResultSet rs = pstmtSelect.executeQuery();
+            if (rs.next()) {
+                String bCode = rs.getString(1);
+                return bCode;
+            } else {
+                return "Branch not found.";
+            }
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+    
+    public String obtainBranchId(Connection con) {
+        try {
+            PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchCode);
+            pstmtSelect.setString(1, this.branchCode);
             ResultSet rs = pstmtSelect.executeQuery();
             if (rs.next()) {
                 String bCode = rs.getString(1);

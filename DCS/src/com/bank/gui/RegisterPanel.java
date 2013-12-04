@@ -254,6 +254,8 @@ public class RegisterPanel extends javax.swing.JPanel {
                 } else {
                     gender = "F";
                 }
+                Branch b = new Branch();
+                b.setBranchCode(this.branchCode);
                 content.put("gender", gender);
                 content.put("address", txtAddress.getText());
                 content.put("state", jcbState.getSelectedItem().toString());
@@ -262,12 +264,11 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("contact", txtContact.getText().trim());
                 content.put("email", txtEmail.getText().trim());
                 content.put("type", jcbAccType.getSelectedItem().toString());
-                content.put("bid", this.branchCode);
+                content.put("bid", b.obtainBranchId(MySQLConnection.getConnection()));
                 content.put("port", 5500);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
-                Branch b = new Branch();
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
                 System.out.println(js.toString());
