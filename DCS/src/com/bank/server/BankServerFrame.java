@@ -146,45 +146,6 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Operation ended, return to idle state\n");
     }
 
-    private void transferWithdraw(JSONObject json) throws JSONException, UnknownHostException {
-        jtaMessage.append("Request received, Processing now..\n");
-        jtaMessage.append("Operation Type : Withdraw\n");
-        JSONObject wData = json.getJSONObject("content");
-        System.out.println(wData.toString());
-        JSONObject returnValue = new JSONObject();
-        jtaMessage.append("Reading data received..\n");
-        String accBranch = wData.getString("accNo").substring(0, 4);
-        System.out.println(accBranch);
-        if (accBranch.equals(this.branchCode)) {
-            withdraw = new Withdraw();
-            withdraw.setAccNo(wData.getString("accNo"));
-            withdraw.setAmount(wData.getDouble("amount"));
-            jtaMessage.append("Processing withdrawal\n");
-            String result = withdraw.transferWithdraw(dbCon);
-            if (result.equals("Success")) {
-                tLog = new TransactionLog();
-                tLog.setAccNo(wData.getString("accNo"));
-                tLog.setAmount(wData.getDouble("amount"));
-                tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                tLog.setTransactionType(TransactionType.DBT.toString());
-                tLog.createTransactionLog(dbCon);
-                jtaMessage.append("Operation success\n");
-                jtaMessage.append("Sending back respond\n");
-                transferDeposit(json);
-            } else {
-                returnValue.put("result", result);
-                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
-                jtaMessage.append("Unable to withdraw : " + result + "\n");
-            }
-        } else {
-            jtaMessage.append("Not belongs to this branch, send to next branch\n");
-            branch = new Branch();
-            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
-            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
-        }
-        jtaMessage.append("Operation ended, return to idle state\n");
-    }
-
     private void deposit(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Deposit\n");
@@ -219,50 +180,6 @@ public class BankServerFrame extends javax.swing.JFrame {
                 respond(returnValue);
             } else {
                 returnValue.put("result", result);
-                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
-                jtaMessage.append("Unable to deposit : " + result + "\n");
-            }
-        } else {
-            jtaMessage.append("Not belongs to this branch, send to next branch\n");
-            branch = new Branch();
-            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
-            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
-        }
-        jtaMessage.append("Operation ended, return to idle state\n");
-    }
-
-    private void transferDeposit(JSONObject json) throws JSONException, UnknownHostException {
-        jtaMessage.append("Request received, Processing now..\n");
-        jtaMessage.append("Operation Type : Deposit\n");
-        JSONObject dData = json.getJSONObject("content");
-        JSONObject returnValue = new JSONObject();
-        JSONObject returnContent = new JSONObject();
-        jtaMessage.append("Reading data received..\n");
-        String accBranch = dData.getString("accReceiver").substring(0, 4);
-        System.out.println(accBranch);
-        returnContent.put("bCode", dData.getString("bCode"));
-        returnContent.put("address", dData.getString("address"));
-        returnContent.put("port", dData.getInt("port"));
-        if (accBranch.equals(this.branchCode)) {
-            deposit = new Deposit();
-            deposit.setAccNo(dData.getString("accReceiver"));
-            deposit.setAmount(dData.getDouble("amount"));
-            jtaMessage.append("Processing deposit\n");
-            String result = deposit.transferDeposit(dbCon);
-            returnValue.put("operation", Operation.RESPONSE);
-            if (result.equals("Success")) {
-                tLog = new TransactionLog();
-                tLog.setAccNo(dData.getString("accNo"));
-                tLog.setAmount(dData.getDouble("amount"));
-                tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                tLog.setTransactionType(TransactionType.DBT.toString());
-                tLog.createTransactionLog(dbCon);
-                jtaMessage.append("Operation success\n");
-                jtaMessage.append("Sending back respond\n");
-                returnContent.put("result", result);
-                returnValue.put("content", returnContent);
-                respond(returnValue);
-            } else {
                 cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
                 jtaMessage.append("Unable to deposit : " + result + "\n");
             }
