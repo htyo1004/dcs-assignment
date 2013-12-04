@@ -264,7 +264,7 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("contact", txtContact.getText().trim());
                 content.put("email", txtEmail.getText().trim());
                 content.put("type", jcbAccType.getSelectedItem().toString());
-                content.put("bid", b.obtainBranchId(MySQLConnection.getConnection()));
+                content.put("bid", Integer.parseInt(b.obtainBranchId(MySQLConnection.getConnection())));
                 content.put("port", 5500);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());

@@ -83,7 +83,7 @@ public class Branch {
     
     public String obtainBranchId(Connection con) {
         try {
-            PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchCode);
+            PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchId);
             pstmtSelect.setString(1, this.branchCode);
             ResultSet rs = pstmtSelect.executeQuery();
             if (rs.next()) {
