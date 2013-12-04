@@ -32,10 +32,26 @@ public class CommunicationWrapper {
     DatagramSocket udpSocket;
     private String textFile = "/com/bank/InterconnectionGraph.txt";
 
+    /**
+     * Create a new wrapper class for the network communication between either
+     * client to server or server to server
+     * 
+     * @param port Port to be binded to the socket
+     * @throws SocketException 
+     */
     public CommunicationWrapper(int port) throws SocketException {
         udpSocket = new DatagramSocket(port);
     }
 
+    /**
+     * Accept data from client side and pass the data to the server for
+     * processing
+     *
+     * @param data a json object to be sent to the server to process
+     * @param branchURL the destination url
+     * @param port server's port number
+     * @see DatagramSocket
+     */
     public void send(JSONObject data, InetAddress branchURL, int port) {
         try {
             String json = data.toString();
@@ -51,11 +67,16 @@ public class CommunicationWrapper {
         }
     }
 
+    /**
+     * Receive data processed by server and returnthe data to the invoker
+     *
+     * @return a json object that contain the processed data
+     * @see DatagramSocket
+     */
     public JSONObject receive() {
         JSONObject json = new JSONObject();
         try {
             try {
-//                udpSocket.setSoTimeout(3000);
                 udpSocket.receive(packetReceived);
                 String data = new String(packetReceived.getData());
                 json = new JSONObject(data);
@@ -75,10 +96,23 @@ public class CommunicationWrapper {
         return json;
     }
 
+    /**
+     * Close the UDP datagram socket
+     *
+     * @see DatagramSocket
+     */
     public void close() {
         udpSocket.close();
     }
 
+    /**
+     * Accept two parameters and check if the source branch can reach the 
+     * destination branch or not by reading into the graph file
+     *
+     * @param source The source branch
+     * @param destination The destination branch
+     * @return true if the branch is reachable, false otherwise
+     */
     public boolean isBranchReachable(String source, String destination) {
         boolean reachable = false;
         try {
@@ -98,6 +132,13 @@ public class CommunicationWrapper {
         return reachable;
     }
 
+    /**
+     * Check the reachable neighbor of current branch by looking into the 
+     * graph file
+     *
+     * @param branch The current branch
+     * @return The neighbor of current branch
+     */
     public String whoIsNeighbors(String branch) {
         String neighbor = null;
         try {
