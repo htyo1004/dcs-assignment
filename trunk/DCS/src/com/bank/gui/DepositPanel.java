@@ -140,30 +140,22 @@ public class DepositPanel extends javax.swing.JPanel {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
-
         if (txtAccNumber.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter account number");
         }
-
         if (txtICNumber.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter ic number");
         }
-
         if (txtAmountDeposit.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter deposit amount");
         }
-
         if (!validate) {
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
-
-
-
-
             try {
 
                 JSONObject j = new JSONObject();

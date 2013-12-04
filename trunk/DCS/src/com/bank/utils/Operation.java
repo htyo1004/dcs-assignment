@@ -5,9 +5,11 @@
 package com.bank.utils;
 
 /**
+ * Enumerator to stimulate operations that is often carried out.
  *
  * @author Kenny
  */
+
 public enum Operation {
 
     WITHDRAW,

@@ -18,6 +18,12 @@ public class TextFieldLimiter extends DocumentFilter {
 
     private Pattern pattern;
 
+    /**
+     * Create a new text field filter that take in a regex to limit the 
+     * text to be able to enter to the text field
+     * 
+     * @param pattern regular expression for limiting input
+     */
     public TextFieldLimiter(String pattern) {
         super();
         this.pattern = Pattern.compile(pattern);
