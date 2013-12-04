@@ -52,13 +52,13 @@ public class TransferPanel extends javax.swing.JPanel {
 
         setLayout(null);
 
-        jLabel1.setText("Beneficial Account Number ");
+        jLabel1.setText("Account Number");
         add(jLabel1);
         jLabel1.setBounds(20, 60, 190, 30);
         add(txtAccNo);
         txtAccNo.setBounds(20, 90, 390, 30);
 
-        jLabel2.setText("Account Number");
+        jLabel2.setText("Beneficial Account Number ");
         add(jLabel2);
         jLabel2.setBounds(20, 130, 220, 30);
         add(txtAccNoReceiver);
