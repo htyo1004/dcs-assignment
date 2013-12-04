@@ -87,48 +87,93 @@ public class Main extends javax.swing.JFrame {
         jbtDeposit = new javax.swing.JButton();
         jbtTransfer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jpMainCard = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jbtRegister = new javax.swing.JButton();
         jbtLoan = new javax.swing.JButton();
         jbtUpdate = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jpMainCard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(null);
 
+        jbtWithdraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/b.png"))); // NOI18N
         jbtWithdraw.setText("Withdraw");
+        jbtWithdraw.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtWithdraw.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbtWithdraw.setIconTextGap(0);
         jbtWithdraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtWithdrawActionPerformed(evt);
             }
         });
         jPanel1.add(jbtWithdraw);
-        jbtWithdraw.setBounds(20, 70, 90, 50);
+        jbtWithdraw.setBounds(10, 70, 120, 50);
 
+        jbtDeposit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/a.jpg"))); // NOI18N
         jbtDeposit.setText("Deposit");
+        jbtDeposit.setIconTextGap(6);
         jbtDeposit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtDepositActionPerformed(evt);
             }
         });
         jPanel1.add(jbtDeposit);
-        jbtDeposit.setBounds(20, 130, 90, 50);
+        jbtDeposit.setBounds(10, 130, 120, 50);
 
+        jbtTransfer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/c.png"))); // NOI18N
         jbtTransfer.setText("Transfer");
+        jbtTransfer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtTransfer.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtTransfer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtTransferActionPerformed(evt);
             }
         });
         jPanel1.add(jbtTransfer);
-        jbtTransfer.setBounds(20, 190, 90, 50);
+        jbtTransfer.setBounds(10, 190, 120, 50);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("FF8 Banking System");
+        jLabel1.setText("Ong Ong Lai Banking System");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 560, 60);
+        jLabel1.setBounds(0, 0, 570, 60);
+
+        jbtRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/f.jpg"))); // NOI18N
+        jbtRegister.setText("Register");
+        jbtRegister.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtRegister.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbtRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRegisterActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtRegister);
+        jbtRegister.setBounds(10, 250, 120, 50);
+
+        jbtLoan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/e.png"))); // NOI18N
+        jbtLoan.setText("Loan");
+        jbtLoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtLoan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbtLoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLoanActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtLoan);
+        jbtLoan.setBounds(10, 310, 120, 50);
+
+        jbtUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/d.jpg"))); // NOI18N
+        jbtUpdate.setText("<html>Update<br/> passbook");
+        jbtUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtUpdateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtUpdate);
+        jbtUpdate.setBounds(10, 370, 120, 50);
 
         jpMainCard.setPreferredSize(new java.awt.Dimension(440, 380));
         jpMainCard.setLayout(new java.awt.CardLayout());
@@ -137,50 +182,25 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jpMainCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jpMainCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jpMainCard.add(jPanel2, "null");
-
-        jPanel1.add(jpMainCard);
-        jpMainCard.setBounds(120, 70, 440, 380);
-
-        jbtRegister.setText("Register");
-        jbtRegister.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtRegisterActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtRegister);
-        jbtRegister.setBounds(20, 250, 90, 50);
-
-        jbtLoan.setText("Loan");
-        jbtLoan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtLoanActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtLoan);
-        jbtLoan.setBounds(20, 310, 90, 50);
-
-        jbtUpdate.setText("<html>Update<br/> passbook");
-        jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtUpdateActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtUpdate);
-        jbtUpdate.setBounds(20, 370, 90, 50);
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(130, 70, 440, 380);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
