@@ -4,7 +4,6 @@ package com.bank.gui;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Moofie
@@ -27,39 +26,40 @@ public class RegisterPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btngrp = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtFname = new javax.swing.JTextField();
+        txtLname = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jrbMale = new javax.swing.JRadioButton();
+        jrbFemale = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField5 = new javax.swing.JTextField();
+        jcbState = new javax.swing.JComboBox();
+        txtCity = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtPostCode = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtEmail = new javax.swing.JTextField();
+        btnSubmit = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jcbAccType = new javax.swing.JComboBox();
 
         setLayout(null);
 
         jLabel1.setText("Firstname");
         add(jLabel1);
         jLabel1.setBounds(20, 10, 150, 30);
-        add(jTextField1);
-        jTextField1.setBounds(170, 10, 250, 30);
-        add(jTextField2);
-        jTextField2.setBounds(170, 40, 250, 30);
+        add(txtFname);
+        txtFname.setBounds(170, 10, 250, 30);
+        add(txtLname);
+        txtLname.setBounds(170, 40, 250, 30);
 
         jLabel2.setText("Lastname");
         add(jLabel2);
@@ -68,53 +68,45 @@ public class RegisterPanel extends javax.swing.JPanel {
         jLabel3.setText("Gender");
         add(jLabel3);
         jLabel3.setBounds(20, 70, 150, 30);
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        add(jTextField4);
-        jTextField4.setBounds(170, 100, 250, 30);
+        add(txtAddress);
+        txtAddress.setBounds(170, 100, 250, 30);
 
         jLabel4.setText("Address");
         add(jLabel4);
         jLabel4.setBounds(20, 100, 150, 30);
 
-        jRadioButton1.setText("Male");
-        add(jRadioButton1);
-        jRadioButton1.setBounds(213, 70, 70, 30);
+        btngrp.add(jrbMale);
+        jrbMale.setSelected(true);
+        jrbMale.setText("Male");
+        add(jrbMale);
+        jrbMale.setBounds(213, 70, 70, 30);
 
-        jRadioButton2.setText("Female");
-        add(jRadioButton2);
-        jRadioButton2.setBounds(320, 70, 59, 30);
+        btngrp.add(jrbFemale);
+        jrbFemale.setText("Female");
+        add(jrbFemale);
+        jrbFemale.setBounds(320, 70, 59, 30);
 
         jLabel5.setText("State");
         add(jLabel5);
         jLabel5.setBounds(20, 130, 150, 30);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        add(jComboBox1);
-        jComboBox1.setBounds(170, 130, 250, 30);
-        add(jTextField5);
-        jTextField5.setBounds(170, 160, 250, 30);
+        jcbState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Perak", "Selangor", "Seremban", "Melaka", "Wilayah Persekutuan" }));
+        add(jcbState);
+        jcbState.setBounds(170, 130, 250, 30);
+        add(txtCity);
+        txtCity.setBounds(170, 160, 250, 30);
 
         jLabel6.setText("City");
         add(jLabel6);
         jLabel6.setBounds(20, 160, 150, 30);
-        add(jTextField6);
-        jTextField6.setBounds(170, 190, 250, 30);
+        add(txtPostCode);
+        txtPostCode.setBounds(170, 190, 250, 30);
 
         jLabel7.setText("Postal Code");
         add(jLabel7);
         jLabel7.setBounds(20, 190, 150, 30);
-        add(jTextField7);
-        jTextField7.setBounds(170, 220, 250, 30);
+        add(txtContact);
+        txtContact.setBounds(170, 220, 250, 30);
 
         jLabel8.setText("Contact Number");
         add(jLabel8);
@@ -123,39 +115,79 @@ public class RegisterPanel extends javax.swing.JPanel {
         jLabel9.setText("Email");
         add(jLabel9);
         jLabel9.setBounds(20, 250, 150, 30);
-        add(jTextField8);
-        jTextField8.setBounds(170, 250, 250, 30);
+        add(txtEmail);
+        txtEmail.setBounds(170, 250, 250, 30);
 
-        jButton1.setText("Submit");
-        add(jButton1);
-        jButton1.setBounds(260, 320, 170, 50);
+        btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
+        add(btnSubmit);
+        btnSubmit.setBounds(260, 320, 170, 50);
 
-        jButton2.setText("Reset");
-        add(jButton2);
-        jButton2.setBounds(10, 320, 170, 50);
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+        add(btnReset);
+        btnReset.setBounds(10, 320, 170, 50);
 
         jLabel10.setText("Account Type");
         add(jLabel10);
         jLabel10.setBounds(20, 280, 150, 30);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(jComboBox2);
-        jComboBox2.setBounds(170, 280, 250, 30);
+        jcbAccType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Saving", "Current" }));
+        add(jcbAccType);
+        jcbAccType.setBounds(170, 280, 250, 30);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        clear();
+    }//GEN-LAST:event_btnResetActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
+      
+            String fname = txtFname.getText().trim();
+            String lname = txtLname.getText().trim();
+            String gender = "";
+            if(jrbMale.isSelected())
+                gender = "Male";
+            else{
+                gender = "Female";
+            }
+            String addr = txtAddress.getText().trim();
+            String state = jcbState.getSelectedItem().toString();
+            String city = txtCity.getText().trim();
+            String postcode = txtPostCode.getText().trim();
+            String contact = txtContact.getText().trim();
+            String email =txtEmail.getText().trim();
+            String acctype = jcbAccType.getSelectedItem().toString();
+        
+    }//GEN-LAST:event_btnSubmitActionPerformed
+    
+    public void clear() {
+        txtFname.setText("");
+        txtLname.setText("");
+        jrbMale.setSelected(true);        
+        txtAddress.setText("");
+        jcbState.setSelectedIndex(0);
+        txtCity.setText("");        
+        txtPostCode.setText("");
+        txtContact.setText("");
+        txtEmail.setText("");
+        jcbAccType.setSelectedIndex(0);
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSubmit;
+    private javax.swing.ButtonGroup btngrp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -166,14 +198,16 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JComboBox jcbAccType;
+    private javax.swing.JComboBox jcbState;
+    private javax.swing.JRadioButton jrbFemale;
+    private javax.swing.JRadioButton jrbMale;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtCity;
+    private javax.swing.JTextField txtContact;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFname;
+    private javax.swing.JTextField txtLname;
+    private javax.swing.JTextField txtPostCode;
     // End of variables declaration//GEN-END:variables
 }

@@ -29,7 +29,7 @@ public class BankServer{
         CommunicationWrapper cw = new CommunicationWrapper(socket);
         System.out.println(cw.whoIsNeighbors("B2"));
         System.out.println("Enter operation");
-        System.out.println("1. Send i25tem");
+        System.out.println("1. Send item");
         System.out.println("2. Receive Item");
         System.out.println("3. Exit");
         String option = br.readLine();
