@@ -17,11 +17,13 @@ import java.util.logging.Logger;
  */
 public class PassbookPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
+    private String branchCode;
     /**
      * Creates new form PassbookPanel
      */
-    public PassbookPanel(CommunicationWrapper cw) {
+    public PassbookPanel(CommunicationWrapper cw, String branchCode) {
         this.cw = cw;
+        this.branchCode = branchCode;
         initComponents();
     }
 

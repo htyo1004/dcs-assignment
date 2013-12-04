@@ -1,9 +1,17 @@
 package com.bank.gui;
 
 
+import com.bank.entity.Branch;
+import com.bank.entity.MySQLConnection;
+import com.bank.server.BankServerFrame;
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Toast;
 import java.awt.CardLayout;
 import java.net.SocketException;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 /*
  * To change this template, choose Tools | Templates
@@ -17,10 +25,20 @@ import java.net.SocketException;
 public class Main extends javax.swing.JFrame {
     private CardLayout cl;
     private CommunicationWrapper cw;
+    private DefaultComboBoxModel dcbmBranch;
+    private Branch branch;
+    private JComboBox jcb;
+    private String branchCode;
     /**
      * Creates new form Main
      */
     public Main() {
+        
+        jcb = new JComboBox();
+        populateBranchCode();
+        JOptionPane.showMessageDialog(null, jcb, "Select Option", JOptionPane.QUESTION_MESSAGE);
+        branchCode = jcb.getSelectedItem().toString();
+        
         try{
             cw = new CommunicationWrapper(5500);
         } catch (SocketException ex) {
@@ -33,16 +51,28 @@ public class Main extends javax.swing.JFrame {
             }
         }
         initComponents();
-        jpMainCard.add(new WithdrawPanel(cw), "withdraw");
-        jpMainCard.add(new DepositPanel(cw), "deposit");
-        jpMainCard.add(new TransferPanel(cw), "transfer");
-        jpMainCard.add(new RegisterPanel(cw), "register");
-        jpMainCard.add(new LoanPanel(cw), "loan");
-        jpMainCard.add(new PassbookPanel(cw), "passbook");
+        jpMainCard.add(new WithdrawPanel(cw,branchCode), "withdraw");
+        jpMainCard.add(new DepositPanel(cw,branchCode), "deposit");
+        jpMainCard.add(new TransferPanel(cw,branchCode), "transfer");
+        jpMainCard.add(new RegisterPanel(cw,branchCode), "register");
+        jpMainCard.add(new LoanPanel(cw,branchCode), "loan");
+        jpMainCard.add(new PassbookPanel(cw,branchCode), "passbook");
         cl = (CardLayout) jpMainCard.getLayout();
         
     }
-
+     private void populateBranchCode() {
+        dcbmBranch = new DefaultComboBoxModel();
+        Branch branch = new Branch();
+        ArrayList<String> d = branch.obtainAllBranchCode(MySQLConnection.getConnection());
+        if (!d.isEmpty()) {
+            for (int i = 0; i < d.size(); i++) {
+                dcbmBranch.addElement(d.get(i));
+            }
+            jcb.setModel(dcbmBranch);
+        } else {
+            Toast.makeText(Main.this, "No branch found.", Toast.LENGTH_SHORT).display();
+        }
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

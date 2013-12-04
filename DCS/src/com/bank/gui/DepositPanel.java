@@ -26,13 +26,15 @@ import org.json.JSONObject;
 public class DepositPanel extends javax.swing.JPanel {
 
     private CommunicationWrapper cw;
+    private String branchCode;
     /**
      * Creates new form DepositPanel
      */
     private boolean validate;
 
-    public DepositPanel(CommunicationWrapper cw) {
+    public DepositPanel(CommunicationWrapper cw, String branchCode) {
         this.cw = cw;
+        this.branchCode = branchCode;
         initComponents();
     }
 

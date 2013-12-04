@@ -17,13 +17,15 @@ public class WithdrawPanel extends javax.swing.JPanel {
 
     private boolean validate;
     private CommunicationWrapper cw;
+    private String branchCode;
 
     /**
      * Creates new form WithdrawPanel
      */
-    public WithdrawPanel(CommunicationWrapper cw) {
+    public WithdrawPanel(CommunicationWrapper cw, String branchCode) {
         initComponents();
         this.cw= cw;
+        this.branchCode = branchCode;
     }
 
     public static boolean isNumeric(String str) {
