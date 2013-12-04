@@ -171,6 +171,7 @@ public class DepositPanel extends javax.swing.JPanel {
                 content.put("icNo", txtICNumber.getText());
                 content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
                 content.put("port", 5500);
+                content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
