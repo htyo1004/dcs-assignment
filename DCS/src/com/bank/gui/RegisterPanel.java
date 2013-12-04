@@ -1,6 +1,19 @@
 package com.bank.gui;
 
+import com.bank.entity.Branch;
+import com.bank.entity.MySQLConnection;
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
+import com.bank.utils.TextFieldLimiter;
+import com.bank.utils.Toast;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.AbstractDocument;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * To change this template, choose Tools | Templates
@@ -11,15 +24,31 @@ import com.bank.utils.CommunicationWrapper;
  * @author Moofie
  */
 public class RegisterPanel extends javax.swing.JPanel {
+    private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
+    
     /**
      * Creates new form RegisterPanel
      */
-    public RegisterPanel(CommunicationWrapper cw, String branchCode) {
-        this.cw = cw;
+    public RegisterPanel(CommunicationWrapper cw,String branchCode) {
+        this.cw=cw;
         this.branchCode = branchCode;
+    
         initComponents();
+    }
+    
+    private void reset(){
+        txtFname.setText("");
+        txtLname.setText("");
+        jrbMale.setSelected(true);
+        txtAddress.setText("");
+        jcbState.setSelectedItem("Perak");
+        txtCity.setText("");
+        txtPostCode.setText("");
+        txtContact.setText("");
+        txtEmail.setText("");
+        jcbAccType.setSelectedItem("Saving");
     }
 
     /**
@@ -61,6 +90,9 @@ public class RegisterPanel extends javax.swing.JPanel {
         jLabel1.setText("Firstname");
         add(jLabel1);
         jLabel1.setBounds(20, 10, 150, 30);
+
+        AbstractDocument aDocname = (AbstractDocument)txtPostCode.getDocument();
+        aDocname.setDocumentFilter(new TextFieldLimiter("^[a-zA-Z]+$"));
         add(txtFname);
         txtFname.setBounds(170, 10, 250, 30);
         add(txtLname);
@@ -104,12 +136,18 @@ public class RegisterPanel extends javax.swing.JPanel {
         jLabel6.setText("City");
         add(jLabel6);
         jLabel6.setBounds(20, 160, 150, 30);
+
+        AbstractDocument aDocPostCode = (AbstractDocument)txtPostCode.getDocument();
+        aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,5}"));
         add(txtPostCode);
         txtPostCode.setBounds(170, 190, 250, 30);
 
         jLabel7.setText("Postal Code");
         add(jLabel7);
         jLabel7.setBounds(20, 190, 150, 30);
+
+        AbstractDocument aDocContact = (AbstractDocument)txtPostCode.getDocument();
+        aDocContact.setDocumentFilter(new TextFieldLimiter("\\d{0,10}"));
         add(txtContact);
         txtContact.setBounds(170, 220, 250, 30);
 
@@ -156,7 +194,86 @@ public class RegisterPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        // TODO add your handling code here:
+        StringBuilder check = new StringBuilder("<html>Errors");
+        validate = true;
+        
+        if (txtFname.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter first name");
+        } 
+
+        if (txtLname.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter last name");
+        }
+
+        if (txtAddress.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter address");
+        } 
+        if (txtCity.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter city");
+        } 
+        if (txtPostCode.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter postal code");
+        } 
+
+        if (txtContact.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter contact number");
+        } 
+        if (txtEmail.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter email");
+        } 
+        
+        if (!validate) {
+            check.append("</html>");
+            Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
+        } else {
+            CommunicationWrapper cw = null;
+            try {
+                cw = new CommunicationWrapper(5500);
+            } catch (SocketException ex) {
+                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+//            if (cw.isBranchReachable("6652", "6649")) {
+//            try {
+//
+//                    JSONObject j = new JSONObject();
+//                    j.put("operation", Operation.DEPOSIT);
+//                    String message;
+//                    JSONObject content = new JSONObject();
+//                    content.put("accNo", txtAccNumber.getText());
+//                    content.put("icNo", txtICNumber.getText());
+//                    content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
+//                    content.put("port", 5500);
+//                    content.put("address", InetAddress.getLocalHost().getHostAddress());
+//                    System.out.println(InetAddress.getLocalHost().getHostAddress());
+//                    j.put("content", content);
+//                    Branch b = new Branch();
+//                    b.setBranchCode("6649");
+//                    String ip = b.obtainBranchIp(MySQLConnection.getConnection());
+//                    cw.send(j, InetAddress.getByName(ip), 5000);
+//                    JSONObject js = cw.receive();
+//                    System.out.println(js.toString());
+//                } catch (JSONException ex) {
+//                    ex.printStackTrace();
+//                System.out.println(ex);
+//            } catch (UnknownHostException ex) {
+//                ex.printStackTrace();
+//                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            } else {
+//                System.out.println("Branch unreacbable");
+//    }
+        
+        
+        
       
             String fname = txtFname.getText().trim();
             String lname = txtLname.getText().trim();
@@ -173,7 +290,7 @@ public class RegisterPanel extends javax.swing.JPanel {
             String contact = txtContact.getText().trim();
             String email =txtEmail.getText().trim();
             String acctype = jcbAccType.getSelectedItem().toString();
-        
+        }
     }//GEN-LAST:event_btnSubmitActionPerformed
     
     public void clear() {
@@ -189,6 +306,10 @@ public class RegisterPanel extends javax.swing.JPanel {
         jcbAccType.setSelectedIndex(0);
         
     }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSubmit;

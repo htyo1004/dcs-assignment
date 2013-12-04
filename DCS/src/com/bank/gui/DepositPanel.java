@@ -134,11 +134,8 @@ public class DepositPanel extends javax.swing.JPanel {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         StringBuilder check = new StringBuilder("<html>Errors");
-
         validate = true;
-
-
-
+        
         if (txtAccNumber.getText().length() == 0) {
             validate = false;
             check.append("<br />Please enter account number");
