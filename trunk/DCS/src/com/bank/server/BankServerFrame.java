@@ -203,6 +203,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         returnContent.put("address", tData.getString("address"));
         returnContent.put("port", tData.getInt("port"));
         if (json.optBoolean("withdraw", false)) {
+            System.out.println(json.optBoolean("withdraw", false));
             String accBranch = tData.getString("accNo").substring(0, 4);
             if (accBranch.equals(this.branchCode)) {
                 withdraw = new Withdraw();
