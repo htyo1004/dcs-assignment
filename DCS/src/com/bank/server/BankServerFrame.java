@@ -149,7 +149,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Reading data received..\n");
         String accBranch = dData.getString("accNo").substring(0, 4);
         System.out.println(accBranch);
-        returnContent.put("bCode", this.branchCode);
+        returnContent.put("bCode", dData.getString("bCode"));
         returnContent.put("address", dData.getString("address"));
         returnContent.put("port", dData.getInt("port"));
         if (accBranch.equals(this.branchCode)) {
