@@ -1,9 +1,16 @@
 package com.bank.gui;
 
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.AbstractDocument;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * To change this template, choose Tools | Templates
@@ -118,7 +125,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
             validate = false;
             height+=10;
             sb.append("<br />Please enter account number");
-        }else if(jtfAccountNumber.getText().length()>0 && jtfAccountNumber.getText().length()!=12){
+        }else if(jtfAccountNumber.getText().length()>0 && jtfAccountNumber.getText().length()!=14){
             validate = false;
             height+=10;
             sb.append("<br />Please enter 12 digit account number");
@@ -138,6 +145,29 @@ public class WithdrawPanel extends javax.swing.JPanel {
             sb.append("</html>");
             Toast.makeText(getParent(), height, "" + sb, Toast.LENGTH_LONG).display();
         } else {
+            try {
+
+                JSONObject j = new JSONObject();
+                j.put("operation", Operation.WITHDRAW);
+                JSONObject content = new JSONObject();
+                content.put("accNo", jtfAccountNumber.getText());
+                content.put("icNo", jtfICNumber.getText());
+                content.put("amount", Double.parseDouble(jtfAmountWithdraw.getText()));
+                content.put("port", 5500);
+                content.put("bCode", this.branchCode);
+                content.put("address", InetAddress.getLocalHost().getHostAddress());
+                System.out.println(InetAddress.getLocalHost().getHostAddress());
+                j.put("content", content);
+                cw.send(j, InetAddress.getLocalHost(), 5000);
+                JSONObject js = cw.receive();
+                System.out.println(js.toString());
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+                System.out.println(ex);
+            } catch (UnknownHostException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Toast.makeText(getParent(), "Success", Toast.LENGTH_LONG).display();
         }
     }//GEN-LAST:event_jbtSubmitActionPerformed
