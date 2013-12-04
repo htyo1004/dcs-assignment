@@ -66,7 +66,7 @@ public class BankServerFrame extends javax.swing.JFrame {
     private void populateBranchCode() {
         dcbmBranch = new DefaultComboBoxModel();
         dcbmBranch.addElement("Select the branch you belongs to");
-        Branch branch = new Branch();
+        branch = new Branch();
         ArrayList<String> d = branch.obtainAllBranchCode(dbCon);
         if (!d.isEmpty()) {
             for (int i = 0; i < d.size(); i++) {
