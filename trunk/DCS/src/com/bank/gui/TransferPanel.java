@@ -2,11 +2,13 @@ package com.bank.gui;
 
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Operation;
+import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.AbstractDocument;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,18 +58,27 @@ public class TransferPanel extends javax.swing.JPanel {
         jLabel1.setText("Account Number");
         add(jLabel1);
         jLabel1.setBounds(20, 60, 190, 30);
+
+        AbstractDocument aDocAccNo = (AbstractDocument)txtAccNo.getDocument();
+        aDocAccNo.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
         add(txtAccNo);
         txtAccNo.setBounds(20, 90, 390, 30);
 
         jLabel2.setText("Beneficial Account Number ");
         add(jLabel2);
         jLabel2.setBounds(20, 130, 220, 30);
+
+        AbstractDocument aDocAccReceive = (AbstractDocument)txtAccNoReceiver.getDocument();
+        aDocAccReceive.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
         add(txtAccNoReceiver);
         txtAccNoReceiver.setBounds(20, 160, 390, 30);
 
         jLabel3.setText("Amount to Transfer");
         add(jLabel3);
         jLabel3.setBounds(20, 200, 180, 30);
+
+        AbstractDocument aDocAmt = (AbstractDocument)txtAmountTransfer.getDocument();
+        aDocAmt.setDocumentFilter(new TextFieldLimiter("\\d{0,}"));
         add(txtAmountTransfer);
         txtAmountTransfer.setBounds(20, 230, 390, 30);
 
