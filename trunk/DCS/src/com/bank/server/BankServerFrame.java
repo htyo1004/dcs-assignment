@@ -150,6 +150,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Withdraw\n");
         JSONObject wData = json.getJSONObject("content");
+        System.out.println(wData.toString());
         JSONObject returnValue = new JSONObject();
         jtaMessage.append("Reading data received..\n");
         String accBranch = wData.getString("accNo").substring(0, 4);
@@ -276,8 +277,8 @@ public class BankServerFrame extends javax.swing.JFrame {
     private void transfer(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Transfer\n");
-        JSONObject j = json.getJSONObject("content");
-        transferWithdraw(j);
+//        JSONObject j = json.getJSONObject("content");
+        transferWithdraw(json);
         jtaMessage.append("Operation ended, return to idle state\n");
         
         
@@ -526,6 +527,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                         deposit(json);
                         break;
                     case TRANSFER:
+                        System.out.println(json.toString());
                         transfer(json);
                         break;
                     case LOAN:

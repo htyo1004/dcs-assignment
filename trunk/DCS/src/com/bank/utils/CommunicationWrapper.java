@@ -55,7 +55,7 @@ public class CommunicationWrapper {
         JSONObject json = new JSONObject();
         try {
             try {
-                udpSocket.setSoTimeout(3000);
+//                udpSocket.setSoTimeout(3000);
                 udpSocket.receive(packetReceived);
                 String data = new String(packetReceived.getData());
                 json = new JSONObject(data);
