@@ -144,9 +144,14 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Request received, Processing now..\n");
         jtaMessage.append("Operation Type : Deposit\n");
         JSONObject dData = json.getJSONObject("content");
+        JSONObject returnValue = new JSONObject();
+        JSONObject returnContent = new JSONObject();
         jtaMessage.append("Reading data received..\n");
         String accBranch = dData.getString("accNo").substring(0, 4);
         System.out.println(accBranch);
+        returnContent.put("bCode", this.branchCode);
+        returnContent.put("address", dData.getString("address"));
+        returnContent.put("port", dData.getInt("port"));
         if (accBranch.equals(this.branchCode)) {
             deposit = new Deposit();
             deposit.setAccNo(dData.getString("accNo"));
@@ -154,8 +159,6 @@ public class BankServerFrame extends javax.swing.JFrame {
             deposit.setIcNo(dData.getString("icNo"));
             jtaMessage.append("Processing deposit\n");
             String result = deposit.deposit(dbCon);
-            JSONObject returnValue = new JSONObject();
-            JSONObject returnContent = new JSONObject();
             returnValue.put("operation", Operation.RESPONSE);
             if (result.equals("Success")) {
                 tLog = new TransactionLog();
@@ -166,9 +169,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 tLog.createTransactionLog(dbCon);
                 jtaMessage.append("Operation success\n");
                 jtaMessage.append("Sending back respond\n");
-                returnContent.put("bCode", this.branchCode);
-                returnContent.put("address", dData.getString("address"));
-                returnContent.put("port", dData.getInt("port"));
+                returnContent.put("result", result);
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
