@@ -1,6 +1,18 @@
 package com.bank.gui;
 
+import com.bank.entity.Branch;
+import com.bank.entity.MySQLConnection;
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
+import com.bank.utils.TextFieldLimiter;
+import com.bank.utils.Toast;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.AbstractDocument;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * To change this template, choose Tools | Templates
@@ -13,6 +25,7 @@ import com.bank.utils.CommunicationWrapper;
  */
 public class LoanPanel extends javax.swing.JPanel {
     Integer month =12;
+    private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
     /**
@@ -92,12 +105,18 @@ public class LoanPanel extends javax.swing.JPanel {
         jLabel2.setText("Loan Amount");
         add(jLabel2);
         jLabel2.setBounds(20, 60, 140, 30);
+
+        AbstractDocument aDocloan = (AbstractDocument)txtLoanAmount.getDocument();
+        aDocloan.setDocumentFilter(new TextFieldLimiter("\\d{0,8}"));
         add(txtLoanAmount);
         txtLoanAmount.setBounds(160, 60, 260, 30);
 
         jLabel3.setText("Loan Interest Rate");
         add(jLabel3);
         jLabel3.setBounds(20, 100, 140, 30);
+
+        AbstractDocument aDocInterest = (AbstractDocument)txtLoanInterest.getDocument();
+        aDocInterest.setDocumentFilter(new TextFieldLimiter("\\d{0,3}"));
         add(txtLoanInterest);
         txtLoanInterest.setBounds(160, 100, 260, 30);
 
@@ -111,18 +130,27 @@ public class LoanPanel extends javax.swing.JPanel {
         jLabel5.setText("Loaner Name");
         add(jLabel5);
         jLabel5.setBounds(20, 180, 140, 30);
+
+        AbstractDocument aDocname = (AbstractDocument)txtloanerName.getDocument();
+        aDocname.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
         add(txtloanerName);
         txtloanerName.setBounds(160, 180, 260, 30);
 
         jLabel6.setText("Loaner IC Number");
         add(jLabel6);
         jLabel6.setBounds(20, 220, 140, 30);
+
+        AbstractDocument aDocPostCode = (AbstractDocument)txtLoanerIC.getDocument();
+        aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,12}"));
         add(txtLoanerIC);
         txtLoanerIC.setBounds(160, 220, 260, 30);
 
         jLabel7.setText("Loaner Contact No");
         add(jLabel7);
         jLabel7.setBounds(20, 260, 140, 30);
+
+        AbstractDocument aDoccontact = (AbstractDocument)txtloanerContact.getDocument();
+        aDoccontact.setDocumentFilter(new TextFieldLimiter("\\d{0,10}"));
         add(txtloanerContact);
         txtloanerContact.setBounds(160, 260, 260, 30);
 
@@ -136,6 +164,11 @@ public class LoanPanel extends javax.swing.JPanel {
         btnReset.setBounds(10, 320, 170, 50);
 
         btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
         add(btnSubmit);
         btnSubmit.setBounds(260, 320, 170, 50);
     }// </editor-fold>//GEN-END:initComponents
@@ -149,6 +182,71 @@ public class LoanPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         clear();
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        StringBuilder check = new StringBuilder("<html>Errors");
+        validate = true;
+
+        if (txtLoanAmount.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter loan amount");
+        }
+
+        if (txtLoanInterest.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter interest");
+        }
+
+        if (txtloanerName.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter loaner name");
+        }
+        if (txtLoanerIC.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter loaner ic");
+        }
+        if (txtloanerContact.getText().length() == 0) {
+            validate = false;
+            check.append("<br />Please enter loaner contact number");
+        }
+
+        if (!validate) {
+            check.append("</html>");
+            Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
+        } else {
+
+            try {
+                JSONObject j = new JSONObject();
+                j.put("operation", Operation.LOAN);
+                JSONObject content = new JSONObject();
+                content.put("type", jcbLoanType.getSelectedItem().toString());
+                content.put("loanamount", txtLoanAmount.getText().trim());
+                content.put("rate", txtLoanInterest.getText().trim());
+                content.put("duration", jcbDuration.getSelectedItem().toString());
+                content.put("name", txtloanerName.getText());
+                content.put("icno", txtLoanerIC.getText().trim());
+                content.put("contact", txtloanerContact.getText().trim());
+                Branch b = new Branch();
+                b.setBranchCode(this.branchCode);
+                
+                content.put("port", 5500);
+                content.put("address", InetAddress.getLocalHost().getHostAddress());
+                System.out.println(InetAddress.getLocalHost().getHostAddress());
+                j.put("content", content);
+                b.setBranchCode(this.branchCode);
+                cw.send(j, InetAddress.getLocalHost(), 5000);
+                JSONObject js = cw.receive();
+                //JSONObject contents = js.getJSONObject("content");
+                System.out.println(js.toString());
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+                System.out.println(ex);
+            } catch (UnknownHostException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnSubmitActionPerformed
     
     public void clear(){
         jcbLoanType.setSelectedIndex(0);
