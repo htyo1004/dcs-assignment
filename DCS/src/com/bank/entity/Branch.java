@@ -1,0 +1,82 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.bank.entity;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author Kenny
+ */
+public class Branch {
+
+    private Integer bid;
+    private String branchCode;
+    private String ipaddress;
+    private String getBranchCode = "SELECT branchCode FROM branch WHERE bid = ?;";
+    private String getBranchIP = "SELECT ipAddress FROM branch WHERE bid = ?;";
+
+    public Branch() {
+    }
+
+    public Integer getBid() {
+        return bid;
+    }
+
+    public void setBid(Integer bid) {
+        this.bid = bid;
+    }
+
+    public String getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public String getIpaddress() {
+        return ipaddress;
+    }
+
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
+    }
+
+    public String obtainBranchCode(Connection con) {
+        try {
+            PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchCode);
+            pstmtSelect.setInt(1, this.bid);
+            ResultSet rs = pstmtSelect.executeQuery();
+            if(rs.next()){
+                String bCode = rs.getString(1);
+                return bCode;
+            }else{
+                return "Branch not found.";
+            }
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+    
+    public String obtainBranchIp(Connection con){
+        try {
+            PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchIP);
+            pstmtSelect.setInt(1, this.bid);
+            ResultSet rs = pstmtSelect.executeQuery();
+            if(rs.next()){
+                String ipAdd = rs.getString(1);
+                return ipAdd;
+            }else{
+                return "Branch not found.";
+            }
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+}
