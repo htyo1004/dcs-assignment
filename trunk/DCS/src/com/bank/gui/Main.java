@@ -22,7 +22,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         try{
-            cw = new CommunicationWrapper(5000);
+            cw = new CommunicationWrapper(5500);
         } catch (SocketException ex) {
             System.out.println("Unable to open socket : " + ex.getMessage());
             System.out.println("Closing server..");
