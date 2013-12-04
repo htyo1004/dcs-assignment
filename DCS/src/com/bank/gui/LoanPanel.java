@@ -12,6 +12,7 @@ import com.bank.utils.CommunicationWrapper;
  * @author Moofie
  */
 public class LoanPanel extends javax.swing.JPanel {
+    Integer month =12;
     private CommunicationWrapper cw;
     private String branchCode;
     /**
@@ -21,8 +22,32 @@ public class LoanPanel extends javax.swing.JPanel {
         this.cw = cw;
         this.branchCode = branchCode;
         initComponents();
+        Integer []year ={20,25,30,35};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
     }
 
+    private void getCombo(){
+
+        jcbDuration.removeAllItems();
+        if(jcbLoanType.getSelectedIndex()==0){
+            Integer []year ={20,25,30,35};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }else if(jcbLoanType.getSelectedIndex()==1){
+            Integer []year ={10,20,30};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }else if(jcbLoanType.getSelectedIndex()==2){
+            Integer []year ={5,7,9};
+            for (int i = 0 ; i<year.length;i++){
+                jcbDuration.addItem(""+(year[i]*month)+" Months");
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,26 +141,8 @@ public class LoanPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbLoanTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbLoanTypeActionPerformed
-        // TODO add your handling code here:
-         Integer month=12;
-        Integer item = 0;
-        jcbDuration.removeAllItems();
-        if(jcbLoanType.getSelectedIndex()==0){
-            Integer []year ={20,25,30,35};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
-            }
-        }else if(jcbLoanType.getSelectedIndex()==1){
-            Integer []year ={10,20,30};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
-            }
-        }else if(jcbLoanType.getSelectedIndex()==2){
-            Integer []year ={5,7,9};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
-            }
-        }
+
+         getCombo();
     }//GEN-LAST:event_jcbLoanTypeActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
