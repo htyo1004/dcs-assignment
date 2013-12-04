@@ -69,6 +69,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
         jtfAmountWithdraw = new javax.swing.JTextField();
         jbtSubmit = new javax.swing.JButton();
         jbtReset = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(440, 380));
         setLayout(null);
@@ -117,6 +118,13 @@ public class WithdrawPanel extends javax.swing.JPanel {
         });
         add(jbtReset);
         jbtReset.setBounds(10, 320, 170, 50);
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Withdraw");
+        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 3));
+        add(jLabel4);
+        jLabel4.setBounds(100, 20, 250, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSubmitActionPerformed
@@ -187,6 +195,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JButton jbtReset;
     private javax.swing.JButton jbtSubmit;
     private javax.swing.JTextField jtfAccountNumber;

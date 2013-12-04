@@ -49,6 +49,7 @@ public class TransferPanel extends javax.swing.JPanel {
         txtAmountTransfer = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -87,6 +88,13 @@ public class TransferPanel extends javax.swing.JPanel {
         });
         add(btnSubmit);
         btnSubmit.setBounds(260, 320, 170, 50);
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Transfer");
+        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 3));
+        add(jLabel4);
+        jLabel4.setBounds(100, 20, 250, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
@@ -114,7 +122,13 @@ public class TransferPanel extends javax.swing.JPanel {
             j.put("content", content);
             cw.send(j, InetAddress.getLocalHost(), 5000);
             JSONObject js = cw.receive();
+            JSONObject result = js.getJSONObject("content");
             System.out.println(js.toString());
+            if(result.get("result").toString().equalsIgnoreCase("Success")){
+                Toast.makeText(getParent(),"Success",Toast.LENGTH_SHORT).display();
+            }else{
+                 Toast.makeText(getParent(),"Transfer Unsuccessful.",Toast.LENGTH_SHORT).display();
+            }
         } catch (JSONException ex) {
             ex.printStackTrace();
             System.out.println(ex);
@@ -136,6 +150,7 @@ public class TransferPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtAccNo;
     private javax.swing.JTextField txtAccNoReceiver;
     private javax.swing.JTextField txtAmountTransfer;
