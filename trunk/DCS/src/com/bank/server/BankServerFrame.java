@@ -106,7 +106,8 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Operation Type : Withdraw\n");
         JSONObject wData = json.getJSONObject("content");
         jtaMessage.append("Reading data received..\n");
-        String accBranch = wData.getString("accno").substring(0, 5);
+        String accBranch = wData.getString("accNo").substring(0, 5);
+        System.out.println(accBranch);
         if (accBranch.equals(this.branchCode)) {
             withdraw = new Withdraw();
             withdraw.setAccNo(wData.getString("accNo"));
@@ -130,7 +131,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
                 jtaMessage.append("Unable to withdraw : " + result + "\n");
             }
-        }else{
+        } else {
             jtaMessage.append("Not belongs to this branch, send to next branch\n");
             branch = new Branch();
             branch.setBranchCode(cw.whoIsNeighbors(branchCode));
@@ -144,27 +145,36 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Operation Type : Deposit\n");
         JSONObject dData = json.getJSONObject("content");
         jtaMessage.append("Reading data received..\n");
-        deposit = new Deposit();
-        deposit.setAccNo(dData.getString("accNo"));
-        deposit.setAmount(dData.getDouble("amount"));
-        deposit.setIcNo(dData.getString("icNo"));
-        jtaMessage.append("Processing deposit\n");
-        String result = deposit.deposit(dbCon);
-        JSONObject returnValue = new JSONObject();
-        returnValue.put("result", result);
-        if (result.equals("Success")) {
-            tLog = new TransactionLog();
-            tLog.setAccNo(dData.getString("accNo"));
-            tLog.setAmount(dData.getDouble("amount"));
-            tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-            tLog.setTransactionType(TransactionType.DBT.toString());
-            tLog.createTransactionLog(dbCon);
-            jtaMessage.append("Operation success\n");
-            jtaMessage.append("Sending back respond\n");
-            cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+        String accBranch = dData.getString("accNo").substring(0, 4);
+        System.out.println(accBranch);
+        if (accBranch.equals(this.branchCode)) {
+            deposit = new Deposit();
+            deposit.setAccNo(dData.getString("accNo"));
+            deposit.setAmount(dData.getDouble("amount"));
+            deposit.setIcNo(dData.getString("icNo"));
+            jtaMessage.append("Processing deposit\n");
+            String result = deposit.deposit(dbCon);
+            JSONObject returnValue = new JSONObject();
+            returnValue.put("result", result);
+            if (result.equals("Success")) {
+                tLog = new TransactionLog();
+                tLog.setAccNo(dData.getString("accNo"));
+                tLog.setAmount(dData.getDouble("amount"));
+                tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                tLog.setTransactionType(TransactionType.DBT.toString());
+                tLog.createTransactionLog(dbCon);
+                jtaMessage.append("Operation success\n");
+                jtaMessage.append("Sending back respond\n");
+                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+            } else {
+                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+                jtaMessage.append("Unable to deposit : " + result + "\n");
+            }
         } else {
-            cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
-            jtaMessage.append("Unable to deposit : " + result + "\n");
+            jtaMessage.append("Not belongs to this branch, send to next branch\n");
+            branch = new Branch();
+            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
         }
         jtaMessage.append("Operation ended, return to idle state\n");
     }
