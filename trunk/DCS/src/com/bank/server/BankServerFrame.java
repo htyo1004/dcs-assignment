@@ -285,6 +285,8 @@ public class BankServerFrame extends javax.swing.JFrame {
     }
 
     private void respond(JSONObject json) throws JSONException, UnknownHostException {
+        jtaMessage.append("Request received, Processing now..\n");
+        jtaMessage.append("Operation Type : Response\n");
         JSONObject js = json.getJSONObject("content");
         String bCode = js.getString("bCode");
         if (bCode.equals(this.branchCode)) {
@@ -298,6 +300,7 @@ public class BankServerFrame extends javax.swing.JFrame {
             branch.setBranchCode(cw.whoIsNeighbors(branchCode));
             cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
         }
+        jtaMessage.append("Operation ended, return to idle state\n");
     }
 
     /**
