@@ -1,5 +1,7 @@
 package com.bank.gui;
 
+import com.bank.entity.Branch;
+import com.bank.entity.MySQLConnection;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
@@ -31,7 +33,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
      */
     public WithdrawPanel(CommunicationWrapper cw, String branchCode) {
         initComponents();
-        this.cw= cw;
+        this.cw = cw;
         this.branchCode = branchCode;
     }
 
@@ -44,11 +46,12 @@ public class WithdrawPanel extends javax.swing.JPanel {
         return true;
     }
 
-    private void reset(){
+    private void reset() {
         jtfAccountNumber.setText("");
         jtfICNumber.setText("");
         jtfAmountWithdraw.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,21 +126,21 @@ public class WithdrawPanel extends javax.swing.JPanel {
 
         if (jtfAccountNumber.getText().length() == 0) {
             validate = false;
-            height+=10;
+            height += 10;
             sb.append("<br />Please enter account number");
-        }else if(jtfAccountNumber.getText().length()>0 && jtfAccountNumber.getText().length()!=14){
+        } else if (jtfAccountNumber.getText().length() > 0 && jtfAccountNumber.getText().length() != 14) {
             validate = false;
-            height+=10;
+            height += 10;
             sb.append("<br />Please enter 12 digit account number");
         }
-        
+
         if (jtfICNumber.getText().length() == 0) {
-            height+=10;
+            height += 10;
             validate = false;
             sb.append("<br />Please enter ic number");
         }
         if (jtfAmountWithdraw.getText().length() == 0) {
-            height+=10;
+            height += 10;
             validate = false;
             sb.append("<br />Please enter amount to withdraw");
         }
@@ -156,11 +159,16 @@ public class WithdrawPanel extends javax.swing.JPanel {
                 content.put("port", 5500);
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
-                System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
+                JSONObject contents = js.getJSONObject("content");
                 System.out.println(js.toString());
+                if(contents.get("result").toString().equalsIgnoreCase("Success")){
+                    Toast.makeText(getParent(), "Success", Toast.LENGTH_LONG).display();
+                }else{
+                    Toast.makeText(getParent(), "Please try again later", Toast.LENGTH_LONG).display();
+                }
             } catch (JSONException ex) {
                 ex.printStackTrace();
                 System.out.println(ex);
@@ -168,14 +176,13 @@ public class WithdrawPanel extends javax.swing.JPanel {
                 ex.printStackTrace();
                 Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            Toast.makeText(getParent(), "Success", Toast.LENGTH_LONG).display();
+            
         }
     }//GEN-LAST:event_jbtSubmitActionPerformed
 
     private void jbtResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtResetActionPerformed
         reset();
     }//GEN-LAST:event_jbtResetActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
