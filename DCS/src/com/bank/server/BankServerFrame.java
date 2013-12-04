@@ -219,6 +219,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                     tLog.setTransactionType(TransactionType.DBT.toString());
                     tLog.createTransactionLog(dbCon);
                     json.put("withdraw", true);
+                    transfer(json);
                 } else {
                     returnValue.put("result", res);
                     cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
