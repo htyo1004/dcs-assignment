@@ -102,6 +102,8 @@ public class TransferPanel extends javax.swing.JPanel {
         if(txtAccNo.getText().isEmpty()){
             Toast.makeText(getParent(),"Please enter account number.",Toast.LENGTH_SHORT).display();
         }else{
+            
+            
            txtAccNoReceiver.setEnabled(true);
            txtAmountTransfer.setEditable(true);
         }
