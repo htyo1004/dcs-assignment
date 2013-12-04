@@ -1,23 +1,32 @@
 package com.bank.gui;
 
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
+import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.awt.print.PrinterException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.AbstractDocument;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Moofie
  */
 public class PassbookPanel extends javax.swing.JPanel {
+
     private CommunicationWrapper cw;
     private String branchCode;
+
     /**
      * Creates new form PassbookPanel
      */
@@ -49,6 +58,9 @@ public class PassbookPanel extends javax.swing.JPanel {
         jLabel1.setText("Account No.");
         add(jLabel1);
         jLabel1.setBounds(20, 20, 90, 30);
+
+        AbstractDocument aDocAcc = (AbstractDocument)txtAccNo.getDocument();
+        aDocAcc.setDocumentFilter(new TextFieldLimiter("\\d{0,}"));
         add(txtAccNo);
         txtAccNo.setBounds(110, 20, 200, 30);
 
@@ -61,7 +73,9 @@ public class PassbookPanel extends javax.swing.JPanel {
         add(btnCheck);
         btnCheck.setBounds(313, 20, 110, 30);
 
+        jtaPassbookInfo.setEditable(false);
         jtaPassbookInfo.setColumns(20);
+        jtaPassbookInfo.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         jtaPassbookInfo.setRows(5);
         jtaPassbookInfo.setEnabled(false);
         jScrollPane1.setViewportView(jtaPassbookInfo);
@@ -99,8 +113,24 @@ public class PassbookPanel extends javax.swing.JPanel {
 
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
-        if(txtAccNo.getText().isEmpty()){
-            Toast.makeText(getParent(),"Please enter account number.",Toast.LENGTH_SHORT).display();
+        if (txtAccNo.getText().isEmpty()) {
+            Toast.makeText(getParent(), "Please enter account number.", Toast.LENGTH_SHORT).display();
+        } else {
+            jtaPassbookInfo.setEnabled(true);
+            try {
+                JSONObject j = new JSONObject();
+                j.put("operation", Operation.TRANSACTION);
+                JSONObject content = new JSONObject();
+                content.put("accno", txtAccNo.getText());
+                content.put("port", 5500);
+                content.put("bCode", "");
+                content.put("address", InetAddress.getLocalHost().getHostAddress());
+                j.put("content", content);
+                cw.send(j, InetAddress.getLocalHost(), 5000);
+                JSONObject result = cw.receive();
+                generateTransactionLog(result);
+            } catch (JSONException | UnknownHostException ex) {
+            }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
 
@@ -109,8 +139,24 @@ public class PassbookPanel extends javax.swing.JPanel {
         clear();
     }//GEN-LAST:event_btnResetActionPerformed
 
-    
-    public void clear(){
+    private void generateTransactionLog(JSONObject json) {
+        try {
+            JSONArray jsArr = json.getJSONArray("result");
+            jtaPassbookInfo.append("#   Transaction Date    Transaction Type      Amount\n");
+            jtaPassbookInfo.append("========================================================\n");
+            for (int i = 0; i < jsArr.length(); i++) {
+                JSONObject temp = jsArr.getJSONObject(i);
+                String line =
+                        String.format("%-6d%-22s%-16sRM%9.2f", i + 1, temp.getString("transactionDate"),
+                        (temp.getString("transactionType").equals("CRD") ? "Credit" : "Debit"),
+                        temp.getDouble("amount"));
+                jtaPassbookInfo.append(line + "\n");
+            }
+        } catch (JSONException ex) {
+        }
+    }
+
+    public void clear() {
         txtAccNo.setText("");
         jtaPassbookInfo.setText("");
     }
