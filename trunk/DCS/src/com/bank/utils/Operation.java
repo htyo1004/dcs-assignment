@@ -15,5 +15,6 @@ public enum Operation {
     TRANSFER,
     LOAN,
     REGISTER,
-    TRANSACTION
+    TRANSACTION,
+    RESPONSE
 }

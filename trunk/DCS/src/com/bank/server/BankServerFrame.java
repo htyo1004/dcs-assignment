@@ -155,7 +155,8 @@ public class BankServerFrame extends javax.swing.JFrame {
             jtaMessage.append("Processing deposit\n");
             String result = deposit.deposit(dbCon);
             JSONObject returnValue = new JSONObject();
-            returnValue.put("result", result);
+            JSONObject returnContent = new JSONObject();
+            returnValue.put("operation", Operation.RESPONSE);
             if (result.equals("Success")) {
                 tLog = new TransactionLog();
                 tLog.setAccNo(dData.getString("accNo"));
@@ -165,7 +166,11 @@ public class BankServerFrame extends javax.swing.JFrame {
                 tLog.createTransactionLog(dbCon);
                 jtaMessage.append("Operation success\n");
                 jtaMessage.append("Sending back respond\n");
-                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+                returnContent.put("bCode", this.branchCode);
+                returnContent.put("address", dData.getString("address"));
+                returnContent.put("port", dData.getInt("port"));
+                returnValue.put("content", returnContent);
+                respond(returnValue);
             } else {
                 cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
                 jtaMessage.append("Unable to deposit : " + result + "\n");
@@ -276,6 +281,22 @@ public class BankServerFrame extends javax.swing.JFrame {
             jtaMessage.append("Unable to process request : " + "No record found" + "\n");
         }
         jtaMessage.append("Operation ended, return to idle state\n");
+    }
+
+    private void respond(JSONObject json) throws JSONException, UnknownHostException {
+        JSONObject js = json.getJSONObject("content");
+        String bCode = js.getString("bCode");
+        if (bCode.equals(this.branchCode)) {
+            jtaMessage.append("Respond belongs to this branch\n");
+            jtaMessage.append("Returning to client\n");
+            cw.send(json, InetAddress.getByName(js.getString("address")), js.getInt("port"));
+        } else {
+            jtaMessage.append("Respond not belongs to this branch\n");
+            jtaMessage.append("Send to neighbor branch\n");
+            branch = new Branch();
+            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
+        }
     }
 
     /**
@@ -419,6 +440,9 @@ public class BankServerFrame extends javax.swing.JFrame {
                         break;
                     case TRANSACTION:
                         updatePassbook(json);
+                        break;
+                    case RESPONSE:
+                        respond(json);
                         break;
                 }
             } catch (JSONException | UnknownHostException ex) {
