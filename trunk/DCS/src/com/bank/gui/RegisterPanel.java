@@ -242,11 +242,9 @@ public class RegisterPanel extends javax.swing.JPanel {
         } else {
 
             try {
-
                 String gender = "";
                 JSONObject j = new JSONObject();
                 j.put("operation", Operation.REGISTER);
-                String message;
                 JSONObject content = new JSONObject();
                 content.put("firstname", txtFname.getText());
                 content.put("lastname", txtLname.getText().trim());
@@ -265,16 +263,12 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("email", txtEmail.getText().trim());
                 content.put("type", jcbAccType.getSelectedItem().toString());
                 content.put("bid", this.branchCode);
-
-
                 content.put("port", 5500);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
                 Branch b = new Branch();
-                b.setBranchCode("6652");
-                String ip = b.obtainBranchIp(MySQLConnection.getConnection());
-                cw.send(j, InetAddress.getByName(ip), 5000);
+                cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
                 System.out.println(js.toString());
             } catch (JSONException ex) {
