@@ -1,7 +1,12 @@
 package com.bank.gui;
 
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.Operation;
 import com.bank.utils.Toast;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,14 +14,15 @@ import org.json.JSONObject;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Moofie
  */
 public class TransferPanel extends javax.swing.JPanel {
+
     private CommunicationWrapper cw;
     private String branchCode;
+
     /**
      * Creates new form TransferPanel
      */
@@ -43,7 +49,6 @@ public class TransferPanel extends javax.swing.JPanel {
         txtAmountTransfer = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
-        btnCheck = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -51,21 +56,17 @@ public class TransferPanel extends javax.swing.JPanel {
         add(jLabel1);
         jLabel1.setBounds(20, 60, 190, 30);
         add(txtAccNo);
-        txtAccNo.setBounds(20, 90, 290, 30);
+        txtAccNo.setBounds(20, 90, 390, 30);
 
         jLabel2.setText("Account Number");
         add(jLabel2);
         jLabel2.setBounds(20, 130, 220, 30);
-
-        txtAccNoReceiver.setEnabled(false);
         add(txtAccNoReceiver);
         txtAccNoReceiver.setBounds(20, 160, 390, 30);
 
         jLabel3.setText("Amount to Transfer");
         add(jLabel3);
         jLabel3.setBounds(20, 200, 180, 30);
-
-        txtAmountTransfer.setEnabled(false);
         add(txtAmountTransfer);
         txtAmountTransfer.setBounds(20, 230, 390, 30);
 
@@ -86,39 +87,41 @@ public class TransferPanel extends javax.swing.JPanel {
         });
         add(btnSubmit);
         btnSubmit.setBounds(260, 320, 170, 50);
-
-        btnCheck.setText("Check");
-        btnCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCheckActionPerformed(evt);
-            }
-        });
-        add(btnCheck);
-        btnCheck.setBounds(320, 90, 90, 30);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
-        // TODO add your handling code here:
-        if(txtAccNo.getText().isEmpty()){
-            Toast.makeText(getParent(),"Please enter account number.",Toast.LENGTH_SHORT).display();
-        }else{
-            
-            
-           txtAccNoReceiver.setEnabled(true);
-           txtAmountTransfer.setEditable(true);
-        }
-    }//GEN-LAST:event_btnCheckActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
+        Double amount=0.00;
+        String accNo = txtAccNo.getText().trim();
         String accReceiver = txtAccNoReceiver.getText().trim();
-        
-        try{
-        Double amount = Double.parseDouble(txtAmountTransfer.getText().trim());
-        }catch(NumberFormatException ex){
-             Toast.makeText(getParent(),"Please enter amount in number format.",Toast.LENGTH_SHORT).display();
+        try {
+            amount = Double.parseDouble(txtAmountTransfer.getText().trim());
+        } catch (NumberFormatException ex) {
+            Toast.makeText(getParent(), "Please enter amount in number format.", Toast.LENGTH_SHORT).display();
         }
-        
+
+        try {
+
+            JSONObject j = new JSONObject();
+            j.put("operation", Operation.TRANSFER);
+            JSONObject content = new JSONObject();
+            content.put("accNo",accNo);
+            content.put("accReceiver", accReceiver);
+            content.put("amount", amount);
+            content.put("port", 5500);
+            content.put("bCode", this.branchCode);
+            content.put("address", InetAddress.getLocalHost().getHostAddress());
+            j.put("content", content);
+            cw.send(j, InetAddress.getLocalHost(), 5000);
+            JSONObject js = cw.receive();
+            System.out.println(js.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            System.out.println(ex);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(TransferPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -127,9 +130,7 @@ public class TransferPanel extends javax.swing.JPanel {
         txtAccNoReceiver.setText("");
         txtAmountTransfer.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JLabel jLabel1;

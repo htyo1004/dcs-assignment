@@ -1,13 +1,10 @@
 package com.bank.gui;
 
-import com.bank.entity.Branch;
-import com.bank.entity.MySQLConnection;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
