@@ -5,6 +5,7 @@
 package com.bank.server;
 
 import com.bank.entity.AccountApplication;
+import com.bank.entity.Branch;
 import com.bank.entity.Deposit;
 import com.bank.entity.LoanApplication;
 import com.bank.entity.MySQLConnection;
@@ -12,8 +13,8 @@ import com.bank.entity.TransactionLog;
 import com.bank.entity.Withdraw;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Operation;
+import com.bank.utils.Toast;
 import com.bank.utils.TransactionType;
-import java.awt.List;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -25,6 +26,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.DefaultCaret;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 public class BankServerFrame extends javax.swing.JFrame {
 
     private CommunicationWrapper cw;
+    private Branch branch;
     private Withdraw withdraw;
     private Deposit deposit;
     private TransactionLog tLog;
@@ -45,6 +48,9 @@ public class BankServerFrame extends javax.swing.JFrame {
     private Connection dbCon;
     private Thread thread;
     private Executor executor;
+    private DefaultComboBoxModel dcbmBranch;
+    private String branchCode;
+    private boolean gotBranch = false;
 
     /**
      * Creates new form BankServerFrame
@@ -53,24 +59,46 @@ public class BankServerFrame extends javax.swing.JFrame {
         initComponents();
         dbCon = MySQLConnection.getConnection();
         executor = Executors.newFixedThreadPool(10);
-        try {
-            cw = new CommunicationWrapper(5000);
-            jtaMessage.setText("Server started, in idle state\n");
-            startThread();
-        } catch (SocketException ex) {
-            System.out.println("Unable to open socket : " + ex.getMessage());
-            System.out.println("Closing server..");
-            try {
-                Thread.sleep(3000);
-                System.exit(1);
-            } catch (InterruptedException ex1) {
+        populateBranchCode();
+        jtaMessage.setText("Please configure your server's branch code\n");
+    }
+
+    private void populateBranchCode() {
+        dcbmBranch = new DefaultComboBoxModel();
+        dcbmBranch.addElement("Select the branch you belongs to");
+        Branch branch = new Branch();
+        ArrayList<String> d = branch.obtainAllBranchCode(dbCon);
+        if (!d.isEmpty()) {
+            for (int i = 0; i < d.size(); i++) {
+                dcbmBranch.addElement(d.get(i));
             }
+            jComboBox1.setModel(dcbmBranch);
+            gotBranch = true;
+        } else {
+            Toast.makeText(BankServerFrame.this, "No branch found.", Toast.LENGTH_SHORT).display();
+            gotBranch = false;
         }
     }
 
     private void startThread() {
-        thread = new Thread(new ServerThread());
-        thread.start();
+        if (gotBranch) {
+            try {
+                cw = new CommunicationWrapper(5000);
+                jtaMessage.append("Server started, in idle state\n");
+                thread = new Thread(new ServerThread());
+                thread.start();
+            } catch (SocketException ex) {
+                System.out.println("Unable to open socket : " + ex.getMessage());
+                System.out.println("Closing server..");
+                try {
+                    Thread.sleep(2000);
+                    System.exit(1);
+                } catch (InterruptedException ex1) {
+                }
+            }
+        } else {
+            jtaMessage.append("No branches found, please configure your database first.");
+        }
     }
 
     private void withdraw(JSONObject json) throws JSONException, UnknownHostException {
@@ -78,27 +106,35 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append("Operation Type : Withdraw\n");
         JSONObject wData = json.getJSONObject("content");
         jtaMessage.append("Reading data received..\n");
-        withdraw = new Withdraw();
-        withdraw.setAccNo(wData.getString("accNo"));
-        withdraw.setAmount(wData.getDouble("amount"));
-        withdraw.setIcNo(wData.getString("icNo"));
-        jtaMessage.append("Processing withdrawal\n");
-        String result = withdraw.withdraw(dbCon);
-        JSONObject returnValue = new JSONObject();
-        returnValue.put("result", result);
-        if (result.equals("Success")) {
-            tLog = new TransactionLog();
-            tLog.setAccNo(wData.getString("accNo"));
-            tLog.setAmount(wData.getDouble("amount"));
-            tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-            tLog.setTransactionType(TransactionType.DBT.toString());
-            tLog.createTransactionLog(dbCon);
-            jtaMessage.append("Operation success\n");
-            jtaMessage.append("Sending back respond\n");
-            cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
-        } else {
-            cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
-            jtaMessage.append("Unable to withdraw : " + result + "\n");
+        String accBranch = wData.getString("accno").substring(0, 5);
+        if (accBranch.equals(this.branchCode)) {
+            withdraw = new Withdraw();
+            withdraw.setAccNo(wData.getString("accNo"));
+            withdraw.setAmount(wData.getDouble("amount"));
+            withdraw.setIcNo(wData.getString("icNo"));
+            jtaMessage.append("Processing withdrawal\n");
+            String result = withdraw.withdraw(dbCon);
+            JSONObject returnValue = new JSONObject();
+            returnValue.put("result", result);
+            if (result.equals("Success")) {
+                tLog = new TransactionLog();
+                tLog.setAccNo(wData.getString("accNo"));
+                tLog.setAmount(wData.getDouble("amount"));
+                tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                tLog.setTransactionType(TransactionType.DBT.toString());
+                tLog.createTransactionLog(dbCon);
+                jtaMessage.append("Operation success\n");
+                jtaMessage.append("Sending back respond\n");
+                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
+            } else {
+                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
+                jtaMessage.append("Unable to withdraw : " + result + "\n");
+            }
+        }else{
+            jtaMessage.append("Not belongs to this branch, send to next branch\n");
+            branch = new Branch();
+            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
         }
         jtaMessage.append("Operation ended, return to idle state\n");
     }
@@ -224,7 +260,7 @@ public class BankServerFrame extends javax.swing.JFrame {
             jtaMessage.append("Request successful\n");
             jtaMessage.append("Sending back respond\n");
             cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
-        }else{
+        } else {
             returnValue.put("result", "No record");
             cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
             jtaMessage.append("Unable to process request : " + "No record found" + "\n");
@@ -243,6 +279,9 @@ public class BankServerFrame extends javax.swing.JFrame {
 
         jspMessage = new javax.swing.JScrollPane();
         jtaMessage = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -261,9 +300,41 @@ public class BankServerFrame extends javax.swing.JFrame {
         getContentPane().add(jspMessage);
         jspMessage.setBounds(10, 10, 430, 330);
 
-        setSize(new java.awt.Dimension(466, 389));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setText("Set Branch Code");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(10, 350, 110, 30);
+
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select the branch you belongs to" }));
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(120, 350, 210, 30);
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton1.setText("Set");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(340, 350, 100, 30);
+
+        setSize(new java.awt.Dimension(466, 429));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jComboBox1.getSelectedIndex() != 0) {
+            branchCode = jComboBox1.getSelectedItem().toString();
+            jtaMessage.append("Branch Code configured\n");
+            jtaMessage.append("Starting server...\n");
+            startThread();
+            jComboBox1.setEnabled(false);
+            jButton1.setEnabled(false);
+            jLabel1.setEnabled(false);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,6 +349,9 @@ public class BankServerFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jspMessage;
     private javax.swing.JTextArea jtaMessage;
     // End of variables declaration//GEN-END:variables

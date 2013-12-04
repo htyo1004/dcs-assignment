@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Branch {
     private Integer bid;
     private String branchCode;
     private String ipaddress;
+    private String getAllBranchCode = "SELECT branchCode FROM branch;";
     private String getBranchCode = "SELECT branchCode FROM branch WHERE bid = ?;";
     private String getBranchIP = "SELECT ipAddress FROM branch WHERE branchCode = ?;";
 
@@ -48,31 +50,45 @@ public class Branch {
         this.ipaddress = ipaddress;
     }
 
+    public ArrayList<String> obtainAllBranchCode(Connection con) {
+        ArrayList<String> data = new ArrayList<>();
+        try {
+            PreparedStatement pstmtSelect = con.prepareStatement(this.getAllBranchCode);
+            ResultSet rs = pstmtSelect.executeQuery();
+            while (rs.next()) {
+                String bCode = rs.getString(1);
+                data.add(bCode);
+            }
+        } catch (SQLException ex) {
+        }
+        return data;
+    }
+
     public String obtainBranchCode(Connection con) {
         try {
             PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchCode);
             pstmtSelect.setInt(1, this.bid);
             ResultSet rs = pstmtSelect.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String bCode = rs.getString(1);
                 return bCode;
-            }else{
+            } else {
                 return "Branch not found.";
             }
         } catch (SQLException ex) {
             return ex.getMessage();
         }
     }
-    
-    public String obtainBranchIp(Connection con){
+
+    public String obtainBranchIp(Connection con) {
         try {
             PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchIP);
             pstmtSelect.setString(1, this.branchCode);
             ResultSet rs = pstmtSelect.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String ipAdd = rs.getString(1);
                 return ipAdd;
-            }else{
+            } else {
                 return "Branch not found.";
             }
         } catch (SQLException ex) {
