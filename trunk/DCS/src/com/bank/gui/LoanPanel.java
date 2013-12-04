@@ -13,11 +13,13 @@ import com.bank.utils.CommunicationWrapper;
  */
 public class LoanPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
+    private String branchCode;
     /**
      * Creates new form LoanPanel
      */
-    public LoanPanel(CommunicationWrapper cw) {
+    public LoanPanel(CommunicationWrapper cw, String branchCode) {
         this.cw = cw;
+        this.branchCode = branchCode;
         initComponents();
     }
 

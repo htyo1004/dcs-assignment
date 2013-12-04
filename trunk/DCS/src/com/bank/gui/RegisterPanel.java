@@ -12,11 +12,13 @@ import com.bank.utils.CommunicationWrapper;
  */
 public class RegisterPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
+    private String branchCode;
     /**
      * Creates new form RegisterPanel
      */
-    public RegisterPanel(CommunicationWrapper cw) {
+    public RegisterPanel(CommunicationWrapper cw, String branchCode) {
         this.cw = cw;
+        this.branchCode = branchCode;
         initComponents();
     }
 

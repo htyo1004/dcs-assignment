@@ -16,11 +16,13 @@ import org.json.JSONObject;
  */
 public class TransferPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
+    private String branchCode;
     /**
      * Creates new form TransferPanel
      */
-    public TransferPanel(CommunicationWrapper cw) {
+    public TransferPanel(CommunicationWrapper cw, String branchCode) {
         this.cw = cw;
+        this.branchCode = branchCode;
         initComponents();
     }
 
