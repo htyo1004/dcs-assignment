@@ -34,7 +34,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFname">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocname = (AbstractDocument)txtPostCode.getDocument();&#xa;aDocname.setDocumentFilter(new TextFieldLimiter(&quot;^[a-zA-Z]+$&quot;));"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocname = (AbstractDocument)txtFname.getDocument();&#xa;aDocname.setDocumentFilter(new TextFieldLimiter(&quot;^[a-z A-Z]+$&quot;));"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -43,6 +43,9 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLname">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocLname = (AbstractDocument)txtLname.getDocument();&#xa;aDocLname.setDocumentFilter(new TextFieldLimiter(&quot;^[a-zA-Z]+$&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="170" y="40" width="250" height="30"/>
@@ -65,14 +68,14 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="70" width="150" height="30"/>
+          <AbsoluteConstraints x="20" y="100" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtAddress">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="170" y="100" width="250" height="30"/>
+          <AbsoluteConstraints x="170" y="130" width="250" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -82,7 +85,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="100" width="150" height="30"/>
+          <AbsoluteConstraints x="20" y="130" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -96,7 +99,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="213" y="70" width="70" height="30"/>
+          <AbsoluteConstraints x="220" y="100" width="70" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -109,7 +112,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="320" y="70" width="-1" height="30"/>
+          <AbsoluteConstraints x="320" y="100" width="-1" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -119,7 +122,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="130" width="150" height="30"/>
+          <AbsoluteConstraints x="20" y="160" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -137,14 +140,17 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="170" y="130" width="250" height="30"/>
+          <AbsoluteConstraints x="170" y="160" width="250" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCity">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocCity = (AbstractDocument)txtCity.getDocument();&#xa;aDocCity.setDocumentFilter(new TextFieldLimiter(&quot;^[a-z A-Z]+$&quot;));"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="170" y="160" width="250" height="30"/>
+          <AbsoluteConstraints x="170" y="190" width="250" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -154,33 +160,33 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="160" width="150" height="30"/>
+          <AbsoluteConstraints x="20" y="190" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPostCode">
+    <Component class="javax.swing.JTextField" name="txtICNumber">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocPostCode = (AbstractDocument)txtPostCode.getDocument();&#xa;aDocPostCode.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,5}&quot;));"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocPostCode = (AbstractDocument)txtICNumber.getDocument();&#xa;aDocPostCode.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,12}&quot;));"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="170" y="190" width="250" height="30"/>
+          <AbsoluteConstraints x="170" y="70" width="250" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Postal Code"/>
+        <Property name="text" type="java.lang.String" value="IC Number"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="190" width="150" height="30"/>
+          <AbsoluteConstraints x="20" y="70" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="txtContact">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocContact = (AbstractDocument)txtPostCode.getDocument();&#xa;aDocContact.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,10}&quot;));"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="AbstractDocument aDocContact = (AbstractDocument)txtContact.getDocument();&#xa;aDocContact.setDocumentFilter(new TextFieldLimiter(&quot;\\d{0,10}&quot;));"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
