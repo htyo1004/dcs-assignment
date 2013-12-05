@@ -27,14 +27,16 @@ public class WithdrawPanel extends javax.swing.JPanel {
     private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
+    private int portNo;
 
     /**
      * Creates new form WithdrawPanel
      */
-    public WithdrawPanel(CommunicationWrapper cw, String branchCode) {
+    public WithdrawPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         initComponents();
         this.cw = cw;
         this.branchCode = branchCode;
+        this.portNo = portNo;
     }
 
     public static boolean isNumeric(String str) {
@@ -164,7 +166,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
                 content.put("accNo", jtfAccountNumber.getText());
                 content.put("icNo", jtfICNumber.getText());
                 content.put("amount", Double.parseDouble(jtfAmountWithdraw.getText()));
-                content.put("port", 5500);
+                content.put("port", this.portNo);
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);

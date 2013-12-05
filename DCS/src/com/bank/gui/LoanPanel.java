@@ -28,12 +28,14 @@ public class LoanPanel extends javax.swing.JPanel {
     private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
+    private int portNo;
     /**
      * Creates new form LoanPanel
      */
-    public LoanPanel(CommunicationWrapper cw, String branchCode) {
+    public LoanPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         this.cw = cw;
         this.branchCode = branchCode;
+        this.portNo = portNo;
         initComponents();
         Integer []year ={20,25,30,35};
             for (int i = 0 ; i<year.length;i++){
@@ -229,7 +231,7 @@ public class LoanPanel extends javax.swing.JPanel {
                 Branch b = new Branch();
                 b.setBranchCode(this.branchCode);
                 
-                content.put("port", 5500);
+                content.put("port", this.portNo);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);

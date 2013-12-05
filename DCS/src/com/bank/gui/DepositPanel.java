@@ -24,14 +24,16 @@ public class DepositPanel extends javax.swing.JPanel {
 
     private CommunicationWrapper cw;
     private String branchCode;
+    private int portNo;
     /**
      * Creates new form DepositPanel
      */
     private boolean validate;
 
-    public DepositPanel(CommunicationWrapper cw, String branchCode) {
+    public DepositPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         this.cw = cw;
         this.branchCode = branchCode;
+        this.portNo = portNo;
         initComponents();
     }
 
@@ -164,7 +166,7 @@ public class DepositPanel extends javax.swing.JPanel {
                 content.put("accNo", txtAccNumber.getText());
                 content.put("icNo", txtICNumber.getText());
                 content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
-                content.put("port", 5500);
+                content.put("port", this.portNo);
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());

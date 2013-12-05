@@ -26,13 +26,15 @@ public class PassbookPanel extends javax.swing.JPanel {
 
     private CommunicationWrapper cw;
     private String branchCode;
+    private int portNo;
 
     /**
      * Creates new form PassbookPanel
      */
-    public PassbookPanel(CommunicationWrapper cw, String branchCode) {
+    public PassbookPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         this.cw = cw;
         this.branchCode = branchCode;
+        this.portNo = portNo;
         initComponents();
     }
 
@@ -122,14 +124,15 @@ public class PassbookPanel extends javax.swing.JPanel {
                 j.put("operation", Operation.TRANSACTION);
                 JSONObject content = new JSONObject();
                 content.put("accno", txtAccNo.getText());
-                content.put("port", 5500);
-                content.put("bCode", "");
+                content.put("port", this.portNo);
+                content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject result = cw.receive();
                 generateTransactionLog(result);
             } catch (JSONException | UnknownHostException ex) {
+                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
@@ -141,18 +144,23 @@ public class PassbookPanel extends javax.swing.JPanel {
 
     private void generateTransactionLog(JSONObject json) {
         try {
-            JSONArray jsArr = json.getJSONArray("result");
-            jtaPassbookInfo.append("#   Transaction Date    Transaction Type      Amount\n");
-            jtaPassbookInfo.append("========================================================\n");
-            for (int i = 0; i < jsArr.length(); i++) {
-                JSONObject temp = jsArr.getJSONObject(i);
-                String line =
-                        String.format("%-6d%-22s%-16sRM%9.2f", i + 1, temp.getString("transactionDate"),
-                        (temp.getString("transactionType").equals("CRD") ? "Credit" : "Debit"),
-                        temp.getDouble("amount"));
-                jtaPassbookInfo.append(line + "\n");
+            if (json.getBoolean("record")) {
+                JSONArray jsArr = json.getJSONArray("result");
+                jtaPassbookInfo.setText("#   Transaction Date    Transaction Type      Amount\n");
+                jtaPassbookInfo.append("========================================================\n");
+                for (int i = 0; i < jsArr.length(); i++) {
+                    JSONObject temp = jsArr.getJSONObject(i);
+                    String line =
+                            String.format("%-6d%-22s%-16sRM%9.2f", i + 1, temp.getString("transactionDate"),
+                            (temp.getString("transactionType").equals("CRD") ? "Credit" : "Debit"),
+                            temp.getDouble("amount"));
+                    jtaPassbookInfo.append(line + "\n");
+                }
+            } else {
+                jtaPassbookInfo.setText("No record found, did you enter the correct account number?");
             }
         } catch (JSONException ex) {
+            ex.printStackTrace();
         }
     }
 

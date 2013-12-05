@@ -28,14 +28,14 @@ public class RegisterPanel extends javax.swing.JPanel {
     private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
-
+    private int portNo;
     /**
      * Creates new form RegisterPanel
      */
-    public RegisterPanel(CommunicationWrapper cw, String branchCode) {
+    public RegisterPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         this.cw = cw;
         this.branchCode = branchCode;
-
+        this.portNo = portNo;
         initComponents();
     }
 
@@ -265,7 +265,7 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("email", txtEmail.getText().trim());
                 content.put("type", jcbAccType.getSelectedItem().toString());
                 content.put("bid", Integer.parseInt(b.obtainBranchId(MySQLConnection.getConnection())));
-                content.put("port", 5500);
+                content.put("port", this.portNo);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
