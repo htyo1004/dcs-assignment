@@ -1,66 +1,78 @@
 package com.bank.gui;
 
-
 import com.bank.entity.Branch;
 import com.bank.entity.MySQLConnection;
 import com.bank.server.BankServerFrame;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Toast;
 import java.awt.CardLayout;
+import java.awt.GridLayout;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Moofie
  */
 public class Main extends javax.swing.JFrame {
+
     private CardLayout cl;
     private CommunicationWrapper cw;
     private DefaultComboBoxModel dcbmBranch;
-    private Branch branch;
+    private WithdrawPanel wPanel;
+    private DepositPanel dPanel;
+    private LoanPanel lPanel;
+    private PassbookPanel pPanel;
+    private TransferPanel tPanel;
+    private RegisterPanel rPanel;
     private JComboBox jcb;
+    private JPanel jpanel;
+    private JLabel jlabel;
     private String branchCode;
+    private int portNo;
+
     /**
      * Creates new form Main
      */
     public Main() {
-        
+
         jcb = new JComboBox();
+        jpanel = new JPanel();
+        jlabel = new JLabel("Select the branch this pc belongs to");
         populateBranchCode();
-        JOptionPane.showMessageDialog(null, jcb, "Select Option", JOptionPane.QUESTION_MESSAGE);
+        jpanel.setLayout(new GridLayout(2, 1));
+        jpanel.add(jlabel);
+        jpanel.add(jcb);
+        JOptionPane.showMessageDialog(Main.this, jpanel, "Options", JOptionPane.QUESTION_MESSAGE);
         branchCode = jcb.getSelectedItem().toString();
-        
-        try{
-            cw = new CommunicationWrapper(5500);
+        System.out.println(branchCode);
+        portNo = generatePortNumber();
+        try {
+            cw = new CommunicationWrapper(portNo);
         } catch (SocketException ex) {
-            System.out.println("Unable to open socket : " + ex.getMessage());
-            System.out.println("Closing server..");
-            try {
-                Thread.sleep(2000);
-                System.exit(1);
-            } catch (InterruptedException ex1) {
-            }
+            Toast.makeText(Main.this, "Unable to open socket : " + ex.getMessage(), Toast.LENGTH_SHORT);
         }
         initComponents();
-        jpMainCard.add(new WithdrawPanel(cw,branchCode), "withdraw");
-        jpMainCard.add(new DepositPanel(cw,branchCode), "deposit");
-        jpMainCard.add(new TransferPanel(cw,branchCode), "transfer");
-        jpMainCard.add(new RegisterPanel(cw,branchCode), "register");
-        jpMainCard.add(new LoanPanel(cw,branchCode), "loan");
-        jpMainCard.add(new PassbookPanel(cw,branchCode), "passbook");
+        wPanel = new WithdrawPanel(cw, branchCode, portNo);
+        dPanel = new DepositPanel(cw, branchCode, portNo);
+        tPanel = new TransferPanel(cw, branchCode, portNo);
+        rPanel = new RegisterPanel(cw, branchCode, portNo);
+        lPanel = new LoanPanel(cw, branchCode, portNo);
+        pPanel = new PassbookPanel(cw, branchCode, portNo);
         cl = (CardLayout) jpMainCard.getLayout();
-        
     }
-     private void populateBranchCode() {
+
+    private void populateBranchCode() {
         dcbmBranch = new DefaultComboBoxModel();
         Branch branch = new Branch();
         ArrayList<String> d = branch.obtainAllBranchCode(MySQLConnection.getConnection());
@@ -72,7 +84,8 @@ public class Main extends javax.swing.JFrame {
         } else {
             Toast.makeText(Main.this, "No branch found.", Toast.LENGTH_SHORT).display();
         }
-     }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -99,8 +112,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtWithdraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/b.png"))); // NOI18N
         jbtWithdraw.setText("Withdraw");
-        jbtWithdraw.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jbtWithdraw.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbtWithdraw.setFocusPainted(false);
         jbtWithdraw.setIconTextGap(0);
         jbtWithdraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +124,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtDeposit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/a.jpg"))); // NOI18N
         jbtDeposit.setText("Deposit");
+        jbtDeposit.setFocusPainted(false);
         jbtDeposit.setIconTextGap(6);
         jbtDeposit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +136,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtTransfer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/c.png"))); // NOI18N
         jbtTransfer.setText("Transfer");
-        jbtTransfer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtTransfer.setFocusPainted(false);
         jbtTransfer.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtTransfer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,7 +154,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/f.jpg"))); // NOI18N
         jbtRegister.setText("Register");
-        jbtRegister.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtRegister.setFocusPainted(false);
         jbtRegister.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +166,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtLoan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/e.png"))); // NOI18N
         jbtLoan.setText("Loan");
-        jbtLoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtLoan.setFocusPainted(false);
         jbtLoan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtLoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +178,7 @@ public class Main extends javax.swing.JFrame {
 
         jbtUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/d.jpg"))); // NOI18N
         jbtUpdate.setText("<html>Update<br/> passbook");
-        jbtUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbtUpdate.setFocusPainted(false);
         jbtUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,38 +220,51 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(592, 498));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtWithdrawActionPerformed
+        jpMainCard.add(wPanel, "withdraw");
         cl.show(jpMainCard, "withdraw");
     }//GEN-LAST:event_jbtWithdrawActionPerformed
 
     private void jbtDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDepositActionPerformed
+        jpMainCard.add(dPanel, "deposit");
         cl.show(jpMainCard, "deposit");
     }//GEN-LAST:event_jbtDepositActionPerformed
 
     private void jbtTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTransferActionPerformed
+        jpMainCard.add(tPanel, "transfer");
         cl.show(jpMainCard, "transfer");
     }//GEN-LAST:event_jbtTransferActionPerformed
 
     private void jbtRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRegisterActionPerformed
+        jpMainCard.add(rPanel, "register");
         cl.show(jpMainCard, "register");
     }//GEN-LAST:event_jbtRegisterActionPerformed
 
     private void jbtLoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLoanActionPerformed
+        jpMainCard.add(lPanel, "loan");
         cl.show(jpMainCard, "loan");
     }//GEN-LAST:event_jbtLoanActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
+        jpMainCard.add(pPanel, "passbook");
         cl.show(jpMainCard, "passbook");
     }//GEN-LAST:event_jbtUpdateActionPerformed
+
+    private int generatePortNumber() {
+        Random rand = new Random();
+        int port = rand.nextInt((60000 - 5111) + 1) + 5111;
+        return port;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

@@ -24,13 +24,14 @@ public class TransferPanel extends javax.swing.JPanel {
 
     private CommunicationWrapper cw;
     private String branchCode;
-
+    private int portNo;
     /**
      * Creates new form TransferPanel
      */
-    public TransferPanel(CommunicationWrapper cw, String branchCode) {
+    public TransferPanel(CommunicationWrapper cw, String branchCode, int portNo) {
         this.cw = cw;
         this.branchCode = branchCode;
+        this.portNo = portNo;
         initComponents();
     }
 
@@ -127,7 +128,7 @@ public class TransferPanel extends javax.swing.JPanel {
             content.put("accNo",accNo);
             content.put("accReceiver", accReceiver);
             content.put("amount", amount);
-            content.put("port", 5500);
+            content.put("port", this.portNo);
             content.put("bCode", this.branchCode);
             content.put("address", InetAddress.getLocalHost().getHostAddress());
             j.put("content", content);
