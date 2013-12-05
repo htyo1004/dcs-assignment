@@ -238,8 +238,11 @@ public class LoanPanel extends javax.swing.JPanel {
                 b.setBranchCode(this.branchCode);
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
-                //JSONObject contents = js.getJSONObject("content");
-                System.out.println(js.toString());
+                if (js.getString("result").equalsIgnoreCase("Success")) {
+                    Toast.makeText(getParent(), "Loan application successful", Toast.LENGTH_SHORT).display();
+                } else {
+                    Toast.makeText(getParent(), "Unable to apply loan now, try again later", Toast.LENGTH_SHORT).display();
+                }
             } catch (JSONException ex) {
                 ex.printStackTrace();
                 System.out.println(ex);

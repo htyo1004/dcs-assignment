@@ -62,7 +62,7 @@ public class PassbookPanel extends javax.swing.JPanel {
         jLabel1.setBounds(20, 20, 90, 30);
 
         AbstractDocument aDocAcc = (AbstractDocument)txtAccNo.getDocument();
-        aDocAcc.setDocumentFilter(new TextFieldLimiter("\\d{0,}"));
+        aDocAcc.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
         add(txtAccNo);
         txtAccNo.setBounds(110, 20, 200, 30);
 
