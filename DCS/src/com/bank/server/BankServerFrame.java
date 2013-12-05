@@ -134,7 +134,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
-                returnValue.put("result", result);
+                returnContent.put("result", result);
+                returnValue.put("content", returnContent);
                 cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to withdraw : " + result + "\n"));
             }
@@ -180,7 +181,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
-                returnValue.put("result", result);
+                returnContent.put("result", result);
+                returnValue.put("content", returnContent);
                 cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to deposit : " + result + "\n"));
             }
@@ -222,7 +224,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                     json.put("withdraw", true);
                     transfer(json);
                 } else {
-                    returnValue.put("result", res);
+                    returnContent.put("result", res);
+                    returnValue.put("content", returnContent);
                     cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
                     jtaMessage.append(fm.formatMessage("ERROR", "Unable to take out money : " + res + "\n"));
                 }
@@ -254,7 +257,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                     returnValue.put("content", returnContent);
                     respond(returnValue);
                 } else {
-                    returnValue.put("result", result);
+                    returnContent.put("result", result);
+                    returnValue.put("content", returnContent);
                     cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
                     jtaMessage.append(fm.formatMessage("ERROR", "Unable to transfer the money : " + result + "\n"));
                 }
@@ -381,7 +385,6 @@ public class BankServerFrame extends javax.swing.JFrame {
             branch.setBranchCode(cw.whoIsNeighbors(branchCode));
             cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
         }
-        jtaMessage.append(fm.formatMessage("SERVER", "Operation ended, return to idle state\n"));
     }
 
     /**
@@ -430,6 +433,7 @@ public class BankServerFrame extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setText("Start");
+        jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -441,6 +445,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton2.setText("Stop");
         jButton2.setEnabled(false);
+        jButton2.setFocusPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -451,6 +456,7 @@ public class BankServerFrame extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton3.setText("Clear");
+        jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);

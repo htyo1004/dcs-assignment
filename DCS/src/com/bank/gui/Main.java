@@ -45,7 +45,6 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
-
         jcb = new JComboBox();
         jpanel = new JPanel();
         jlabel = new JLabel("Select the branch this pc belongs to");
@@ -62,14 +61,31 @@ public class Main extends javax.swing.JFrame {
         } catch (SocketException ex) {
             Toast.makeText(Main.this, "Unable to open socket : " + ex.getMessage(), Toast.LENGTH_SHORT);
         }
+
         initComponents();
-        wPanel = new WithdrawPanel(cw, branchCode, portNo);
-        dPanel = new DepositPanel(cw, branchCode, portNo);
-        tPanel = new TransferPanel(cw, branchCode, portNo);
-        rPanel = new RegisterPanel(cw, branchCode, portNo);
-        lPanel = new LoanPanel(cw, branchCode, portNo);
-        pPanel = new PassbookPanel(cw, branchCode, portNo);
+        addCard();
         cl = (CardLayout) jpMainCard.getLayout();
+    }
+
+    private void addCard() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                wPanel = new WithdrawPanel(cw, branchCode, portNo);
+                dPanel = new DepositPanel(cw, branchCode, portNo);
+                tPanel = new TransferPanel(cw, branchCode, portNo);
+                rPanel = new RegisterPanel(cw, branchCode, portNo);
+                lPanel = new LoanPanel(cw, branchCode, portNo);
+                pPanel = new PassbookPanel(cw, branchCode, portNo);
+                jpMainCard.add(wPanel, "withdraw");
+                jpMainCard.add(dPanel, "deposit");
+                jpMainCard.add(tPanel, "transfer");
+                jpMainCard.add(rPanel, "register");
+                jpMainCard.add(lPanel, "loan");
+                jpMainCard.add(pPanel, "passbook");
+            }
+        }).start();
+
     }
 
     private void populateBranchCode() {
@@ -105,6 +121,7 @@ public class Main extends javax.swing.JFrame {
         jbtUpdate = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jpMainCard = new javax.swing.JPanel();
+        jpNullCard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -191,6 +208,19 @@ public class Main extends javax.swing.JFrame {
         jpMainCard.setPreferredSize(new java.awt.Dimension(440, 380));
         jpMainCard.setLayout(new java.awt.CardLayout());
 
+        javax.swing.GroupLayout jpNullCardLayout = new javax.swing.GroupLayout(jpNullCard);
+        jpNullCard.setLayout(jpNullCardLayout);
+        jpNullCardLayout.setHorizontalGroup(
+            jpNullCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 440, Short.MAX_VALUE)
+        );
+        jpNullCardLayout.setVerticalGroup(
+            jpNullCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 380, Short.MAX_VALUE)
+        );
+
+        jpMainCard.add(jpNullCard, "null");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -225,32 +255,26 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtWithdrawActionPerformed
-        jpMainCard.add(wPanel, "withdraw");
         cl.show(jpMainCard, "withdraw");
     }//GEN-LAST:event_jbtWithdrawActionPerformed
 
     private void jbtDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDepositActionPerformed
-        jpMainCard.add(dPanel, "deposit");
         cl.show(jpMainCard, "deposit");
     }//GEN-LAST:event_jbtDepositActionPerformed
 
     private void jbtTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTransferActionPerformed
-        jpMainCard.add(tPanel, "transfer");
         cl.show(jpMainCard, "transfer");
     }//GEN-LAST:event_jbtTransferActionPerformed
 
     private void jbtRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRegisterActionPerformed
-        jpMainCard.add(rPanel, "register");
         cl.show(jpMainCard, "register");
     }//GEN-LAST:event_jbtRegisterActionPerformed
 
     private void jbtLoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLoanActionPerformed
-        jpMainCard.add(lPanel, "loan");
         cl.show(jpMainCard, "loan");
     }//GEN-LAST:event_jbtLoanActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
-        jpMainCard.add(pPanel, "passbook");
         cl.show(jpMainCard, "passbook");
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
@@ -283,5 +307,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jbtUpdate;
     private javax.swing.JButton jbtWithdraw;
     private javax.swing.JPanel jpMainCard;
+    private javax.swing.JPanel jpNullCard;
     // End of variables declaration//GEN-END:variables
 }

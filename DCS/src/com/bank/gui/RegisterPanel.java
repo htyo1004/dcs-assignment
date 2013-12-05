@@ -29,6 +29,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
     private String branchCode;
     private int portNo;
+
     /**
      * Creates new form RegisterPanel
      */
@@ -242,7 +243,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         } else {
 
             try {
-                String gender = "";
+                String gender;
                 JSONObject j = new JSONObject();
                 j.put("operation", Operation.REGISTER);
                 JSONObject content = new JSONObject();
@@ -260,7 +261,7 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("addressss", txtAddress.getText());
                 content.put("state", jcbState.getSelectedItem().toString());
                 content.put("city", txtCity.getText());
-                content.put("postcode",postcode(jcbState.getSelectedIndex()));
+                content.put("postcode", postcode(jcbState.getSelectedIndex()));
                 content.put("contact", txtContact.getText().trim());
                 content.put("email", txtEmail.getText().trim());
                 content.put("type", jcbAccType.getSelectedItem().toString());
@@ -272,7 +273,11 @@ public class RegisterPanel extends javax.swing.JPanel {
                 b.setBranchCode(this.branchCode);
                 cw.send(j, InetAddress.getLocalHost(), 5000);
                 JSONObject js = cw.receive();
-                System.out.println(js.toString());
+                if (js.getString("result").equalsIgnoreCase("Success")) {
+                    Toast.makeText(getParent(), "Registration successful", Toast.LENGTH_SHORT).display();
+                } else {
+                    Toast.makeText(getParent(), "Unable to register now, try again later", Toast.LENGTH_SHORT).display();
+                }
             } catch (JSONException ex) {
                 ex.printStackTrace();
                 System.out.println(ex);
@@ -293,7 +298,7 @@ public class RegisterPanel extends javax.swing.JPanel {
                 return postcode;
             case 2:
                 postcode = "77890";
-               return postcode;
+                return postcode;
             case 3:
                 postcode = "44690";
                 return postcode;
@@ -302,7 +307,7 @@ public class RegisterPanel extends javax.swing.JPanel {
                 return postcode;
         }
         return "Not available";
-        
+
 
     }
 
