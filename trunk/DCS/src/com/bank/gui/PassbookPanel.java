@@ -145,7 +145,7 @@ public class PassbookPanel extends javax.swing.JPanel {
     private void generateTransactionLog(JSONObject json) {
         try {
             if (json.getBoolean("record")) {
-                JSONArray jsArr = json.getJSONArray("result");
+                JSONArray jsArr = json.getJSONObject("content").getJSONArray("result");
                 jtaPassbookInfo.setText("#   Transaction Date    Transaction Type      Amount\n");
                 jtaPassbookInfo.append("========================================================\n");
                 for (int i = 0; i < jsArr.length(); i++) {
