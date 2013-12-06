@@ -14,7 +14,6 @@ import com.bank.entity.Withdraw;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.FormattedMessage;
 import com.bank.utils.Operation;
-import com.bank.utils.Toast;
 import com.bank.utils.TransactionType;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -136,7 +135,8 @@ public class BankServerFrame extends javax.swing.JFrame {
             } else {
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
-                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
+//                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
+                respond(returnValue);
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to withdraw : " + result + "\n"));
             }
         } else {
@@ -173,7 +173,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 tLog.setAccNo(dData.getString("accNo"));
                 tLog.setAmount(dData.getDouble("amount"));
                 tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                tLog.setTransactionType(TransactionType.DBT.toString());
+                tLog.setTransactionType(TransactionType.CRD.toString());
                 tLog.createTransactionLog(dbCon);
                 jtaMessage.append(fm.formatMessage(Operation.DEPOSIT.toString(), "Operation success\n"));
                 jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
@@ -183,7 +183,8 @@ public class BankServerFrame extends javax.swing.JFrame {
             } else {
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
-                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+//                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
+                respond(returnValue);
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to deposit : " + result + "\n"));
             }
         } else {
@@ -226,7 +227,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                 } else {
                     returnContent.put("result", res);
                     returnValue.put("content", returnContent);
-                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+//                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+                    respond(returnValue);
                     jtaMessage.append(fm.formatMessage("ERROR", "Unable to take out money : " + res + "\n"));
                 }
             } else {
@@ -259,7 +261,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                 } else {
                     returnContent.put("result", result);
                     returnValue.put("content", returnContent);
-                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+//                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
+                    respond(returnValue);
                     jtaMessage.append(fm.formatMessage("ERROR", "Unable to transfer the money : " + result + "\n"));
                 }
             } else {
@@ -339,32 +342,48 @@ public class BankServerFrame extends javax.swing.JFrame {
         jtaMessage.append(fm.formatMessage("SERVER", "Request received, Processing now..\n"));
         jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Operation Type : Update Passbook\n"));
         JSONObject uData = json.getJSONObject("content");
-        jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Reading data received..\n"));
-        tLog = new TransactionLog();
         JSONObject returnValue = new JSONObject();
-        ArrayList<TransactionLog> log = tLog.getTransactionLog(dbCon, uData.getString("accno"));
-        JSONArray jsonArr = new JSONArray();
-        for (int i = 0; i < log.size(); i++) {
-            TransactionLog transactionLog = log.get(i);
-            JSONObject temp = new JSONObject();
-            temp.put("accNo", transactionLog.getAccNo());
-            temp.put("transactionType", transactionLog.getTransactionType());
-            temp.put("transactionDate", transactionLog.getTransactionDate());
-            temp.put("amount", transactionLog.getAmount());
-            jsonArr.put(temp);
-        }
-        jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Processing update passbook request\n"));
-        if (jsonArr.length() > 0) {
-            returnValue.put("result", jsonArr);
-            returnValue.put("record", true);
-            jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Request successful\n"));
-            jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
-            cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
-        } else {
-            returnValue.put("result", JSONObject.NULL);
-            returnValue.put("record", false);
-            cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
-            jtaMessage.append(fm.formatMessage("ERROR", "Unable to process request : " + "No record found" + "\n"));
+        JSONObject returnContent = new JSONObject();
+        jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Reading data received..\n"));
+        String accBranch = uData.getString("accno");
+        returnContent.put("bCode", uData.getString("bCode"));
+        returnContent.put("address", uData.getString("address"));
+        returnContent.put("port", uData.getInt("port"));
+        if (accBranch.equals(this.branchCode)) {
+            tLog = new TransactionLog();
+            ArrayList<TransactionLog> log = tLog.getTransactionLog(dbCon, uData.getString("accno"));
+            JSONArray jsonArr = new JSONArray();
+            for (int i = 0; i < log.size(); i++) {
+                TransactionLog transactionLog = log.get(i);
+                JSONObject temp = new JSONObject();
+                temp.put("accNo", transactionLog.getAccNo());
+                temp.put("transactionType", transactionLog.getTransactionType());
+                temp.put("transactionDate", transactionLog.getTransactionDate());
+                temp.put("amount", transactionLog.getAmount());
+                jsonArr.put(temp);
+            }
+            jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Processing update passbook request\n"));
+            if (jsonArr.length() > 0) {
+                returnContent.put("result", jsonArr);
+                returnValue.put("content", returnContent);
+                returnValue.put("record", true);
+                jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Request successful\n"));
+                jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
+//                cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
+                respond(returnValue);
+            } else {
+                returnContent.put("result", JSONObject.NULL);
+                returnValue.put("content", returnContent);
+                returnValue.put("record", false);
+//                cw.send(returnValue, InetAddress.getByName(uData.getString("address")), uData.getInt("port"));
+                respond(returnValue);
+                jtaMessage.append(fm.formatMessage("ERROR", "Unable to process request : " + "No record found" + "\n"));
+            }
+        }else{
+            jtaMessage.append(fm.formatMessage("SERVER", "Not belongs to this branch, send to next branch\n"));
+            branch = new Branch();
+            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
         }
         jtaMessage.append(fm.formatMessage("SERVER", "Operation ended, return to idle state\n"));
     }
@@ -564,7 +583,6 @@ public class BankServerFrame extends javax.swing.JFrame {
                         deposit(json);
                         break;
                     case TRANSFER:
-                        System.out.println(json.toString());
                         transfer(json);
                         break;
                     case LOAN:
