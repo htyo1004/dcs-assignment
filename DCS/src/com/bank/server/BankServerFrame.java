@@ -345,7 +345,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         JSONObject returnValue = new JSONObject();
         JSONObject returnContent = new JSONObject();
         jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Reading data received..\n"));
-        String accBranch = uData.getString("accno");
+        String accBranch = uData.getString("accno").substring(0,4);
         returnContent.put("bCode", uData.getString("bCode"));
         returnContent.put("address", uData.getString("address"));
         returnContent.put("port", uData.getInt("port"));
