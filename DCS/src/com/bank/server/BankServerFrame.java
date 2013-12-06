@@ -363,6 +363,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 jsonArr.put(temp);
             }
             jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Processing update passbook request\n"));
+            returnValue.put("operation", Operation.RESPONSE);
             if (jsonArr.length() > 0) {
                 returnContent.put("result", jsonArr);
                 returnValue.put("content", returnContent);
