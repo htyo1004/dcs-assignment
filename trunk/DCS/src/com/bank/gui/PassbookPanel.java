@@ -1,6 +1,7 @@
 package com.bank.gui;
 
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.CustomScrollBarUI;
 import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
@@ -74,6 +75,8 @@ public class PassbookPanel extends javax.swing.JPanel {
         });
         add(btnCheck);
         btnCheck.setBounds(313, 20, 110, 30);
+
+        jScrollPane1.getVerticalScrollBar().setUI(new CustomScrollBarUI());
 
         jtaPassbookInfo.setEditable(false);
         jtaPassbookInfo.setColumns(20);

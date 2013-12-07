@@ -12,6 +12,7 @@ import com.bank.entity.MySQLConnection;
 import com.bank.entity.TransactionLog;
 import com.bank.entity.Withdraw;
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.CustomScrollBarUI;
 import com.bank.utils.FormattedMessage;
 import com.bank.utils.Operation;
 import com.bank.utils.TransactionType;
@@ -428,6 +429,8 @@ public class BankServerFrame extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
+        jspMessage.getVerticalScrollBar().setUI(new CustomScrollBarUI());
+
         jtaMessage.setEditable(false);
         jtaMessage.setColumns(20);
         jtaMessage.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
@@ -501,6 +504,8 @@ public class BankServerFrame extends javax.swing.JFrame {
                 jButton1.setEnabled(false);
                 jLabel1.setEnabled(false);
             }
+        }else{
+            jtaMessage.append(fm.formatMessage("ERROR", "Please select a vaild branch code\n"));
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
