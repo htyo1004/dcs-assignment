@@ -29,6 +29,7 @@
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="jspMessage">
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jspMessage.getVerticalScrollBar().setUI(new CustomScrollBarUI());"/>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
       <Constraints>
