@@ -52,37 +52,47 @@ public class TransferPanel extends javax.swing.JPanel {
         txtAmountTransfer = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        jlblAccBalance = new javax.swing.JLabel();
+        jlblBalance = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Account Number");
         add(jLabel1);
-        jLabel1.setBounds(20, 60, 190, 30);
+        jLabel1.setBounds(20, 40, 190, 30);
 
         AbstractDocument aDocAccNo = (AbstractDocument)txtAccNo.getDocument();
         aDocAccNo.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
+        txtAccNo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtAccNo);
-        txtAccNo.setBounds(20, 90, 390, 30);
+        txtAccNo.setBounds(20, 70, 400, 30);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Beneficial Account Number ");
         add(jLabel2);
-        jLabel2.setBounds(20, 130, 220, 30);
+        jLabel2.setBounds(20, 110, 220, 30);
 
         AbstractDocument aDocAccReceive = (AbstractDocument)txtAccNoReceiver.getDocument();
         aDocAccReceive.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
+        txtAccNoReceiver.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtAccNoReceiver);
-        txtAccNoReceiver.setBounds(20, 160, 390, 30);
+        txtAccNoReceiver.setBounds(20, 140, 400, 30);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Amount to Transfer");
         add(jLabel3);
-        jLabel3.setBounds(20, 200, 180, 30);
+        jLabel3.setBounds(20, 180, 180, 30);
 
         AbstractDocument aDocAmt = (AbstractDocument)txtAmountTransfer.getDocument();
         aDocAmt.setDocumentFilter(new TextFieldLimiter("\\d{0,}"));
+        txtAmountTransfer.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtAmountTransfer);
-        txtAmountTransfer.setBounds(20, 230, 390, 30);
+        txtAmountTransfer.setBounds(20, 210, 400, 30);
 
+        btnReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,8 +100,9 @@ public class TransferPanel extends javax.swing.JPanel {
             }
         });
         add(btnReset);
-        btnReset.setBounds(10, 320, 170, 50);
+        btnReset.setBounds(20, 320, 160, 50);
 
+        btnSubmit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,14 +110,23 @@ public class TransferPanel extends javax.swing.JPanel {
             }
         });
         add(btnSubmit);
-        btnSubmit.setBounds(260, 320, 170, 50);
+        btnSubmit.setBounds(260, 320, 160, 50);
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Transfer");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 3));
-        add(jLabel4);
-        jLabel4.setBounds(100, 20, 250, 30);
+        jlblAccBalance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jlblAccBalance.setText("Account Balance                        : ");
+        add(jlblAccBalance);
+        jlblAccBalance.setBounds(20, 250, 210, 30);
+
+        jlblBalance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add(jlblBalance);
+        jlblBalance.setBounds(230, 250, 180, 30);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setText("TRANSFER MONEY");
+        add(jLabel5);
+        jLabel5.setBounds(20, 5, 400, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 25, 420, 2);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
@@ -138,6 +158,7 @@ public class TransferPanel extends javax.swing.JPanel {
             System.out.println(js.toString());
             if(result.get("result").toString().equalsIgnoreCase("Success")){
                 Toast.makeText(getParent(),"Success",Toast.LENGTH_SHORT).display();
+                jlblBalance.setText("RM " + String.format("%.2f", result.getDouble("balance")));
             }else{
                  Toast.makeText(getParent(),"Transfer Unsuccessful.",Toast.LENGTH_SHORT).display();
             }
@@ -162,7 +183,10 @@ public class TransferPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jlblAccBalance;
+    private javax.swing.JLabel jlblBalance;
     private javax.swing.JTextField txtAccNo;
     private javax.swing.JTextField txtAccNoReceiver;
     private javax.swing.JTextField txtAmountTransfer;

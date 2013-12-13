@@ -4,6 +4,7 @@ import com.bank.entity.Branch;
 import com.bank.entity.MySQLConnection;
 import com.bank.server.BankServerFrame;
 import com.bank.utils.CommunicationWrapper;
+import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -15,6 +16,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
 
 /*
  * To change this template, choose Tools | Templates
@@ -29,6 +32,7 @@ public class Main extends javax.swing.JFrame {
     private CardLayout cl;
     private CommunicationWrapper cw;
     private DefaultComboBoxModel dcbmBranch;
+    private QueryPanel qPanel;
     private WithdrawPanel wPanel;
     private DepositPanel dPanel;
     private LoanPanel lPanel;
@@ -71,12 +75,14 @@ public class Main extends javax.swing.JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                qPanel = new QueryPanel(cw, branchCode, portNo);
                 wPanel = new WithdrawPanel(cw, branchCode, portNo);
                 dPanel = new DepositPanel(cw, branchCode, portNo);
                 tPanel = new TransferPanel(cw, branchCode, portNo);
                 rPanel = new RegisterPanel(cw, branchCode, portNo);
                 lPanel = new LoanPanel(cw, branchCode, portNo);
                 pPanel = new PassbookPanel(cw, branchCode, portNo);
+                jpMainCard.add(qPanel, "query");
                 jpMainCard.add(wPanel, "withdraw");
                 jpMainCard.add(dPanel, "deposit");
                 jpMainCard.add(tPanel, "transfer");
@@ -122,6 +128,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jpMainCard = new javax.swing.JPanel();
         jpNullCard = new javax.swing.JPanel();
+        jbtQuery = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,7 +144,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtWithdraw);
-        jbtWithdraw.setBounds(10, 70, 120, 50);
+        jbtWithdraw.setBounds(10, 115, 120, 50);
 
         jbtDeposit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/a.jpg"))); // NOI18N
         jbtDeposit.setText("Deposit");
@@ -149,7 +156,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtDeposit);
-        jbtDeposit.setBounds(10, 130, 120, 50);
+        jbtDeposit.setBounds(10, 170, 120, 50);
 
         jbtTransfer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/c.png"))); // NOI18N
         jbtTransfer.setText("Transfer");
@@ -161,7 +168,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtTransfer);
-        jbtTransfer.setBounds(10, 190, 120, 50);
+        jbtTransfer.setBounds(10, 225, 120, 50);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -179,7 +186,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtRegister);
-        jbtRegister.setBounds(10, 250, 120, 50);
+        jbtRegister.setBounds(10, 280, 120, 50);
 
         jbtLoan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/e.png"))); // NOI18N
         jbtLoan.setText("Loan");
@@ -191,7 +198,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtLoan);
-        jbtLoan.setBounds(10, 310, 120, 50);
+        jbtLoan.setBounds(10, 335, 120, 50);
 
         jbtUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/d.jpg"))); // NOI18N
         jbtUpdate.setText("<html>Update<br/> passbook");
@@ -203,7 +210,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtUpdate);
-        jbtUpdate.setBounds(10, 370, 120, 50);
+        jbtUpdate.setBounds(10, 390, 120, 50);
 
         jpMainCard.setPreferredSize(new java.awt.Dimension(440, 380));
         jpMainCard.setLayout(new java.awt.CardLayout());
@@ -237,7 +244,16 @@ public class Main extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(130, 70, 440, 380);
+        jPanel2.setBounds(130, 65, 440, 380);
+
+        jbtQuery.setText("<html>Check<br/>Balance");
+        jbtQuery.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtQueryActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtQuery);
+        jbtQuery.setBounds(10, 60, 120, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,6 +294,11 @@ public class Main extends javax.swing.JFrame {
         cl.show(jpMainCard, "passbook");
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
+    private void jbtQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtQueryActionPerformed
+        cl.show(jpMainCard, "query");
+    }//GEN-LAST:event_jbtQueryActionPerformed
+
+    
     private int generatePortNumber() {
         Random rand = new Random();
         int port = rand.nextInt((60000 - 5111) + 1) + 5111;
@@ -302,6 +323,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jbtDeposit;
     private javax.swing.JButton jbtLoan;
+    private javax.swing.JButton jbtQuery;
     private javax.swing.JButton jbtRegister;
     private javax.swing.JButton jbtTransfer;
     private javax.swing.JButton jbtUpdate;

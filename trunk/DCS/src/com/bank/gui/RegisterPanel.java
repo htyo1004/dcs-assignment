@@ -86,89 +86,113 @@ public class RegisterPanel extends javax.swing.JPanel {
         btnReset = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jcbAccType = new javax.swing.JComboBox();
+        jLabel11 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Firstname");
         add(jLabel1);
-        jLabel1.setBounds(20, 10, 150, 30);
+        jLabel1.setBounds(20, 30, 150, 30);
 
         AbstractDocument aDocname = (AbstractDocument)txtFname.getDocument();
         aDocname.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
+        txtFname.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtFname);
-        txtFname.setBounds(170, 10, 250, 30);
+        txtFname.setBounds(170, 30, 250, 30);
 
         AbstractDocument aDocLname = (AbstractDocument)txtLname.getDocument();
         aDocLname.setDocumentFilter(new TextFieldLimiter("^[a-zA-Z]+$"));
+        txtLname.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtLname);
-        txtLname.setBounds(170, 40, 250, 30);
+        txtLname.setBounds(170, 60, 250, 30);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Lastname");
         add(jLabel2);
-        jLabel2.setBounds(20, 40, 150, 30);
+        jLabel2.setBounds(20, 60, 150, 30);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Gender");
         add(jLabel3);
-        jLabel3.setBounds(20, 100, 150, 30);
-        add(txtAddress);
-        txtAddress.setBounds(170, 130, 250, 30);
+        jLabel3.setBounds(20, 120, 150, 30);
 
+        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add(txtAddress);
+        txtAddress.setBounds(170, 150, 250, 30);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Address");
         add(jLabel4);
-        jLabel4.setBounds(20, 130, 150, 30);
+        jLabel4.setBounds(20, 150, 150, 30);
 
         btngrp.add(jrbMale);
+        jrbMale.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jrbMale.setSelected(true);
         jrbMale.setText("Male");
         add(jrbMale);
-        jrbMale.setBounds(220, 100, 70, 30);
+        jrbMale.setBounds(220, 120, 70, 30);
 
         btngrp.add(jrbFemale);
+        jrbFemale.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jrbFemale.setText("Female");
         add(jrbFemale);
-        jrbFemale.setBounds(320, 100, 59, 30);
+        jrbFemale.setBounds(320, 120, 80, 30);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("State");
         add(jLabel5);
-        jLabel5.setBounds(20, 160, 150, 30);
+        jLabel5.setBounds(20, 180, 150, 30);
 
+        jcbState.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jcbState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Perak", "Selangor", "Seremban", "Melaka", "Wilayah Persekutuan" }));
         add(jcbState);
-        jcbState.setBounds(170, 160, 250, 30);
+        jcbState.setBounds(170, 180, 250, 30);
 
         AbstractDocument aDocCity = (AbstractDocument)txtCity.getDocument();
         aDocCity.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
+        txtCity.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtCity);
-        txtCity.setBounds(170, 190, 250, 30);
+        txtCity.setBounds(170, 210, 250, 30);
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("City");
         add(jLabel6);
-        jLabel6.setBounds(20, 190, 150, 30);
+        jLabel6.setBounds(20, 210, 150, 30);
 
         AbstractDocument aDocPostCode = (AbstractDocument)txtICNumber.getDocument();
         aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,12}"));
+        txtICNumber.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtICNumber);
-        txtICNumber.setBounds(170, 70, 250, 30);
+        txtICNumber.setBounds(170, 90, 250, 30);
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("IC Number");
         add(jLabel7);
-        jLabel7.setBounds(20, 70, 150, 30);
+        jLabel7.setBounds(20, 90, 150, 30);
 
         AbstractDocument aDocContact = (AbstractDocument)txtContact.getDocument();
         aDocContact.setDocumentFilter(new TextFieldLimiter("\\d{0,10}"));
+        txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtContact);
-        txtContact.setBounds(170, 220, 250, 30);
+        txtContact.setBounds(170, 240, 250, 30);
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Contact Number");
         add(jLabel8);
-        jLabel8.setBounds(20, 220, 150, 30);
+        jLabel8.setBounds(20, 240, 150, 30);
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Email");
         add(jLabel9);
-        jLabel9.setBounds(20, 250, 150, 30);
-        add(txtEmail);
-        txtEmail.setBounds(170, 250, 250, 30);
+        jLabel9.setBounds(20, 270, 150, 30);
 
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add(txtEmail);
+        txtEmail.setBounds(170, 270, 250, 30);
+
+        btnSubmit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,8 +200,9 @@ public class RegisterPanel extends javax.swing.JPanel {
             }
         });
         add(btnSubmit);
-        btnSubmit.setBounds(260, 320, 170, 50);
+        btnSubmit.setBounds(260, 340, 160, 30);
 
+        btnReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,15 +210,24 @@ public class RegisterPanel extends javax.swing.JPanel {
             }
         });
         add(btnReset);
-        btnReset.setBounds(10, 320, 170, 50);
+        btnReset.setBounds(20, 340, 160, 30);
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Account Type");
         add(jLabel10);
-        jLabel10.setBounds(20, 280, 150, 30);
+        jLabel10.setBounds(20, 300, 150, 30);
 
+        jcbAccType.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jcbAccType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Saving", "Current" }));
         add(jcbAccType);
-        jcbAccType.setBounds(170, 280, 250, 30);
+        jcbAccType.setBounds(170, 300, 250, 30);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel11.setText("ACCOUNT REGISTRATION");
+        add(jLabel11);
+        jLabel11.setBounds(20, 5, 400, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 25, 420, 5);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -333,6 +367,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup btngrp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -341,6 +376,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox jcbAccType;
     private javax.swing.JComboBox jcbState;
     private javax.swing.JRadioButton jrbFemale;

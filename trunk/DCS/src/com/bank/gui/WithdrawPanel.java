@@ -71,38 +71,48 @@ public class WithdrawPanel extends javax.swing.JPanel {
         jtfAmountWithdraw = new javax.swing.JTextField();
         jbtSubmit = new javax.swing.JButton();
         jbtReset = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        jlblAccBalance = new javax.swing.JLabel();
+        jlblBalance = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setPreferredSize(new java.awt.Dimension(440, 380));
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Account Number ");
         add(jLabel1);
-        jLabel1.setBounds(20, 60, 390, 30);
+        jLabel1.setBounds(20, 40, 390, 30);
 
         AbstractDocument aDoc = (AbstractDocument)jtfAccountNumber.getDocument();
         aDoc.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
+        jtfAccountNumber.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(jtfAccountNumber);
-        jtfAccountNumber.setBounds(20, 90, 390, 30);
+        jtfAccountNumber.setBounds(20, 70, 400, 30);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("IC Number");
         add(jLabel2);
-        jLabel2.setBounds(20, 130, 220, 30);
+        jLabel2.setBounds(20, 110, 220, 30);
 
         AbstractDocument aDocIC = (AbstractDocument)jtfICNumber.getDocument();
         aDocIC.setDocumentFilter(new TextFieldLimiter("\\d{0,12}"));
+        jtfICNumber.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(jtfICNumber);
-        jtfICNumber.setBounds(20, 160, 390, 30);
+        jtfICNumber.setBounds(20, 140, 400, 30);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Amount to Withdraw");
         add(jLabel3);
-        jLabel3.setBounds(20, 200, 180, 30);
+        jLabel3.setBounds(20, 180, 180, 30);
 
         AbstractDocument aDocAmount = (AbstractDocument)jtfAmountWithdraw.getDocument();
         aDocAmount.setDocumentFilter(new TextFieldLimiter("\\d{0,5}"));
+        jtfAmountWithdraw.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(jtfAmountWithdraw);
-        jtfAmountWithdraw.setBounds(20, 230, 390, 30);
+        jtfAmountWithdraw.setBounds(20, 210, 400, 30);
 
+        jbtSubmit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jbtSubmit.setText("Submit");
         jbtSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,8 +120,9 @@ public class WithdrawPanel extends javax.swing.JPanel {
             }
         });
         add(jbtSubmit);
-        jbtSubmit.setBounds(260, 320, 170, 50);
+        jbtSubmit.setBounds(260, 320, 160, 50);
 
+        jbtReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jbtReset.setText("Reset");
         jbtReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,14 +130,23 @@ public class WithdrawPanel extends javax.swing.JPanel {
             }
         });
         add(jbtReset);
-        jbtReset.setBounds(10, 320, 170, 50);
+        jbtReset.setBounds(20, 320, 160, 50);
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Withdraw");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 3));
-        add(jLabel4);
-        jLabel4.setBounds(100, 20, 250, 30);
+        jlblAccBalance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jlblAccBalance.setText("Account Balance                        : ");
+        add(jlblAccBalance);
+        jlblAccBalance.setBounds(20, 250, 210, 30);
+
+        jlblBalance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add(jlblBalance);
+        jlblBalance.setBounds(230, 250, 180, 30);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setText("MONEY WITHDRAWAL");
+        add(jLabel5);
+        jLabel5.setBounds(20, 5, 400, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 25, 420, 5);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSubmitActionPerformed
@@ -176,6 +196,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
                 System.out.println(js.toString());
                 if(contents.get("result").toString().equalsIgnoreCase("Success")){
                     Toast.makeText(getParent(), "Success", Toast.LENGTH_LONG).display();
+                    jlblBalance.setText("RM " + String.format("%.2f", contents.getDouble("balance")));
                 }else{
                     Toast.makeText(getParent(), "Please try again later", Toast.LENGTH_LONG).display();
                 }
@@ -197,9 +218,12 @@ public class WithdrawPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtReset;
     private javax.swing.JButton jbtSubmit;
+    private javax.swing.JLabel jlblAccBalance;
+    private javax.swing.JLabel jlblBalance;
     private javax.swing.JTextField jtfAccountNumber;
     private javax.swing.JTextField jtfAmountWithdraw;
     private javax.swing.JTextField jtfICNumber;

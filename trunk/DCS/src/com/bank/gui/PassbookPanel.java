@@ -55,18 +55,23 @@ public class PassbookPanel extends javax.swing.JPanel {
         jtaPassbookInfo = new javax.swing.JTextArea();
         btnReset = new javax.swing.JButton();
         btnPrint = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Account No.");
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 90, 30);
+        jLabel1.setBounds(20, 35, 90, 30);
 
         AbstractDocument aDocAcc = (AbstractDocument)txtAccNo.getDocument();
         aDocAcc.setDocumentFilter(new TextFieldLimiter("\\d{0,14}"));
+        txtAccNo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtAccNo);
-        txtAccNo.setBounds(110, 20, 200, 30);
+        txtAccNo.setBounds(110, 35, 200, 30);
 
+        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnCheck.setText("Check");
         btnCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,7 +79,7 @@ public class PassbookPanel extends javax.swing.JPanel {
             }
         });
         add(btnCheck);
-        btnCheck.setBounds(313, 20, 110, 30);
+        btnCheck.setBounds(310, 35, 110, 30);
 
         jScrollPane1.getVerticalScrollBar().setUI(new CustomScrollBarUI());
 
@@ -86,8 +91,9 @@ public class PassbookPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jtaPassbookInfo);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(10, 60, 410, 270);
+        jScrollPane1.setBounds(20, 70, 400, 260);
 
+        btnReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,8 +101,9 @@ public class PassbookPanel extends javax.swing.JPanel {
             }
         });
         add(btnReset);
-        btnReset.setBounds(10, 340, 140, 30);
+        btnReset.setBounds(20, 340, 160, 30);
 
+        btnPrint.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnPrint.setText("Print");
         btnPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,7 +111,14 @@ public class PassbookPanel extends javax.swing.JPanel {
             }
         });
         add(btnPrint);
-        btnPrint.setBounds(280, 340, 140, 30);
+        btnPrint.setBounds(260, 340, 160, 30);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setText("TRANSFER MONEY");
+        add(jLabel5);
+        jLabel5.setBounds(20, 5, 400, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 25, 420, 5);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
@@ -176,7 +190,9 @@ public class PassbookPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnReset;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jtaPassbookInfo;
     private javax.swing.JTextField txtAccNo;
     // End of variables declaration//GEN-END:variables
