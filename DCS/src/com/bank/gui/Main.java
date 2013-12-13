@@ -172,7 +172,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Ong Ong Lai Banking System");
+        jLabel1.setText("Bank Ladesh Banking System");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 570, 60);
 
