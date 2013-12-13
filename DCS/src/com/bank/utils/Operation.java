@@ -12,6 +12,7 @@ package com.bank.utils;
 
 public enum Operation {
 
+    QUERY,
     WITHDRAW,
     DEPOSIT,
     TRANSFER,

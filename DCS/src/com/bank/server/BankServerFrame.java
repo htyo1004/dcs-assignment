@@ -9,6 +9,7 @@ import com.bank.entity.Branch;
 import com.bank.entity.Deposit;
 import com.bank.entity.LoanApplication;
 import com.bank.entity.MySQLConnection;
+import com.bank.entity.Query;
 import com.bank.entity.TransactionLog;
 import com.bank.entity.Withdraw;
 import com.bank.utils.CommunicationWrapper;
@@ -41,6 +42,7 @@ public class BankServerFrame extends javax.swing.JFrame {
 
     private CommunicationWrapper cw;
     private FormattedMessage fm = new FormattedMessage();
+    private Query query;
     private Branch branch;
     private Withdraw withdraw;
     private Deposit deposit;
@@ -101,15 +103,56 @@ public class BankServerFrame extends javax.swing.JFrame {
         }
     }
 
+    private void query(JSONObject json) throws JSONException, UnknownHostException {
+        jtaMessage.append(fm.formatMessage("SERVER", "Request received, Processing now..\n"));
+        jtaMessage.append(fm.formatMessage(Operation.QUERY.toString(), "Operation Type : Check balance\n"));
+        JSONObject qData = json.getJSONObject("content");
+        JSONObject returnValue = new JSONObject();
+        JSONObject returnContent = new JSONObject();
+        jtaMessage.append(fm.formatMessage(Operation.QUERY.toString(), "Reading data received..\n"));
+        String accBranch = qData.getString("accNo").substring(0, 4);
+        returnContent.put("bCode", qData.getString("bCode"));
+        returnContent.put("address", qData.getString("address"));
+        returnContent.put("port", qData.getInt("port"));
+        if (accBranch.equals(this.branchCode)) {
+            query = new Query();
+            query.setAccNo(qData.getString("accNo"));
+            jtaMessage.append(fm.formatMessage(Operation.QUERY.toString(), "Checking balance\n"));
+            String result = query.query(dbCon);
+            String[] split = result.split(" ");
+            returnValue.put("operation", Operation.RESPONSE);
+            if (split[0].equals("Success")) {
+                String balance = split[1];
+                jtaMessage.append(fm.formatMessage(Operation.QUERY.toString(), "Operation success\n"));
+                jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
+                returnContent.put("balance", Double.parseDouble(balance));
+                returnContent.put("result", split[0]);
+                returnValue.put("content", returnContent);
+                respond(returnValue);
+            } else {
+                returnContent.put("result", result);
+                returnValue.put("content", returnContent);
+                respond(returnValue);
+                jtaMessage.append(fm.formatMessage("ERROR", "Unable to check account : " + result + "\n"));
+            }
+        } else {
+            jtaMessage.append(fm.formatMessage("SERVER", "Not belongs to this branch, send to next branch\n"));
+            branch = new Branch();
+            branch.setBranchCode(cw.whoIsNeighbors(branchCode));
+            cw.send(json, InetAddress.getByName(branch.obtainBranchIp(dbCon)), 5000);
+        }
+        jtaMessage.append(fm.formatMessage("SERVER", "Operation ended, return to idle state\n"));
+    }
+
     private void withdraw(JSONObject json) throws JSONException, UnknownHostException {
         jtaMessage.append(fm.formatMessage("SERVER", "Request received, Processing now..\n"));
         jtaMessage.append(fm.formatMessage(Operation.WITHDRAW.toString(), "Operation Type : Withdraw\n"));
         JSONObject wData = json.getJSONObject("content");
+        System.out.println(json.toString());
         JSONObject returnValue = new JSONObject();
         JSONObject returnContent = new JSONObject();
         jtaMessage.append(fm.formatMessage(Operation.WITHDRAW.toString(), "Reading data received..\n"));
         String accBranch = wData.getString("accNo").substring(0, 4);
-        System.out.println(accBranch);
         returnContent.put("bCode", wData.getString("bCode"));
         returnContent.put("address", wData.getString("address"));
         returnContent.put("port", wData.getInt("port"));
@@ -128,15 +171,18 @@ public class BankServerFrame extends javax.swing.JFrame {
                 tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                 tLog.setTransactionType(TransactionType.DBT.toString());
                 tLog.createTransactionLog(dbCon);
+                query = new Query();
+                query.setAccNo(wData.getString("accNo"));
+                String balance = query.query(dbCon).split(" ")[1];
                 jtaMessage.append(fm.formatMessage(Operation.WITHDRAW.toString(), "Operation success\n"));
                 jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
+                returnContent.put("balance", Double.parseDouble(balance));
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
-//                cw.send(returnValue, InetAddress.getByName(wData.getString("address")), wData.getInt("port"));
                 respond(returnValue);
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to withdraw : " + result + "\n"));
             }
@@ -176,15 +222,18 @@ public class BankServerFrame extends javax.swing.JFrame {
                 tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                 tLog.setTransactionType(TransactionType.CRD.toString());
                 tLog.createTransactionLog(dbCon);
+                query = new Query();
+                query.setAccNo(dData.getString("accNo"));
+                String balance = query.query(dbCon).split(" ")[1];
                 jtaMessage.append(fm.formatMessage(Operation.DEPOSIT.toString(), "Operation success\n"));
                 jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
+                returnContent.put("balance", Double.parseDouble(balance));
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
                 respond(returnValue);
             } else {
                 returnContent.put("result", result);
                 returnValue.put("content", returnContent);
-//                cw.send(returnValue, InetAddress.getByName(dData.getString("address")), dData.getInt("port"));
                 respond(returnValue);
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to deposit : " + result + "\n"));
             }
@@ -223,12 +272,15 @@ public class BankServerFrame extends javax.swing.JFrame {
                     tLog.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                     tLog.setTransactionType(TransactionType.DBT.toString());
                     tLog.createTransactionLog(dbCon);
+                    query = new Query();
+                    query.setAccNo(tData.getString("accNo"));
+                    String balance = query.query(dbCon).split(" ")[1];
                     json.put("withdraw", true);
+                    json.put("balance", Double.parseDouble(balance));
                     transfer(json);
                 } else {
                     returnContent.put("result", res);
                     returnValue.put("content", returnContent);
-//                    cw.send(returnValue, InetAddress.getByName(tData.getString("address")), tData.getInt("port"));
                     respond(returnValue);
                     jtaMessage.append(fm.formatMessage("ERROR", "Unable to take out money : " + res + "\n"));
                 }
@@ -257,6 +309,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                     jtaMessage.append(fm.formatMessage(Operation.TRANSFER.toString(), "Operation success\n"));
                     jtaMessage.append(fm.formatMessage("SERVER", "Sending back respond\n"));
                     returnContent.put("result", result);
+                    returnContent.put("balance", json.getDouble("balance"));
                     returnValue.put("content", returnContent);
                     respond(returnValue);
                 } else {
@@ -346,7 +399,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         JSONObject returnValue = new JSONObject();
         JSONObject returnContent = new JSONObject();
         jtaMessage.append(fm.formatMessage(Operation.TRANSACTION.toString(), "Reading data received..\n"));
-        String accBranch = uData.getString("accno").substring(0,4);
+        String accBranch = uData.getString("accno").substring(0, 4);
         returnContent.put("bCode", uData.getString("bCode"));
         returnContent.put("address", uData.getString("address"));
         returnContent.put("port", uData.getInt("port"));
@@ -381,7 +434,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 respond(returnValue);
                 jtaMessage.append(fm.formatMessage("ERROR", "Unable to process request : " + "No record found" + "\n"));
             }
-        }else{
+        } else {
             jtaMessage.append(fm.formatMessage("SERVER", "Not belongs to this branch, send to next branch\n"));
             branch = new Branch();
             branch.setBranchCode(cw.whoIsNeighbors(branchCode));
@@ -504,7 +557,7 @@ public class BankServerFrame extends javax.swing.JFrame {
                 jButton1.setEnabled(false);
                 jLabel1.setEnabled(false);
             }
-        }else{
+        } else {
             jtaMessage.append(fm.formatMessage("ERROR", "Please select a vaild branch code\n"));
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -553,6 +606,7 @@ public class BankServerFrame extends javax.swing.JFrame {
             while (!stopServer) {
                 try {
                     JSONObject dataReceived = cw.receive();
+                    System.out.println(dataReceived.toString());
                     boolean error = dataReceived.optBoolean("error");
                     if (!error) {
                         String op = dataReceived.getString("operation");
@@ -581,7 +635,11 @@ public class BankServerFrame extends javax.swing.JFrame {
         @Override
         public void run() {
             try {
+                System.out.println(op.toString());
                 switch (op) {
+                    case QUERY:
+                        query(json);
+                        break;
                     case WITHDRAW:
                         withdraw(json);
                         break;

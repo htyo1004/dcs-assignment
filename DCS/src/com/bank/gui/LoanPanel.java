@@ -88,13 +88,17 @@ public class LoanPanel extends javax.swing.JPanel {
         txtloanerContact = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Loan Type");
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 140, 30);
+        jLabel1.setBounds(20, 40, 140, 30);
 
+        jcbLoanType.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jcbLoanType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Housing Loan", "Personal Loan", "Car Loan" }));
         jcbLoanType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,60 +106,73 @@ public class LoanPanel extends javax.swing.JPanel {
             }
         });
         add(jcbLoanType);
-        jcbLoanType.setBounds(160, 20, 260, 30);
+        jcbLoanType.setBounds(160, 40, 260, 30);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Loan Amount");
         add(jLabel2);
-        jLabel2.setBounds(20, 60, 140, 30);
+        jLabel2.setBounds(20, 80, 140, 30);
 
         AbstractDocument aDocloan = (AbstractDocument)txtLoanAmount.getDocument();
         aDocloan.setDocumentFilter(new TextFieldLimiter("\\d{0,8}"));
+        txtLoanAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtLoanAmount);
-        txtLoanAmount.setBounds(160, 60, 260, 30);
+        txtLoanAmount.setBounds(160, 80, 260, 30);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Loan Interest Rate");
         add(jLabel3);
-        jLabel3.setBounds(20, 100, 140, 30);
+        jLabel3.setBounds(20, 120, 140, 30);
 
         AbstractDocument aDocInterest = (AbstractDocument)txtLoanInterest.getDocument();
         aDocInterest.setDocumentFilter(new TextFieldLimiter("\\d{0,3}"));
+        txtLoanInterest.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtLoanInterest);
-        txtLoanInterest.setBounds(160, 100, 260, 30);
+        txtLoanInterest.setBounds(160, 120, 260, 30);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Duration");
         add(jLabel4);
-        jLabel4.setBounds(20, 140, 140, 30);
+        jLabel4.setBounds(20, 160, 140, 30);
 
+        jcbDuration.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(jcbDuration);
-        jcbDuration.setBounds(160, 140, 260, 30);
+        jcbDuration.setBounds(160, 160, 260, 30);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Loaner Name");
         add(jLabel5);
-        jLabel5.setBounds(20, 180, 140, 30);
+        jLabel5.setBounds(20, 200, 140, 30);
 
         AbstractDocument aDocname = (AbstractDocument)txtloanerName.getDocument();
         aDocname.setDocumentFilter(new TextFieldLimiter("^[a-z A-Z]+$"));
+        txtloanerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtloanerName);
-        txtloanerName.setBounds(160, 180, 260, 30);
+        txtloanerName.setBounds(160, 200, 260, 30);
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Loaner IC Number");
         add(jLabel6);
-        jLabel6.setBounds(20, 220, 140, 30);
+        jLabel6.setBounds(20, 240, 140, 30);
 
         AbstractDocument aDocPostCode = (AbstractDocument)txtLoanerIC.getDocument();
         aDocPostCode.setDocumentFilter(new TextFieldLimiter("\\d{0,12}"));
+        txtLoanerIC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtLoanerIC);
-        txtLoanerIC.setBounds(160, 220, 260, 30);
+        txtLoanerIC.setBounds(160, 240, 260, 30);
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Loaner Contact No");
         add(jLabel7);
-        jLabel7.setBounds(20, 260, 140, 30);
+        jLabel7.setBounds(20, 280, 140, 30);
 
         AbstractDocument aDoccontact = (AbstractDocument)txtloanerContact.getDocument();
         aDoccontact.setDocumentFilter(new TextFieldLimiter("\\d{0,10}"));
+        txtloanerContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtloanerContact);
-        txtloanerContact.setBounds(160, 260, 260, 30);
+        txtloanerContact.setBounds(160, 280, 260, 30);
 
+        btnReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,8 +180,9 @@ public class LoanPanel extends javax.swing.JPanel {
             }
         });
         add(btnReset);
-        btnReset.setBounds(10, 320, 170, 50);
+        btnReset.setBounds(20, 320, 160, 50);
 
+        btnSubmit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,7 +190,14 @@ public class LoanPanel extends javax.swing.JPanel {
             }
         });
         add(btnSubmit);
-        btnSubmit.setBounds(260, 320, 170, 50);
+        btnSubmit.setBounds(260, 320, 160, 50);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setText("LOAN APPLICATION");
+        add(jLabel8);
+        jLabel8.setBounds(20, 5, 400, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 25, 420, 5);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbLoanTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbLoanTypeActionPerformed
@@ -272,6 +297,8 @@ public class LoanPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox jcbDuration;
     private javax.swing.JComboBox jcbLoanType;
     private javax.swing.JTextField txtLoanAmount;
