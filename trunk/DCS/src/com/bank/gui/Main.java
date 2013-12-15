@@ -134,6 +134,7 @@ public class Main extends javax.swing.JFrame {
         jbtQuery = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bank Ladesh Banking System");
 
         jPanel1.setLayout(null);
 
@@ -204,7 +205,7 @@ public class Main extends javax.swing.JFrame {
         jbtLoan.setBounds(10, 335, 120, 50);
 
         jbtUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/d.jpg"))); // NOI18N
-        jbtUpdate.setText("<html>Update<br/> passbook");
+        jbtUpdate.setText("<html>Transaction<br/>History");
         jbtUpdate.setFocusPainted(false);
         jbtUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -250,6 +251,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setBounds(130, 65, 440, 380);
 
         jbtQuery.setText("<html>Check<br/>Balance");
+        jbtQuery.setFocusPainted(false);
         jbtQuery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtQueryActionPerformed(evt);
