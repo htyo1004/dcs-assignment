@@ -114,7 +114,7 @@ public class PassbookPanel extends javax.swing.JPanel {
         btnPrint.setBounds(260, 340, 160, 30);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel5.setText("TRANSFER MONEY");
+        jLabel5.setText("TRANSACTION HISTORY");
         add(jLabel5);
         jLabel5.setBounds(20, 5, 400, 20);
         add(jSeparator1);

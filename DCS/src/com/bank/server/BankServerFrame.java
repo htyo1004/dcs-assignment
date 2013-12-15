@@ -665,6 +665,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bank Ladesh Banking Server");
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -735,6 +736,7 @@ public class BankServerFrame extends javax.swing.JFrame {
         // start server if user selected a valid branch code
         if (jComboBox1.getSelectedIndex() != 0) {
             branchCode = jComboBox1.getSelectedItem().toString();
+            this.setTitle("Bank Ladesh Banking Server - Branch " + branchCode);
             jtaMessage.append(fm.formatMessage("SERVER", "Branch Code configured\n"));
             jtaMessage.append(fm.formatMessage("SERVER", "Starting server...\n"));
             startThread();
