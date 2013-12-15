@@ -8,8 +8,6 @@ import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.AbstractDocument;
 import org.json.JSONException;
 import org.json.JSONObject;
