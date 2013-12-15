@@ -7,7 +7,6 @@ import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,18 +39,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    private void reset() {
-        txtFname.setText("");
-        txtLname.setText("");
-        jrbMale.setSelected(true);
-        txtAddress.setText("");
-        jcbState.setSelectedItem("Perak");
-        txtCity.setText("");
-        txtICNumber.setText("");
-        txtContact.setText("");
-        txtEmail.setText("");
-        jcbAccType.setSelectedItem("Saving");
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -231,11 +219,11 @@ public class RegisterPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
         clear();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // prepare string for error message
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
 
@@ -272,15 +260,18 @@ public class RegisterPanel extends javax.swing.JPanel {
         }
 
         if (!validate) {
+            // validation failed, display error message
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
-
+            // validation passed, proceed to constructing data
             try {
                 String gender;
                 JSONObject j = new JSONObject();
+                // specific operation
                 j.put("operation", Operation.REGISTER);
                 JSONObject content = new JSONObject();
+                // put in all necessay data
                 content.put("firstname", txtFname.getText());
                 content.put("lastname", txtLname.getText().trim());
                 content.put("icno", txtICNumber.getText().trim());
@@ -301,26 +292,35 @@ public class RegisterPanel extends javax.swing.JPanel {
                 content.put("type", jcbAccType.getSelectedItem().toString());
                 content.put("bid", Integer.parseInt(b.obtainBranchId(MySQLConnection.getConnection())));
                 content.put("port", this.portNo);
+                content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
-                System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
-                b.setBranchCode(this.branchCode);
+                // after finished constructing data, send to server
                 cw.send(j, InetAddress.getLocalHost(), 5000);
+                // wait for server's reply
                 JSONObject js = cw.receive();
                 if (js.getString("result").equalsIgnoreCase("Success")) {
+                    // operation succeed, display successful message
                     Toast.makeText(getParent(), "Registration successful", Toast.LENGTH_SHORT).display();
                 } else {
+                    // operation failed, display error message
                     Toast.makeText(getParent(), "Unable to register now, try again later", Toast.LENGTH_SHORT).display();
                 }
             } catch (JSONException ex) {
                 ex.printStackTrace();
-                System.out.println(ex);
             } catch (UnknownHostException ex) {
                 ex.printStackTrace();
-                Logger.getLogger(DepositPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
+    
+    /**
+     * generate post code based on selected state
+     * 
+     * @param index selected index
+     * @return post code
+     */
+    
     private String postcode(int index) {
         String postcode;
         switch (index) {
@@ -344,6 +344,10 @@ public class RegisterPanel extends javax.swing.JPanel {
 
 
     }
+    
+    /**
+     * Clear all field
+     */
 
     public void clear() {
         txtFname.setText("");

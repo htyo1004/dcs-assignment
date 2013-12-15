@@ -18,6 +18,12 @@ public class MySQLConnection {
 
     public MySQLConnection() {
     }
+    
+    /**
+     * Create a connection to database to allow system to interact with database
+     * 
+     * @return connection to database
+     */
 
     public static Connection getConnection() {
 
@@ -34,6 +40,5 @@ public class MySQLConnection {
             System.out.println(ex);
         }
         return con;
-
     }
 }

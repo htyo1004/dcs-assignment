@@ -136,6 +136,12 @@ public class AccountApplication {
         this.bid = bid;
     }
 
+    /**
+     * Create a new account in database
+     * 
+     * @param con Connection to database
+     * @return string that represent the resul of query
+     */
     public String applyAccount(Connection con) {
         try {
             con.setAutoCommit(false);

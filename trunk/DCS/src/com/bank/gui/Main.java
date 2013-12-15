@@ -2,9 +2,7 @@ package com.bank.gui;
 
 import com.bank.entity.Branch;
 import com.bank.entity.MySQLConnection;
-import com.bank.server.BankServerFrame;
 import com.bank.utils.CommunicationWrapper;
-import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -16,8 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.text.AbstractDocument;
 
 /*
  * To change this template, choose Tools | Templates
@@ -56,9 +52,9 @@ public class Main extends javax.swing.JFrame {
         jpanel.setLayout(new GridLayout(2, 1));
         jpanel.add(jlabel);
         jpanel.add(jcb);
+        // prompt user to choose branch code
         JOptionPane.showMessageDialog(Main.this, jpanel, "Options", JOptionPane.QUESTION_MESSAGE);
         branchCode = jcb.getSelectedItem().toString();
-        System.out.println(branchCode);
         portNo = generatePortNumber();
         try {
             cw = new CommunicationWrapper(portNo);
@@ -71,6 +67,10 @@ public class Main extends javax.swing.JFrame {
         cl = (CardLayout) jpMainCard.getLayout();
     }
 
+    /**
+     * thread for creating and adding panel into the main panel
+     */
+    
     private void addCard() {
         new Thread(new Runnable() {
             @Override
@@ -93,6 +93,9 @@ public class Main extends javax.swing.JFrame {
         }).start();
 
     }
+    /**
+     * retrieve branch code from database and add into combo box
+     */
 
     private void populateBranchCode() {
         dcbmBranch = new DefaultComboBoxModel();
@@ -271,34 +274,45 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtWithdrawActionPerformed
+        // show withdraw panel
         cl.show(jpMainCard, "withdraw");
     }//GEN-LAST:event_jbtWithdrawActionPerformed
 
     private void jbtDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDepositActionPerformed
+        // show deposit panel
         cl.show(jpMainCard, "deposit");
     }//GEN-LAST:event_jbtDepositActionPerformed
 
     private void jbtTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTransferActionPerformed
+        // show transfer panel
         cl.show(jpMainCard, "transfer");
     }//GEN-LAST:event_jbtTransferActionPerformed
 
     private void jbtRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRegisterActionPerformed
+        // show register panel
         cl.show(jpMainCard, "register");
     }//GEN-LAST:event_jbtRegisterActionPerformed
 
     private void jbtLoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLoanActionPerformed
+        // show loan panel
         cl.show(jpMainCard, "loan");
     }//GEN-LAST:event_jbtLoanActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
+        // show update passbook panel
         cl.show(jpMainCard, "passbook");
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
     private void jbtQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtQueryActionPerformed
+        // show check balance panel
         cl.show(jpMainCard, "query");
     }//GEN-LAST:event_jbtQueryActionPerformed
 
-    
+    /**
+     * Generate a random port number between 5111 to 60000
+     * 
+     * @return random generated port number
+     */
     private int generatePortNumber() {
         Random rand = new Random();
         int port = rand.nextInt((60000 - 5111) + 1) + 5111;

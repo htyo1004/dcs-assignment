@@ -48,6 +48,9 @@ public class WithdrawPanel extends javax.swing.JPanel {
         return true;
     }
 
+    /**
+     * Reset all field to empty
+     */
     private void reset() {
         jtfAccountNumber.setText("");
         jtfICNumber.setText("");
@@ -150,6 +153,7 @@ public class WithdrawPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSubmitActionPerformed
+        // prepare string for errors
         StringBuilder sb = new StringBuilder("<html>Errors");
         int height = 50;
         validate = true;
@@ -175,14 +179,18 @@ public class WithdrawPanel extends javax.swing.JPanel {
             sb.append("<br />Please enter amount to withdraw");
         }
         if (!validate) {
+            // validation failed, display error message
             sb.append("</html>");
             Toast.makeText(getParent(), height, "" + sb, Toast.LENGTH_LONG).display();
         } else {
+            // validation passed, proceed to constructing data
             try {
 
                 JSONObject j = new JSONObject();
+                // specific operation
                 j.put("operation", Operation.WITHDRAW);
                 JSONObject content = new JSONObject();
+                // put in necessary data
                 content.put("accNo", jtfAccountNumber.getText());
                 content.put("icNo", jtfICNumber.getText());
                 content.put("amount", Double.parseDouble(jtfAmountWithdraw.getText()));
@@ -190,14 +198,17 @@ public class WithdrawPanel extends javax.swing.JPanel {
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
+                // after finish constructing, send to server
                 cw.send(j, InetAddress.getLocalHost(), 5000);
+                // wait for server's reply
                 JSONObject js = cw.receive();
                 JSONObject contents = js.getJSONObject("content");
-                System.out.println(js.toString());
                 if(contents.get("result").toString().equalsIgnoreCase("Success")){
+                    // operation succeed, display success message and returned value
                     Toast.makeText(getParent(), "Success", Toast.LENGTH_LONG).display();
                     jlblBalance.setText("RM " + String.format("%.2f", contents.getDouble("balance")));
                 }else{
+                    // operation failed, display error message
                     Toast.makeText(getParent(), "Please try again later", Toast.LENGTH_LONG).display();
                 }
             } catch (JSONException ex) {

@@ -94,6 +94,13 @@ public class LoanApplication {
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
+    
+    /**
+     * Create a new loan application with the given details
+     * 
+     * @param con connection to database
+     * @return result of applying loan
+     */
 
     public String applyLoan(Connection con) {
         try {

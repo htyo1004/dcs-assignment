@@ -54,6 +54,13 @@ public class Withdraw {
     public void setIcNo(String icNo) {
         this.icNo = icNo;
     }
+    
+    /**
+     * Withdraw money from the given account number
+     * 
+     * @param con connection to database
+     * @return result of withdrawal
+     */
 
     public String withdraw(Connection con) {
         try {
@@ -91,6 +98,13 @@ public class Withdraw {
         }
     }
     
+    /**
+     * Withdrawal used in transfer operation, take out the specific
+     * amount of money from source account
+     * 
+     * @param con connection to database
+     * @return result of taking out money
+     */
     
      public String transferWithdraw(Connection con) {
         try {

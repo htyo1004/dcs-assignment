@@ -1,7 +1,6 @@
 package com.bank.gui;
 
 import com.bank.entity.Branch;
-import com.bank.entity.MySQLConnection;
 import com.bank.utils.CommunicationWrapper;
 import com.bank.utils.Operation;
 import com.bank.utils.TextFieldLimiter;
@@ -18,17 +17,18 @@ import org.json.JSONObject;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Moofie
  */
 public class LoanPanel extends javax.swing.JPanel {
-    Integer month =12;
+
+    Integer month = 12;
     private boolean validate;
     private CommunicationWrapper cw;
     private String branchCode;
     private int portNo;
+
     /**
      * Creates new form LoanPanel
      */
@@ -37,32 +37,37 @@ public class LoanPanel extends javax.swing.JPanel {
         this.branchCode = branchCode;
         this.portNo = portNo;
         initComponents();
-        Integer []year ={20,25,30,35};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
-            }
+        Integer[] year = {20, 25, 30, 35};
+        for (int i = 0; i < year.length; i++) {
+            jcbDuration.addItem("" + (year[i] * month) + " Months");
+        }
     }
+    
+    /**
+     * Create duration dynamically based on loan type
+     */
 
-    private void getCombo(){
+    private void getCombo() {
 
         jcbDuration.removeAllItems();
-        if(jcbLoanType.getSelectedIndex()==0){
-            Integer []year ={20,25,30,35};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
+        if (jcbLoanType.getSelectedIndex() == 0) {
+            Integer[] year = {20, 25, 30, 35};
+            for (int i = 0; i < year.length; i++) {
+                jcbDuration.addItem("" + (year[i] * month) + " Months");
             }
-        }else if(jcbLoanType.getSelectedIndex()==1){
-            Integer []year ={10,20,30};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
+        } else if (jcbLoanType.getSelectedIndex() == 1) {
+            Integer[] year = {10, 20, 30};
+            for (int i = 0; i < year.length; i++) {
+                jcbDuration.addItem("" + (year[i] * month) + " Months");
             }
-        }else if(jcbLoanType.getSelectedIndex()==2){
-            Integer []year ={5,7,9};
-            for (int i = 0 ; i<year.length;i++){
-                jcbDuration.addItem(""+(year[i]*month)+" Months");
+        } else if (jcbLoanType.getSelectedIndex() == 2) {
+            Integer[] year = {5, 7, 9};
+            for (int i = 0; i < year.length; i++) {
+                jcbDuration.addItem("" + (year[i] * month) + " Months");
             }
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -201,8 +206,7 @@ public class LoanPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbLoanTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbLoanTypeActionPerformed
-
-         getCombo();
+        getCombo();
     }//GEN-LAST:event_jcbLoanTypeActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -211,6 +215,7 @@ public class LoanPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // prepare a string for errors
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
 
@@ -238,14 +243,17 @@ public class LoanPanel extends javax.swing.JPanel {
         }
 
         if (!validate) {
+            // validation failed, display error message
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
-
+            // validation passed, proceed to construct data for sending to server
             try {
                 JSONObject j = new JSONObject();
+                // specific operation
                 j.put("operation", Operation.LOAN);
                 JSONObject content = new JSONObject();
+                // put in all necessart data
                 content.put("type", jcbLoanType.getSelectedItem().toString());
                 content.put("loanamount", txtLoanAmount.getText().trim());
                 content.put("rate", txtLoanInterest.getText().trim());
@@ -253,19 +261,19 @@ public class LoanPanel extends javax.swing.JPanel {
                 content.put("name", txtloanerName.getText());
                 content.put("icno", txtLoanerIC.getText().trim());
                 content.put("contact", txtloanerContact.getText().trim());
-                Branch b = new Branch();
-                b.setBranchCode(this.branchCode);
-                
                 content.put("port", this.portNo);
+                content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
-                System.out.println(InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
-                b.setBranchCode(this.branchCode);
+                // when finished constructing, send data to server
                 cw.send(j, InetAddress.getLocalHost(), 5000);
+                // wait for server's reply
                 JSONObject js = cw.receive();
                 if (js.getString("result").equalsIgnoreCase("Success")) {
+                    // operation succeed, display successful message 
                     Toast.makeText(getParent(), "Loan application successful", Toast.LENGTH_SHORT).display();
                 } else {
+                    // operation failed, display error message
                     Toast.makeText(getParent(), "Unable to apply loan now, try again later", Toast.LENGTH_SHORT).display();
                 }
             } catch (JSONException ex) {
@@ -277,15 +285,19 @@ public class LoanPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
+
+    /**
+     * Clear all input field
+     */
     
-    public void clear(){
+    public void clear() {
         jcbLoanType.setSelectedIndex(0);
         txtLoanAmount.setText("");
         txtLoanInterest.setText("");
         jcbDuration.removeAllItems();
         txtloanerName.setText("");
         txtLoanerIC.setText("");
-        txtloanerContact.setText("");  
+        txtloanerContact.setText("");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReset;
