@@ -50,6 +50,13 @@ public class Branch {
     public void setIpaddress(String ipaddress) {
         this.ipaddress = ipaddress;
     }
+    
+    /**
+     * Obtain all branch code from the database
+     * 
+     * @param con Connection to database
+     * @return arrayList that contain all the branch code
+     */
 
     public ArrayList<String> obtainAllBranchCode(Connection con) {
         ArrayList<String> data = new ArrayList<>();
@@ -64,6 +71,13 @@ public class Branch {
         }
         return data;
     }
+    
+    /**
+     * retrieve branch code with the given branch id
+     * 
+     * @param con connection to database
+     * @return branch code
+     */
 
     public String obtainBranchCode(Connection con) {
         try {
@@ -81,6 +95,13 @@ public class Branch {
         }
     }
     
+    /**
+     * retrieve branch id with the given branch code
+     * 
+     * @param con connection to database
+     * @return branch ID
+     */
+    
     public String obtainBranchId(Connection con) {
         try {
             PreparedStatement pstmtSelect = con.prepareStatement(this.getBranchId);
@@ -96,6 +117,13 @@ public class Branch {
             return ex.getMessage();
         }
     }
+    
+    /**
+     * retrieve branch's ip address with the given branch code
+     * 
+     * @param con connection to database
+     * @return branch ip address
+     */
 
     public String obtainBranchIp(Connection con) {
         try {

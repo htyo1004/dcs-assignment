@@ -25,6 +25,7 @@ public class TransferPanel extends javax.swing.JPanel {
     private CommunicationWrapper cw;
     private String branchCode;
     private int portNo;
+
     /**
      * Creates new form TransferPanel
      */
@@ -130,37 +131,37 @@ public class TransferPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        // TODO add your handling code here:
-        Double amount=0.00;
+        //get all data from text field
+        Double amount = Double.parseDouble(txtAmountTransfer.getText().trim());
         String accNo = txtAccNo.getText().trim();
         String accReceiver = txtAccNoReceiver.getText().trim();
-        try {
-            amount = Double.parseDouble(txtAmountTransfer.getText().trim());
-        } catch (NumberFormatException ex) {
-            Toast.makeText(getParent(), "Please enter amount in number format.", Toast.LENGTH_SHORT).display();
-        }
 
         try {
-
+            // constructing data
             JSONObject j = new JSONObject();
+            // specific operation
             j.put("operation", Operation.TRANSFER);
             JSONObject content = new JSONObject();
-            content.put("accNo",accNo);
+            // put in necessary data
+            content.put("accNo", accNo);
             content.put("accReceiver", accReceiver);
             content.put("amount", amount);
             content.put("port", this.portNo);
             content.put("bCode", this.branchCode);
             content.put("address", InetAddress.getLocalHost().getHostAddress());
             j.put("content", content);
+            // after finished constructing data, send to server
             cw.send(j, InetAddress.getLocalHost(), 5000);
+            // wait for reply from server
             JSONObject js = cw.receive();
             JSONObject result = js.getJSONObject("content");
-            System.out.println(js.toString());
-            if(result.get("result").toString().equalsIgnoreCase("Success")){
-                Toast.makeText(getParent(),"Success",Toast.LENGTH_SHORT).display();
+            if (result.get("result").toString().equalsIgnoreCase("Success")) {
+                // operation succeed, display successful message and returned value
+                Toast.makeText(getParent(), "Success", Toast.LENGTH_SHORT).display();
                 jlblBalance.setText("RM " + String.format("%.2f", result.getDouble("balance")));
-            }else{
-                 Toast.makeText(getParent(),"Transfer Unsuccessful.",Toast.LENGTH_SHORT).display();
+            } else {
+                // operation failed, display error message
+                Toast.makeText(getParent(), "Transfer Unsuccessful.", Toast.LENGTH_SHORT).display();
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -172,7 +173,7 @@ public class TransferPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
+        // clear all field
         txtAccNo.setText("");
         txtAccNoReceiver.setText("");
         txtAmountTransfer.setText("");

@@ -69,6 +69,14 @@ public class TransactionLog {
     public void setAccNo(String accNo) {
         this.accNo = accNo;
     }
+    
+    /**
+     * Create a transaction log after each time a transaction is being 
+     * carried out
+     * 
+     * @param con connection to database
+     * @return result of creating log
+     */
 
     public boolean createTransactionLog(Connection con) {
         try {
@@ -93,6 +101,14 @@ public class TransactionLog {
             return false;
         }
     }
+    
+    /**
+     * Retrieve the list of transaction logs of the given account numner
+     * 
+     * @param con connection to database
+     * @param accNo account to retrieve transaction logs
+     * @return list of transaction logs
+     */
 
     public ArrayList<TransactionLog> getTransactionLog(Connection con, String accNo) {
         ArrayList<TransactionLog> transactionLog = new ArrayList<>();
@@ -114,8 +130,4 @@ public class TransactionLog {
         return transactionLog;
     }
 
-    @Override
-    public String toString() {
-        return "TransactionLog{" + "\ntransactionType=" + transactionType + ", \namount=" + amount + ", \ntransactionDate=" + transactionDate + ", \naccNo=" + accNo + "}\n";
-    }
 }

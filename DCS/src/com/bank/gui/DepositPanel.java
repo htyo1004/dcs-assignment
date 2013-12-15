@@ -6,8 +6,6 @@ import com.bank.utils.TextFieldLimiter;
 import com.bank.utils.Toast;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.AbstractDocument;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,12 +35,21 @@ public class DepositPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     * reset text fields
+     */
     private void reset() {
         txtAccNumber.setText("");
         txtICNumber.setText("");
         txtAmountDeposit.setText("");
     }
 
+    /**
+     * check if the given string is numeric or not
+     *
+     * @param str string to be checked
+     * @return result of checking
+     */
     public static boolean isNumeric(String str) {
         try {
             double d = Double.parseDouble(str);
@@ -161,6 +168,7 @@ public class DepositPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // prepare a string for errors
         StringBuilder check = new StringBuilder("<html>Errors");
         validate = true;
         if (txtAccNumber.getText().length() == 0) {
@@ -176,14 +184,17 @@ public class DepositPanel extends javax.swing.JPanel {
             check.append("<br />Please enter deposit amount");
         }
         if (!validate) {
+            // validation not true, display error message
             check.append("</html>");
             Toast.makeText(getParent(), 150, "" + check, Toast.LENGTH_LONG).display();
         } else {
+            // validation true, proceed to constructing data to be send to server
             try {
-
                 JSONObject j = new JSONObject();
+                // specific operation
                 j.put("operation", Operation.DEPOSIT);
                 JSONObject content = new JSONObject();
+                // put in all necessary data
                 content.put("accNo", txtAccNumber.getText());
                 content.put("icNo", txtICNumber.getText());
                 content.put("amount", Double.parseDouble(txtAmountDeposit.getText()));
@@ -191,15 +202,18 @@ public class DepositPanel extends javax.swing.JPanel {
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
+                // send constructed data to server
                 cw.send(j, InetAddress.getLocalHost(), 5000);
+                // wait for reply from server
                 JSONObject js = cw.receive();
                 JSONObject result = js.getJSONObject("content");
-                System.out.println(js.toString());
                 if (result.get("result").toString().equalsIgnoreCase("Success")) {
+                    // operation success, display returned value
                     Toast.makeText(getParent(), "Success", Toast.LENGTH_SHORT).display();
                     jlblBalance.setText("RM " + String.format("%.2f", result.getDouble("balance")));
                 } else {
-                    Toast.makeText(getParent(), "Transfer Unsuccessful.", Toast.LENGTH_SHORT).display();
+                    // operation failed, display error message
+                    Toast.makeText(getParent(), "Deposit unsuccessful.", Toast.LENGTH_SHORT).display();
                 }
             } catch (JSONException ex) {
                 ex.printStackTrace();

@@ -55,6 +55,12 @@ public class Deposit {
         this.icNo = icNo;
     }
 
+    /**
+     * deposit money to the given account
+     * 
+     * @param con connection to database
+     * @return result of deposit
+     */
     public String deposit(Connection con) {
         try {
             con.setAutoCommit(false);
@@ -85,6 +91,13 @@ public class Deposit {
         }
     }
     
+    /**
+     * method used in transfer operation, deposit the taken out money to
+     * the benefitcial account
+     * 
+     * @param con connection to database
+     * @return result of transfer's deposit
+     */
     
      public String transferDeposit(Connection con) {
         try {

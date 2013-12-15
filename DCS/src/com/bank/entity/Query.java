@@ -28,6 +28,13 @@ public class Query {
         this.accNo = accNo;
     }
     
+    /**
+     * Check account's balance with the given account number
+     * 
+     * @param con connection to database
+     * @return result of checking account
+     */
+    
     public String query(Connection con){
         try{
             PreparedStatement pstmt = con.prepareStatement(this.selectBalance);

@@ -110,6 +110,7 @@ public class QueryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtResetActionPerformed
+        //reset all field to empty
         jtfAccountNumber.setText(null);
         jlblBalance.setText(null);
         jbtSubmit.setEnabled(false);
@@ -118,22 +119,26 @@ public class QueryPanel extends javax.swing.JPanel {
     private void jbtSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSubmitActionPerformed
         try {
             JSONObject json = new JSONObject();
+            // specific operation
             json.put("operation", Operation.QUERY);
             JSONObject content = new JSONObject();
+            // put in necessary data
             content.put("accNo", jtfAccountNumber.getText());
             content.put("port", this.portNo);
             content.put("bCode", this.branchCode);
             content.put("address", InetAddress.getLocalHost().getHostAddress());
             json.put("content", content);
-            System.out.println(json.toString());
+            // after finish constructing data, send to server
             cw.send(json, InetAddress.getLocalHost(), 5000);
+            // wait for server's reply
             JSONObject js = cw.receive();
-            System.out.println(js.toString());
             JSONObject result = js.getJSONObject("content");
             if (result.get("result").toString().equalsIgnoreCase("Success")) {
+                // operation succeed, display success message and returned value
                 Toast.makeText(getParent(), "Success", Toast.LENGTH_SHORT).display();
                 jlblBalance.setText("RM " + String.format("%.2f", result.getDouble("balance")));
             } else {
+                // operation failed, display error message
                 Toast.makeText(getParent(), result.getString("result"), Toast.LENGTH_SHORT).display();
             }
         } catch (JSONException | UnknownHostException ex) {
@@ -142,9 +147,12 @@ public class QueryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jbtSubmitActionPerformed
 
     private void onReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onReleased
+        // check if account number got 14 numbers
         if (jtfAccountNumber.getText().length() == 14) {
+            // got 14 numbers, enable submit button
             jbtSubmit.setEnabled(true);
         } else {
+            // do not have 14 numbers, disable submit button
             jbtSubmit.setEnabled(false);
         }
     }//GEN-LAST:event_onReleased

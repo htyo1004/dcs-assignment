@@ -123,7 +123,7 @@ public class PassbookPanel extends javax.swing.JPanel {
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
-            // TODO add your handling code here:
+            // trying to print the text area's content
             jtaPassbookInfo.print();
         } catch (PrinterException ex) {
             Logger.getLogger(PassbookPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,21 +131,26 @@ public class PassbookPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
-        // TODO add your handling code here:
         if (txtAccNo.getText().isEmpty()) {
+            // account number field left empty, prompt error message
             Toast.makeText(getParent(), "Please enter account number.", Toast.LENGTH_SHORT).display();
         } else {
-            jtaPassbookInfo.setEnabled(true);
+            // account number is not empty, proceed to construct data
+            jtaPassbookInfo.setEnabled(true); // enable the text area
             try {
                 JSONObject j = new JSONObject();
+                // specific operation
                 j.put("operation", Operation.TRANSACTION);
                 JSONObject content = new JSONObject();
+                // put in necessary data
                 content.put("accno", txtAccNo.getText());
                 content.put("port", this.portNo);
                 content.put("bCode", this.branchCode);
                 content.put("address", InetAddress.getLocalHost().getHostAddress());
                 j.put("content", content);
+                // after constructed data, send to server
                 cw.send(j, InetAddress.getLocalHost(), 5000);
+                // wait for server's reply
                 JSONObject result = cw.receive();
                 generateTransactionLog(result);
             } catch (JSONException | UnknownHostException ex) {
@@ -159,6 +164,12 @@ public class PassbookPanel extends javax.swing.JPanel {
         clear();
     }//GEN-LAST:event_btnResetActionPerformed
 
+    /**
+     * construct the transaction logs with the given data and 
+     * display in text area
+     * 
+     * @param json JSON string that store transaction logs
+     */
     private void generateTransactionLog(JSONObject json) {
         try {
             if (json.getBoolean("record")) {
